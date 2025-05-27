@@ -1,27 +1,30 @@
-use ratatui::{
-    Terminal,
-    backend::CrosstermBackend,
-    widgets::{Block, Borders, Paragraph},
-    style::{Style, Color},
-    layout::{Layout, Direction, Constraint, Rect},
-};
-use std::io;
+use chrono::{Datelike, Local};
+use color_eyre::Result;
 use crossterm::{
     event::{self, Event, KeyCode},
     terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
     ExecutableCommand,
 };
-use color_eyre::Result;
-use chrono::{Local, Datelike};
+use ratatui::{
+    backend::CrosstermBackend,
+    layout::{Constraint, Direction, Layout, Rect},
+    style::{Color, Style},
+    widgets::{Block, Borders, Paragraph},
+    Terminal,
+};
+use std::io;
 
 mod data;
 use data::MonthCalendar;
+mod month_render;
+use month_render::render_day_item;
+mod theme;
 
 fn main() -> Result<()> {
     // 设置终端
     enable_raw_mode()?;
     io::stdout().execute(EnterAlternateScreen)?;
-    
+
     let backend = CrosstermBackend::new(io::stdout());
     let mut terminal = Terminal::new(backend)?;
 
@@ -42,21 +45,14 @@ fn run(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>) -> Result<()> {
 
     loop {
         terminal.draw(|frame| {
-            let size = frame.size();
-            
+            let size = frame.area();
+
             // 创建主框架
-            let main_block = Block::default()
-                .title("日历")
-                .borders(Borders::ALL);
+            let main_block = Block::default().title("日历").borders(Borders::ALL);
             frame.render_widget(main_block, size);
 
             // 为日历创建内部区域
-            let calendar_area = Rect::new(
-                size.x + 1,
-                size.y + 1,
-                size.width - 2,
-                size.height - 2,
-            );
+            let calendar_area = Rect::new(size.x + 1, size.y + 1, size.width - 2, size.height - 2);
 
             // 创建7列的布局（一周7天）
             let constraints = vec![Constraint::Percentage(100 / 7); 7];
@@ -68,14 +64,13 @@ fn run(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>) -> Result<()> {
             // 渲染星期标题
             let weekdays = ["日", "一", "二", "三", "四", "五", "六"];
             for (i, &day) in weekdays.iter().enumerate() {
-                let day_block = Block::default()
-                    .title(day)
-                    .borders(Borders::ALL);
+                let day_block = Block::default().title(day).borders(Borders::ALL);
                 frame.render_widget(day_block, horizontal_layout[i]);
             }
 
             // 计算每个日期块的高度
-            let day_height = (calendar_area.height - 3) / 6; // 减去标题行的高度
+            // let day_height = (calendar_area.height - 3) / 6; // 减去标题行的高度
+            let day_height = 3;
 
             // 渲染日期
             for (week_idx, week) in calendar.day_data.iter().enumerate() {
@@ -86,19 +81,7 @@ fn run(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>) -> Result<()> {
                         horizontal_layout[day_idx].width,
                         day_height,
                     );
-
-                    let style = if day.is_current_month {
-                        Style::default().fg(Color::White)
-                    } else {
-                        Style::default().fg(Color::DarkGray)
-                    };
-
-                    let day_block = Block::default()
-                        .title(day.day.to_string())
-                        .borders(Borders::ALL)
-                        .style(style);
-
-                    frame.render_widget(day_block, day_area);
+                    render_day_item(frame, day, day_area);
                 }
             }
         })?;
