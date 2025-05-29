@@ -9,6 +9,7 @@ use ratatui::{
     backend::CrosstermBackend,
     layout::{Constraint, Direction, Layout, Rect},
     style::{Color, Style},
+    text::Line,
     widgets::{Block, Borders, Paragraph},
     Terminal,
 };
@@ -64,8 +65,9 @@ fn run(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>) -> Result<()> {
             // 渲染星期标题
             let weekdays = ["日", "一", "二", "三", "四", "五", "六"];
             for (i, &day) in weekdays.iter().enumerate() {
+                let line_txt = Line::from(day).centered();
                 let day_block = Block::default().title(day).borders(Borders::ALL);
-                frame.render_widget(day_block, horizontal_layout[i]);
+                frame.render_widget(line_txt, horizontal_layout[i]);
             }
 
             // 计算每个日期块的高度

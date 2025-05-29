@@ -1,11 +1,14 @@
+use clap::builder::Str;
 use ratatui::{
-    layout::{Constraint, Layout, Rect}, style::{Color, Style}, text::Line, widgets::{Block, Borders}, Frame
+    layout::{Constraint, Layout, Rect},
+    style::{Color, Style},
+    text::Line,
+    widgets::{Block, Borders, Paragraph, StatefulWidget, Widget, Wrap},
+    Frame,
 };
 
 use crate::data::CalendarDay;
 use crate::theme::Theme;
-
-
 
 pub fn render_day_item<'a>(frame: &mut Frame, day: &'a CalendarDay, rect: Rect) {
     // 创建一个layout
@@ -25,12 +28,30 @@ pub fn render_day_item<'a>(frame: &mut Frame, day: &'a CalendarDay, rect: Rect) 
         .borders(Borders::ALL)
         .style(style);
 
-    frame.render_widget(day_block, rows_layout[1]);
+    let day_item = CnDayItem::new(day.day);
+
+    StatefulWidget::render(
+        day_item,
+        rect,
+        frame.buffer_mut(),
+        &mut DayItemState { selected: false },
+    );
 }
 
-#[derive(Debug,Clone)]
-struct DayItem<'a> {
-    label: Line<'a>,
+#[derive(Debug, Clone)]
+struct DayItemState {
+    selected: bool,
+}
+
+#[derive(Debug, Clone)]
+struct DayItem {
+    day: u32,
+    theme: Theme,
+}
+
+#[derive(Debug, Clone)]
+struct CnDayItem {
+    day: u32,
     theme: Theme,
 }
 
@@ -42,19 +63,92 @@ const BLUE: Theme = Theme {
 };
 
 /// A button with a label that can be themed.
-impl<'a> DayItem<'a> {
-    pub fn new<T: Into<Line<'a>>>(label: T) -> Self {
-        DayItem {
-            label: label.into(),
-            theme: BLUE,
-        }
+impl DayItem {
+    pub fn new(day: u32) -> Self {
+        DayItem { day, theme: BLUE }
     }
 
     pub const fn theme(mut self, theme: Theme) -> Self {
         self.theme = theme;
         self
     }
-
 }
 
+/// A button with a label that can be themed.
+impl CnDayItem {
+    pub fn new(day: u32) -> Self {
+        CnDayItem { day, theme: BLUE }
+    }
 
+    pub const fn theme(mut self, theme: Theme) -> Self {
+        self.theme = theme;
+        self
+    }
+}
+
+impl StatefulWidget for CnDayItem {
+    type State = DayItemState;
+    fn render(self, area: Rect, buf: &mut ratatui::prelude::Buffer, state: &mut Self::State) {
+        let line = Line::from(self.day.to_string())
+            .centered()
+            .style(Style::default().bg(self.theme.background));
+        let holiday = Line::from("中秋节")
+            .centered()
+            .style(Style::default().bg(self.theme.background));
+        line.render(
+            Rect {
+                x: (area.width - 6) / 2 + area.left(),
+                y: area.top(),
+                width: 6,
+                height: 1,
+            },
+            buf,
+        );
+        holiday.render(
+            Rect {
+                x: (area.width - 6) / 2 + area.left(),
+                y: area.top() + 1,
+                width: 6,
+                height: 1,
+            },
+            buf,
+        );
+    }
+}
+
+impl StatefulWidget for DayItem {
+    type State = DayItemState;
+
+    fn render(self, area: Rect, buf: &mut ratatui::prelude::Buffer, state: &mut Self::State) {
+        // 1. 首先渲染Block
+        let block = Block::default()
+            .borders(Borders::ALL)
+            .border_type(ratatui::widgets::BorderType::Rounded);
+        let line =
+            Line::from(self.day.to_string()).style(Style::default().fg(self.theme.highlight));
+
+        block.render(area, buf);
+        line.render(
+            Rect {
+                x: area.left() + 1,
+                y: area.top() + 1,
+                width: 2,
+                height: 1,
+            },
+            buf,
+        );
+        let holiday_text = Line::from("Juneteenth National Independence Day");
+        let paragraph = Paragraph::new(holiday_text)
+            .wrap(Wrap { trim: true }) // 启用自动换行
+            .style(Style::default());
+        paragraph.render(
+            Rect {
+                x: area.left() + 1,
+                y: area.top() + 2,
+                width: area.width - 2,
+                height: 2,
+            },
+            buf,
+        );
+    }
+}
