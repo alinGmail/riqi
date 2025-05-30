@@ -1,9 +1,10 @@
 use clap::builder::Str;
 use ratatui::{
+    buffer::Buffer,
     layout::{Constraint, Layout, Rect},
     style::{Color, Style},
     text::Line,
-    widgets::{Block, Borders, Paragraph, StatefulWidget, Widget, Wrap},
+    widgets::{Block, BorderType, Borders, Paragraph, StatefulWidget, Widget, Wrap},
     Frame,
 };
 
@@ -84,20 +85,12 @@ impl CnDayItem {
         self.theme = theme;
         self
     }
-}
-
-impl StatefulWidget for CnDayItem {
-    type State = DayItemState;
-    fn render(self, area: Rect, buf: &mut ratatui::prelude::Buffer, state: &mut Self::State) {
-        let line = Line::from(self.day.to_string())
-            .centered()
-            .style(Style::default().bg(self.theme.background));
-        let holiday = Line::from("中秋节")
-            .centered()
-            .style(Style::default().bg(self.theme.background));
+    pub fn render_content_2row6col(self, area: Rect, buf: &mut Buffer) {
+        let line = Line::from(self.day.to_string()).style(Style::default());
+        let holiday = Line::from("中秋节").centered().style(Style::default());
         line.render(
             Rect {
-                x: (area.width - 6) / 2 + area.left(),
+                x: area.left() + 1,
                 y: area.top(),
                 width: 6,
                 height: 1,
@@ -106,13 +99,25 @@ impl StatefulWidget for CnDayItem {
         );
         holiday.render(
             Rect {
-                x: (area.width - 6) / 2 + area.left(),
-                y: area.top() + 1,
+                x: area.left() + 1,
+                y: area.top() + 2,
                 width: 6,
                 height: 1,
             },
             buf,
         );
+    }
+}
+
+impl StatefulWidget for CnDayItem {
+    type State = DayItemState;
+    fn render(self, area: Rect, buf: &mut Buffer, state: &mut Self::State) {
+        let block = Block::new()
+            .borders(Borders::ALL)
+            .border_type(BorderType::Rounded);
+        let inner_area = block.inner(area);
+        block.render(area, buf);
+        self.render_content_2row6col(inner_area, buf);
     }
 }
 
@@ -145,7 +150,7 @@ impl StatefulWidget for DayItem {
             Rect {
                 x: area.left() + 1,
                 y: area.top() + 2,
-                width: area.width - 2,
+                width: 6,
                 height: 2,
             },
             buf,

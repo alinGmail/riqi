@@ -21,6 +21,8 @@ mod month_render;
 use month_render::render_day_item;
 mod theme;
 
+mod month_component;
+
 fn main() -> Result<()> {
     // 设置终端
     enable_raw_mode()?;
@@ -72,7 +74,7 @@ fn run(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>) -> Result<()> {
 
             // 计算每个日期块的高度
             // let day_height = (calendar_area.height - 3) / 6; // 减去标题行的高度
-            let day_height = 3;
+            let day_height = 5;
 
             // 渲染日期
             for (week_idx, week) in calendar.day_data.iter().enumerate() {
@@ -80,7 +82,8 @@ fn run(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>) -> Result<()> {
                     let day_area = Rect::new(
                         horizontal_layout[day_idx].x,
                         calendar_area.y + 3 + (week_idx as u16 * day_height),
-                        horizontal_layout[day_idx].width,
+                        // horizontal_layout[day_idx].width,
+                        10,
                         day_height,
                     );
                     render_day_item(frame, day, day_area);
