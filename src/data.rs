@@ -80,10 +80,12 @@ impl MonthCalendar {
             if current_week.len() == 7 {
                 weeks.push(current_week);
                 current_week = Vec::new();
+                current_week = Vec::new();
             }
         }
 
         // 添加下个月的日期
+
         if !current_week.is_empty() {
             let next_month_first_day = last_day.succ_opt().unwrap();
             let mut next_day = 1;

@@ -5,15 +5,18 @@ use crossterm::{
     terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
     ExecutableCommand,
 };
+use env_logger::{Builder, Target};
+use log::LevelFilter;
 use ratatui::{
     backend::CrosstermBackend,
-    layout::{Constraint, Direction, Layout, Rect},
+    layout::{Constraint, Direction, Flex, Layout, Rect},
     style::{Color, Style},
     text::Line,
-    widgets::{Block, Borders, Paragraph},
+    widgets::{Block, Borders, Paragraph, Widget},
     Terminal,
 };
-use std::io;
+use std::{fs::File, io};
+use theme::{Theme, BLUE};
 
 mod data;
 use data::MonthCalendar;
@@ -22,8 +25,23 @@ use month_render::render_day_item;
 mod theme;
 
 mod month_component;
+use month_component::MonthComponent;
+
+fn setup_logger() {
+    // 创建或覆盖日志文件
+    let log_file = File::create("debug.log").expect("Failed to create log file");
+
+    Builder::new()
+        .target(Target::Pipe(Box::new(log_file))) // 输出到文件
+        .filter_level(LevelFilter::Debug) // 设置日志级别
+        .format_timestamp(None) // 可选：禁用时间戳
+        .is_test(true) // 禁用颜色（避免乱码）
+        .init();
+}
 
 fn main() -> Result<()> {
+    setup_logger();
+    log::debug!("aaaabbb-ccc");
     // 设置终端
     enable_raw_mode()?;
     io::stdout().execute(EnterAlternateScreen)?;
@@ -57,38 +75,17 @@ fn run(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>) -> Result<()> {
             // 为日历创建内部区域
             let calendar_area = Rect::new(size.x + 1, size.y + 1, size.width - 2, size.height - 2);
 
-            // 创建7列的布局（一周7天）
-            let constraints = vec![Constraint::Percentage(100 / 7); 7];
-            let horizontal_layout = Layout::default()
-                .direction(Direction::Horizontal)
-                .constraints(constraints)
+            //
+            let layout = Layout::horizontal([Constraint::Length(82)])
+                .flex(Flex::Center)
                 .split(calendar_area);
 
-            // 渲染星期标题
-            let weekdays = ["日", "一", "二", "三", "四", "五", "六"];
-            for (i, &day) in weekdays.iter().enumerate() {
-                let line_txt = Line::from(day).centered();
-                let day_block = Block::default().title(day).borders(Borders::ALL);
-                frame.render_widget(line_txt, horizontal_layout[i]);
-            }
-
-            // 计算每个日期块的高度
-            // let day_height = (calendar_area.height - 3) / 6; // 减去标题行的高度
-            let day_height = 5;
-
-            // 渲染日期
-            for (week_idx, week) in calendar.day_data.iter().enumerate() {
-                for (day_idx, day) in week.iter().enumerate() {
-                    let day_area = Rect::new(
-                        horizontal_layout[day_idx].x,
-                        calendar_area.y + 3 + (week_idx as u16 * day_height),
-                        // horizontal_layout[day_idx].width,
-                        10,
-                        day_height,
-                    );
-                    render_day_item(frame, day, day_area);
-                }
-            }
+            let month_component = MonthComponent {
+                data: &calendar,
+                day_gap: 2,
+                theme: BLUE,
+            };
+            month_component.render(layout[0], frame.buffer_mut());
         })?;
 
         if let Event::Key(key) = event::read()? {

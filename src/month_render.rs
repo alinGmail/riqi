@@ -11,30 +11,13 @@ use ratatui::{
 use crate::data::CalendarDay;
 use crate::theme::Theme;
 
-pub fn render_day_item<'a>(frame: &mut Frame, day: &'a CalendarDay, rect: Rect) {
-    // 创建一个layout
-    let rows_layout = Layout::default()
-        .direction(ratatui::layout::Direction::Vertical)
-        .constraints([Constraint::Min(1), Constraint::Min(1), Constraint::Min(1)])
-        .split(rect);
-
-    let style = if day.is_current_month {
-        Style::default().fg(Color::White)
-    } else {
-        Style::default().fg(Color::DarkGray)
-    };
-
-    let day_block = Block::default()
-        .title(day.day.to_string())
-        .borders(Borders::ALL)
-        .style(style);
-
+pub fn render_day_item<'a>(buffer: &mut Buffer, day: &'a CalendarDay, rect: Rect) {
     let day_item = CnDayItem::new(day.day);
 
     StatefulWidget::render(
         day_item,
         rect,
-        frame.buffer_mut(),
+        buffer,
         &mut DayItemState { selected: false },
     );
 }
@@ -61,6 +44,9 @@ const BLUE: Theme = Theme {
     background: Color::Rgb(48, 72, 144),
     highlight: Color::Rgb(64, 96, 192),
     shadow: Color::Rgb(32, 48, 96),
+    holi_day: Color::Rgb(233, 101, 165),
+    work_day: Color::Rgb(177, 242, 167),
+    focus_day: Color::Rgb(32, 48, 96),
 };
 
 /// A button with a label that can be themed.
@@ -85,9 +71,12 @@ impl CnDayItem {
         self.theme = theme;
         self
     }
-    pub fn render_content_2row6col(self, area: Rect, buf: &mut Buffer) {
-        let line = Line::from(self.day.to_string()).style(Style::default());
-        let holiday = Line::from("中秋节").centered().style(Style::default());
+    pub fn render_content_3row6col(self, area: Rect, buf: &mut Buffer) {
+        log::debug!("{:?}", area);
+        let line = Line::from(self.day.to_string()).style(Style::default().fg(BLUE.holi_day));
+        let holiday = Line::from("中秋节")
+            .centered()
+            .style(Style::default().fg(BLUE.holi_day));
         line.render(
             Rect {
                 x: area.left() + 1,
@@ -107,6 +96,29 @@ impl CnDayItem {
             buf,
         );
     }
+
+    pub fn render_content_2row6col(self, area: Rect, buf: &mut Buffer) {
+        let line = Line::from(self.day.to_string()).style(Style::default());
+        let holiday = Line::from("中秋节").centered().style(Style::default());
+        line.render(
+            Rect {
+                x: area.left() + 1,
+                y: area.top(),
+                width: 6,
+                height: 1,
+            },
+            buf,
+        );
+        holiday.render(
+            Rect {
+                x: area.left() + 1,
+                y: area.top() + 1,
+                width: 6,
+                height: 1,
+            },
+            buf,
+        );
+    }
 }
 
 impl StatefulWidget for CnDayItem {
@@ -114,10 +126,11 @@ impl StatefulWidget for CnDayItem {
     fn render(self, area: Rect, buf: &mut Buffer, state: &mut Self::State) {
         let block = Block::new()
             .borders(Borders::ALL)
-            .border_type(BorderType::Rounded);
+            .border_type(BorderType::Rounded)
+            .border_style(Style::default().fg(BLUE.holi_day));
         let inner_area = block.inner(area);
         block.render(area, buf);
-        self.render_content_2row6col(inner_area, buf);
+        self.render_content_3row6col(inner_area, buf);
     }
 }
 
