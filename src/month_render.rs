@@ -12,7 +12,7 @@ use crate::data::CalendarDay;
 use crate::theme::Theme;
 
 pub fn render_day_item<'a>(buffer: &mut Buffer, day: &'a CalendarDay, rect: Rect) {
-    let day_item = CnDayItem::new(day.day);
+    let day_item = CnDayItem::new(day);
 
     StatefulWidget::render(
         day_item,
@@ -34,8 +34,8 @@ struct DayItem {
 }
 
 #[derive(Debug, Clone)]
-struct CnDayItem {
-    day: u32,
+struct CnDayItem<'a> {
+    day: &'a CalendarDay,
     theme: Theme,
 }
 
@@ -62,8 +62,8 @@ impl DayItem {
 }
 
 /// A button with a label that can be themed.
-impl CnDayItem {
-    pub fn new(day: u32) -> Self {
+impl<'a> CnDayItem<'a> {
+    pub fn new(day: &'a CalendarDay) -> Self {
         CnDayItem { day, theme: BLUE }
     }
 
@@ -73,7 +73,7 @@ impl CnDayItem {
     }
     pub fn render_content_3row6col(self, area: Rect, buf: &mut Buffer) {
         log::debug!("{:?}", area);
-        let line = Line::from(self.day.to_string()).style(Style::default().fg(BLUE.holi_day));
+        let line = Line::from(self.day.day.to_string()).style(Style::default().fg(BLUE.holi_day));
         let holiday = Line::from("中秋节")
             .centered()
             .style(Style::default().fg(BLUE.holi_day));
@@ -98,7 +98,7 @@ impl CnDayItem {
     }
 
     pub fn render_content_2row6col(self, area: Rect, buf: &mut Buffer) {
-        let line = Line::from(self.day.to_string()).style(Style::default());
+        let line = Line::from(self.day.day.to_string()).style(Style::default());
         let holiday = Line::from("中秋节").centered().style(Style::default());
         line.render(
             Rect {
@@ -121,7 +121,7 @@ impl CnDayItem {
     }
 }
 
-impl StatefulWidget for CnDayItem {
+impl<'a> StatefulWidget for CnDayItem<'a> {
     type State = DayItemState;
     fn render(self, area: Rect, buf: &mut Buffer, state: &mut Self::State) {
         let block = Block::new()
