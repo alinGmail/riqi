@@ -4,7 +4,7 @@ use chrono::{Datelike, NaiveDate};
 #[derive(Debug, Clone)]
 pub struct CalendarDay {
     pub year: u32,
-    pub month: u32, // 1-12
+    pub month: u32, // 0-11
     pub day: u32,
     pub day_of_week: u32,       // 0=Sunday, 6=Saturday
     pub is_current_month: bool, // 是否属于当前月份
@@ -70,7 +70,7 @@ impl MonthCalendar {
                 prev_month_last_day.year() as u32,
                 prev_month_last_day.month(),
                 day,
-                i as u32,
+                first_weekday as u32 - 1 - i as u32,
                 false,
             ));
         }
@@ -214,5 +214,36 @@ mod tests {
             .filter(|day| !day.is_current_month && day.month == 4)
             .collect();
         assert!(!apr_days.is_empty());
+    }
+
+    #[test]
+    fn test_april_30_in_may_calendar() {
+        // 测试2025年5月份日历中的4月30日
+        let calendar = MonthCalendar::new(2025, 5);
+
+        print!("{:?}", calendar);
+        // 找到4月30日
+        let april_30 = calendar
+            .day_data
+            .iter()
+            .flat_map(|week| week.iter())
+            .find(|day| day.year == 2025 && day.month == 4 && day.day == 30)
+            .unwrap();
+
+        // 使用 chrono 验证正确的星期几
+        let date = NaiveDate::from_ymd_opt(2025, 4, 30).unwrap();
+        let expected_weekday = date.weekday().num_days_from_sunday() as u32;
+
+        assert_eq!(
+            april_30.day_of_week, expected_weekday,
+            "2025年4月30日的星期几计算错误，期望 {}，实际 {}",
+            expected_weekday, april_30.day_of_week
+        );
+
+        // 验证其他属性
+        assert!(!april_30.is_current_month, "4月30日不应该被标记为当前月份");
+        assert_eq!(april_30.year, 2025, "年份应该是2025");
+        assert_eq!(april_30.month, 4, "月份应该是4");
+        assert_eq!(april_30.day, 30, "日期应该是30");
     }
 }
