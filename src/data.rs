@@ -4,7 +4,7 @@ use chrono::{Datelike, NaiveDate};
 #[derive(Debug, Clone)]
 pub struct CalendarDay {
     pub year: u32,
-    pub month: u32, // 0-11
+    pub month: u32, // 1-12
     pub day: u32,
     pub day_of_week: u32,       // 0=Sunday, 6=Saturday
     pub is_current_month: bool, // 是否属于当前月份
