@@ -67,16 +67,24 @@ impl<'a> CnDayItem<'a> {
         CnDayItem { day, theme: BLUE }
     }
 
+    pub fn get_fg_color(&self) -> Style {
+        let style = if self.day.day_of_week == 6 || self.day.day_of_week == 0 {
+            // 周六日使用节假日颜色
+            Style::default().fg(BLUE.holi_day)
+        } else {
+            // 工作日使用工作颜色
+            Style::default().fg(BLUE.work_day)
+        };
+        return style;
+    }
+
     pub const fn theme(mut self, theme: Theme) -> Self {
         self.theme = theme;
         self
     }
     pub fn render_content_3row6col(self, area: Rect, buf: &mut Buffer) {
-        log::debug!("{:?}", area);
-        let line = Line::from(self.day.day.to_string()).style(Style::default().fg(BLUE.holi_day));
-        let holiday = Line::from("中秋节")
-            .centered()
-            .style(Style::default().fg(BLUE.holi_day));
+        let line = Line::from(self.day.day.to_string()).style(self.get_fg_color());
+        let holiday = Line::from("中秋节").centered().style(self.get_fg_color());
         line.render(
             Rect {
                 x: area.left() + 1,
@@ -127,7 +135,7 @@ impl<'a> StatefulWidget for CnDayItem<'a> {
         let block = Block::new()
             .borders(Borders::ALL)
             .border_type(BorderType::Rounded)
-            .border_style(Style::default().fg(BLUE.holi_day));
+            .border_style(self.get_fg_color());
         let inner_area = block.inner(area);
         block.render(area, buf);
         self.render_content_3row6col(inner_area, buf);
