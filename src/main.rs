@@ -1,4 +1,4 @@
-use chrono::{Datelike, Duration, Local, NaiveDate};
+use chrono::{Datelike, Duration, Local};
 use color_eyre::Result;
 use crossterm::{
     event::{self, Event, KeyCode},
@@ -9,20 +9,18 @@ use env_logger::{Builder, Target};
 use log::LevelFilter;
 use ratatui::{
     backend::CrosstermBackend,
-    layout::{Constraint, Direction, Flex, Layout, Rect},
-    style::{Color, Style},
+    layout::{Constraint, Flex, Layout, Rect},
     text::Line,
-    widgets::{Block, Borders, Paragraph, Widget},
+    widgets::{Block, Borders, Widget},
     Terminal,
 };
 use state::RiqiState;
 use std::{fs::File, io};
-use theme::{Theme, BLUE};
+use theme::BLUE;
 
 mod data;
 use data::MonthCalendar;
 mod month_render;
-use month_render::render_day_item;
 mod theme;
 
 mod month_component;
@@ -44,7 +42,6 @@ fn setup_logger() {
 
 fn main() -> Result<()> {
     setup_logger();
-    log::debug!("aaaabbb-ccc");
     // 设置终端
     enable_raw_mode()?;
     io::stdout().execute(EnterAlternateScreen)?;
@@ -75,8 +72,16 @@ fn run(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>) -> Result<()> {
             let size = frame.area();
 
             // 创建主框架
-            let main_block = Block::default().title("日历").borders(Borders::ALL);
-            frame.render_widget(main_block, size);
+
+            let month_til_str = format!(
+                "{}年{}月",
+                &calendar.year.to_string(),
+                &calendar.month.to_string()
+            );
+
+            let month_til_component = Line::from(month_til_str).centered();
+            month_til_component
+                .render(Rect::new(size.x, size.y, size.width, 1), frame.buffer_mut());
 
             // 为日历创建内部区域
             let calendar_area = Rect::new(size.x + 1, size.y + 1, size.width - 2, size.height - 2);
