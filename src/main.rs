@@ -1,4 +1,4 @@
-use chrono::{Datelike, Local};
+use chrono::{Datelike, Local, NaiveDate};
 use color_eyre::Result;
 use crossterm::{
     event::{self, Event, KeyCode},
@@ -15,6 +15,7 @@ use ratatui::{
     widgets::{Block, Borders, Paragraph, Widget},
     Terminal,
 };
+use state::RiqiState;
 use std::{fs::File, io};
 use theme::{Theme, BLUE};
 
@@ -26,6 +27,8 @@ mod theme;
 
 mod month_component;
 use month_component::MonthComponent;
+
+mod state;
 
 fn setup_logger() {
     // 创建或覆盖日志文件
@@ -68,6 +71,10 @@ fn run(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>) -> Result<()> {
         terminal.draw(|frame| {
             let size = frame.area();
 
+            let mut riqi_state = RiqiState {
+                select_day: now.date_naive(),
+            };
+
             // 创建主框架
             let main_block = Block::default().title("日历").borders(Borders::ALL);
             frame.render_widget(main_block, size);
@@ -82,6 +89,7 @@ fn run(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>) -> Result<()> {
 
             let month_component = MonthComponent {
                 data: &calendar,
+                riqi_state: &riqi_state,
                 day_gap: 2,
                 theme: BLUE,
             };

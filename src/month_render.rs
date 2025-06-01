@@ -1,3 +1,4 @@
+use chrono::Datelike;
 use clap::builder::Str;
 use ratatui::{
     buffer::Buffer,
@@ -8,11 +9,16 @@ use ratatui::{
     Frame,
 };
 
-use crate::data::CalendarDay;
-use crate::theme::Theme;
+use crate::{data::CalendarDay, theme::BLUE};
+use crate::{state::RiqiState, theme::Theme};
 
-pub fn render_day_item<'a>(buffer: &mut Buffer, day: &'a CalendarDay, rect: Rect) {
-    let day_item = CnDayItem::new(day);
+pub fn render_day_item<'a>(
+    buffer: &mut Buffer,
+    day: &'a CalendarDay,
+    rect: Rect,
+    riqi_state: &RiqiState,
+) {
+    let day_item = CnDayItem::new(day, riqi_state);
 
     StatefulWidget::render(
         day_item,
@@ -37,17 +43,8 @@ struct DayItem {
 struct CnDayItem<'a> {
     day: &'a CalendarDay,
     theme: Theme,
+    riqi_state: &'a RiqiState,
 }
-
-const BLUE: Theme = Theme {
-    text: Color::Rgb(16, 24, 48),
-    background: Color::Rgb(48, 72, 144),
-    highlight: Color::Rgb(64, 96, 192),
-    shadow: Color::Rgb(32, 48, 96),
-    holi_day: Color::Rgb(233, 101, 165),
-    work_day: Color::Rgb(177, 242, 167),
-    focus_day: Color::Rgb(32, 48, 96),
-};
 
 /// A button with a label that can be themed.
 impl DayItem {
@@ -63,11 +60,27 @@ impl DayItem {
 
 /// A button with a label that can be themed.
 impl<'a> CnDayItem<'a> {
-    pub fn new(day: &'a CalendarDay) -> Self {
-        CnDayItem { day, theme: BLUE }
+    pub fn new(day: &'a CalendarDay, riqi_state: &'a RiqiState) -> Self {
+        CnDayItem {
+            day,
+            theme: BLUE,
+            riqi_state,
+        }
+    }
+
+    pub fn is_selected_day(&self) -> bool {
+        let select_day = self.riqi_state.select_day;
+        return select_day.year() as u32 == self.day.year
+            && select_day.month() == self.day.month
+            && select_day.day() == self.day.day;
     }
 
     pub fn get_fg_color(&self) -> Style {
+        // 是不是今天
+        if self.is_selected_day() {
+            return Style::default().fg(BLUE.today);
+        }
+
         let style = if self.day.day_of_week == 6 || self.day.day_of_week == 0 {
             // 周六日使用节假日颜色
             Style::default().fg(BLUE.holi_day)

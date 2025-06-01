@@ -6,10 +6,11 @@ use ratatui::{
     widgets::{Block, Borders, Widget},
 };
 
-use crate::{data::MonthCalendar, month_render::render_day_item, theme::Theme};
+use crate::{data::MonthCalendar, month_render::render_day_item, state::RiqiState, theme::Theme};
 
 pub struct MonthComponent<'a> {
     pub data: &'a MonthCalendar,
+    pub riqi_state: &'a RiqiState,
     pub day_gap: u16,
     pub theme: Theme,
 }
@@ -39,7 +40,7 @@ impl<'a> Widget for MonthComponent<'a> {
                     day_height,
                 );
                 log::debug!("day_area:{:?}", day_area);
-                render_day_item(buf, day, day_area);
+                render_day_item(buf, day, day_area, self.riqi_state);
             }
         }
     }
