@@ -20,8 +20,8 @@ pub const BLUE: Theme = Theme {
     shadow: Color::Rgb(32, 48, 96),
     holi_day: Color::Rgb(233, 101, 165),
     work_day: Color::Rgb(177, 242, 167),
-    // work_day: Color::Rgb(177, 186, 244),
-    //work_day: Color::Rgb(179, 244, 143),
-    focus_day: Color::Rgb(32, 48, 96),
+    focus_day: Color::Rgb(177, 186, 244),
+    //today: Color::Rgb(179, 244, 143),
+    // focus_day: Color::Rgb(32, 48, 96),
     today: Color::Rgb(235, 222, 118),
 };

@@ -1,12 +1,10 @@
 use chrono::Datelike;
-use clap::builder::Str;
 use ratatui::{
     buffer::Buffer,
     layout::{Constraint, Layout, Rect},
-    style::{Color, Style},
+    style::{Color, Style, Stylize},
     text::Line,
     widgets::{Block, BorderType, Borders, Paragraph, StatefulWidget, Widget, Wrap},
-    Frame,
 };
 
 use crate::{data::CalendarDay, theme::BLUE};
@@ -78,7 +76,7 @@ impl<'a> CnDayItem<'a> {
     pub fn get_fg_color(&self) -> Style {
         // 是不是今天
         if self.is_selected_day() {
-            return Style::default().fg(BLUE.today);
+            return Style::default().fg(BLUE.focus_day).bold();
         }
 
         let style = if self.day.day_of_week == 6 || self.day.day_of_week == 0 {

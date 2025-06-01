@@ -1,4 +1,4 @@
-use chrono::{Datelike, Local, NaiveDate};
+use chrono::{Datelike, Duration, Local, NaiveDate};
 use color_eyre::Result;
 use crossterm::{
     event::{self, Event, KeyCode},
@@ -65,15 +65,14 @@ fn main() -> Result<()> {
 fn run(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>) -> Result<()> {
     // 获取当前日期
     let now = Local::now();
-    let calendar = MonthCalendar::new(now.year() as u32, now.month());
+    let mut riqi_state = RiqiState {
+        select_day: now.date_naive(),
+    };
+    let mut calendar = MonthCalendar::new(now.year() as u32, now.month());
 
     loop {
         terminal.draw(|frame| {
             let size = frame.area();
-
-            let mut riqi_state = RiqiState {
-                select_day: now.date_naive(),
-            };
 
             // 创建主框架
             let main_block = Block::default().title("日历").borders(Borders::ALL);
@@ -99,6 +98,31 @@ fn run(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>) -> Result<()> {
         if let Event::Key(key) = event::read()? {
             if key.code == KeyCode::Char('q') {
                 break;
+            }
+            if key.code == KeyCode::Char('j') {
+                // go to next week
+                riqi_state.select_day = riqi_state.select_day + Duration::weeks(1);
+            }
+            if key.code == KeyCode::Char('k') {
+                // go to pre week
+                riqi_state.select_day = riqi_state.select_day + Duration::weeks(-1);
+            }
+            if key.code == KeyCode::Char('h') {
+                // go to pre day
+                riqi_state.select_day = riqi_state.select_day + Duration::days(-1);
+            }
+            if key.code == KeyCode::Char('l') {
+                // go to pre day
+                riqi_state.select_day = riqi_state.select_day + Duration::days(1);
+            }
+
+            if riqi_state.select_day.year() as u32 != calendar.year
+                || riqi_state.select_day.month() != calendar.month
+            {
+                calendar = MonthCalendar::new(
+                    riqi_state.select_day.year() as u32,
+                    riqi_state.select_day.month(),
+                );
             }
         }
     }
