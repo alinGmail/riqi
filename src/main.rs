@@ -9,6 +9,7 @@ use env_logger::{Builder, Target};
 use log::LevelFilter;
 use ratatui::{
     backend::CrosstermBackend,
+    crossterm::event::KeyEventKind,
     layout::{Constraint, Flex, Layout, Rect},
     text::Line,
     widgets::{Block, Borders, Widget},
@@ -101,6 +102,9 @@ fn run(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>) -> Result<()> {
         })?;
 
         if let Event::Key(key) = event::read()? {
+            if key.is_release() {
+                continue;
+            }
             if key.code == KeyCode::Char('q') {
                 break;
             }
@@ -119,6 +123,10 @@ fn run(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>) -> Result<()> {
             if key.code == KeyCode::Char('l') {
                 // go to pre day
                 riqi_state.select_day = riqi_state.select_day + Duration::days(1);
+            }
+            if key.code == KeyCode::Char('d') {
+                // go to next month
+                // riqi_state.select_day = riqi_state.select_day + Duration::month(1);
             }
 
             if riqi_state.select_day.year() as u32 != calendar.year

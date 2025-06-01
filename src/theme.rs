@@ -11,6 +11,8 @@ pub struct Theme {
     pub work_day: Color,
     pub focus_day: Color,
     pub today: Color,
+
+    pub not_cur_month: Color,
 }
 
 pub const BLUE: Theme = Theme {
@@ -24,4 +26,5 @@ pub const BLUE: Theme = Theme {
     //today: Color::Rgb(179, 244, 143),
     // focus_day: Color::Rgb(32, 48, 96),
     today: Color::Rgb(235, 222, 118),
+    not_cur_month: Color::Rgb(120, 120, 120),
 };

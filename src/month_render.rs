@@ -79,6 +79,11 @@ impl<'a> CnDayItem<'a> {
             return Style::default().fg(BLUE.focus_day).bold();
         }
 
+        // 是不是 这个月
+        if !self.day.is_current_month {
+            return Style::default().fg(BLUE.not_cur_month);
+        }
+
         let style = if self.day.day_of_week == 6 || self.day.day_of_week == 0 {
             // 周六日使用节假日颜色
             Style::default().fg(BLUE.holi_day)
