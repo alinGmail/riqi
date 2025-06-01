@@ -18,6 +18,7 @@ use ratatui::{
 use state::RiqiState;
 use std::{fs::File, io};
 use theme::BLUE;
+use utils::add_months_safe;
 
 mod data;
 use data::MonthCalendar;
@@ -127,7 +128,12 @@ fn run(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>) -> Result<()> {
             }
             if key.code == KeyCode::Char('d') {
                 // go to next month
-                // riqi_state.select_day = riqi_state.select_day + Duration::month(1);
+                riqi_state.select_day = add_months_safe(riqi_state.select_day, 1);
+            }
+
+            if key.code == KeyCode::Char('u') {
+                // go to pre month
+                riqi_state.select_day = add_months_safe(riqi_state.select_day, -1);
             }
 
             if riqi_state.select_day.year() as u32 != calendar.year
