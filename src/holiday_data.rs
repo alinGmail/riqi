@@ -1,4 +1,7 @@
 use serde::{Deserialize, Serialize};
+use std::collections::HashMap;
+
+pub type HolidayMap = HashMap<String, HashMap<String, Vec<Holiday>>>;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Holiday {
@@ -35,4 +38,82 @@ pub struct HolidayResponse {
 
 pub fn parse_holidays(json_str: &str) -> Result<HolidayResponse, serde_json::Error> {
     serde_json::from_str(json_str)
-} 
+}
+
+impl HolidayResponse {
+    pub fn add_to_holiday_map(
+        &self,
+        holiday_map: &mut HolidayMap,
+        region: &str,
+        language: &str,
+        year: &str,
+    ) {
+        let key = format!("{}_{}_{}", year, region, language);
+        let mut date_map: HashMap<String, Vec<Holiday>> = HashMap::new();
+
+        // 按日期对节假日进行分组
+        for holiday in &self.holidays {
+            let date_key = holiday.date.iso.clone();
+            date_map
+                .entry(date_key)
+                .or_insert_with(Vec::new)
+                .push(holiday.clone());
+        }
+
+        // 将分组后的数据插入到 holiday_map 中，如果已存在则替换
+        holiday_map.insert(key, date_map);
+    }
+}
+
+// 为 Holiday 实现 Clone trait
+impl Clone for Holiday {
+    fn clone(&self) -> Self {
+        Holiday {
+            name: self.name.clone(),
+            date: Date {
+                iso: self.date.iso.clone(),
+                datetime: DateTime {
+                    year: self.date.datetime.year,
+                    month: self.date.datetime.month,
+                    day: self.date.datetime.day,
+                    hour: self.date.datetime.hour,
+                    minute: self.date.datetime.minute,
+                    second: self.date.datetime.second,
+                },
+            },
+            holiday_type: self.holiday_type.clone(),
+            primary_type: self.primary_type.clone(),
+        }
+    }
+}
+
+// 为 Date 实现 Clone trait
+impl Clone for Date {
+    fn clone(&self) -> Self {
+        Date {
+            iso: self.iso.clone(),
+            datetime: DateTime {
+                year: self.datetime.year,
+                month: self.datetime.month,
+                day: self.datetime.day,
+                hour: self.datetime.hour,
+                minute: self.datetime.minute,
+                second: self.datetime.second,
+            },
+        }
+    }
+}
+
+// 为 DateTime 实现 Clone trait
+impl Clone for DateTime {
+    fn clone(&self) -> Self {
+        DateTime {
+            year: self.year,
+            month: self.month,
+            day: self.day,
+            hour: self.hour,
+            minute: self.minute,
+            second: self.second,
+        }
+    }
+}
