@@ -36,28 +36,10 @@ struct DayItemState {
 }
 
 #[derive(Debug, Clone)]
-struct DayItem {
-    day: u32,
-    theme: Theme,
-}
-
-#[derive(Debug, Clone)]
 struct CnDayItem<'a> {
     day: &'a CalendarDay,
     theme: Theme,
     riqi_state: &'a RiqiState<'a>,
-}
-
-/// A button with a label that can be themed.
-impl DayItem {
-    pub fn new(day: u32) -> Self {
-        DayItem { day, theme: BLUE }
-    }
-
-    pub const fn theme(mut self, theme: Theme) -> Self {
-        self.theme = theme;
-        self
-    }
 }
 
 fn get_holidays<'a>(
@@ -180,42 +162,5 @@ impl<'a> StatefulWidget for CnDayItem<'a> {
         let inner_area = block.inner(area);
         block.render(area, buf);
         self.render_content_3row6col(inner_area, buf);
-    }
-}
-
-impl StatefulWidget for DayItem {
-    type State = DayItemState;
-
-    fn render(self, area: Rect, buf: &mut ratatui::prelude::Buffer, state: &mut Self::State) {
-        // 1. 首先渲染Block
-        let block = Block::default()
-            .borders(Borders::ALL)
-            .border_type(ratatui::widgets::BorderType::Rounded);
-        let line =
-            Line::from(self.day.to_string()).style(Style::default().fg(self.theme.highlight));
-
-        block.render(area, buf);
-        line.render(
-            Rect {
-                x: area.left() + 1,
-                y: area.top() + 1,
-                width: 2,
-                height: 1,
-            },
-            buf,
-        );
-        let holiday_text = Line::from("Juneteenth National Independence Day");
-        let paragraph = Paragraph::new(holiday_text)
-            .wrap(Wrap { trim: true }) // 启用自动换行
-            .style(Style::default());
-        paragraph.render(
-            Rect {
-                x: area.left() + 1,
-                y: area.top() + 2,
-                width: 6,
-                height: 2,
-            },
-            buf,
-        );
     }
 }

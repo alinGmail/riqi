@@ -22,7 +22,7 @@ use utils::add_months_safe;
 
 mod data;
 use data::MonthCalendar;
-mod month_render;
+mod day_component;
 mod theme;
 
 mod month_component;

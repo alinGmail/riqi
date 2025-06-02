@@ -6,7 +6,7 @@ use ratatui::{
     widgets::{Block, Borders, Widget},
 };
 
-use crate::{data::MonthCalendar, month_render::render_day_item, state::RiqiState, theme::Theme};
+use crate::{data::MonthCalendar, day_component::render_day_item, state::RiqiState, theme::Theme};
 
 pub struct MonthComponent<'a> {
     pub data: &'a MonthCalendar,
