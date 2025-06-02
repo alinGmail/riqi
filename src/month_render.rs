@@ -7,7 +7,11 @@ use ratatui::{
     widgets::{Block, BorderType, Borders, Paragraph, StatefulWidget, Widget, Wrap},
 };
 
-use crate::{data::CalendarDay, holiday_data::HolidayMap, theme::BLUE};
+use crate::{
+    data::CalendarDay,
+    holiday_data::{Holiday, HolidayMap},
+    theme::BLUE,
+};
 use crate::{state::RiqiState, theme::Theme};
 
 pub fn render_day_item<'a>(
@@ -54,6 +58,14 @@ impl DayItem {
         self.theme = theme;
         self
     }
+}
+
+fn get_holidays<'a>(
+    holiday_map: &'a HolidayMap,
+    key1: &str,
+    key2: &str,
+) -> Option<&'a Vec<Holiday>> {
+    holiday_map.get(key1)?.get(key2)
 }
 
 /// A button with a label that can be themed.
@@ -109,17 +121,29 @@ impl<'a> CnDayItem<'a> {
             },
             buf,
         );
-
-        let holiday = Line::from("中秋节").centered().style(self.get_fg_color());
-        holiday.render(
-            Rect {
-                x: area.left() + 1,
-                y: area.top() + 2,
-                width: 6,
-                height: 1,
-            },
-            buf,
+        let date_str = format!(
+            "{:04}-{:02}-{:02}",
+            self.day.year, self.day.month, self.day.day
         );
+        // 使用
+        if let Some(holidays) = get_holidays(&self.riqi_state.holiday_map, "2025_cn_zh", &date_str)
+        {
+            // 处理 holidays
+            if let Some(holiday) = holidays.get(0) {
+                let holiday = Line::from(holiday.name.clone())
+                    .centered()
+                    .style(self.get_fg_color());
+                holiday.render(
+                    Rect {
+                        x: area.left() + 1,
+                        y: area.top() + 2,
+                        width: 6,
+                        height: 1,
+                    },
+                    buf,
+                );
+            }
+        }
     }
 
     pub fn render_content_2row6col(self, area: Rect, buf: &mut Buffer) {
