@@ -2,7 +2,7 @@ pub fn load_holidays_file(lang: &str, region: &str) -> std::io::Result<String> {
     // 开发环境：从项目目录加载
     #[cfg(debug_assertions)]
     {
-        let path = format!("../resources/holidays/{}_{}.json", region, lang);
+        let path = format!("resources/holidays/{}_{}.json", region, lang);
         return std::fs::read_to_string(path);
     }
 

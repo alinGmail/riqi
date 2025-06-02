@@ -30,6 +30,8 @@ use month_component::MonthComponent;
 
 mod holiday;
 use holiday::load_holidays_file;
+mod holiday_data;
+use holiday_data::parse_holidays;
 mod state;
 mod utils;
 
@@ -50,21 +52,27 @@ fn main() -> Result<()> {
     // if let Err(e) = riqi::json_processor::process_holiday_json() {
     //    eprintln!("处理 JSON 文件时出错: {}", e);
     //}
+    setup_logger();
 
     log::debug!("start");
 
-    let file_str = load_holidays_file("zh", "cn");
+    let file_str = load_holidays_file("zh", "cn")?;
 
-    match file_str {
-        Ok(str) => {
-            log::debug!("{}", str.len().to_string())
+    match parse_holidays(&file_str) {
+        Ok(holiday_response) => {
+            log::debug!(
+                "成功解析假期数据，共 {} 个假期",
+                holiday_response.holidays.len()
+            );
+            for holiday in &holiday_response.holidays {
+                log::debug!("假期: {}, 日期: {}", holiday.name, holiday.date.iso);
+            }
         }
         Err(e) => {
-            eprintln!("error load josn ,{}", e);
+            log::error!("解析假期数据失败: {}", e);
         }
     }
 
-    setup_logger();
     // 设置终端
     enable_raw_mode()?;
     io::stdout().execute(EnterAlternateScreen)?;
