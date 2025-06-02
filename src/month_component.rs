@@ -10,7 +10,7 @@ use crate::{data::MonthCalendar, month_render::render_day_item, state::RiqiState
 
 pub struct MonthComponent<'a> {
     pub data: &'a MonthCalendar,
-    pub riqi_state: &'a RiqiState,
+    pub riqi_state: &'a RiqiState<'a>,
     pub day_gap: u16,
     pub theme: Theme,
 }

@@ -16,7 +16,7 @@ use ratatui::{
     Terminal,
 };
 use state::RiqiState;
-use std::{fs::File, io};
+use std::{collections::HashMap, fs::File, io};
 use theme::BLUE;
 use utils::add_months_safe;
 
@@ -32,6 +32,7 @@ mod holiday;
 use holiday::load_holidays_file;
 mod holiday_data;
 use holiday_data::parse_holidays;
+use holiday_data::HolidayMap;
 mod state;
 mod utils;
 
@@ -56,23 +57,6 @@ fn main() -> Result<()> {
 
     log::debug!("start");
 
-    let file_str = load_holidays_file("zh", "cn")?;
-
-    match parse_holidays(&file_str) {
-        Ok(holiday_response) => {
-            log::debug!(
-                "成功解析假期数据，共 {} 个假期",
-                holiday_response.holidays.len()
-            );
-            for holiday in &holiday_response.holidays {
-                log::debug!("假期: {}, 日期: {}", holiday.name, holiday.date.iso);
-            }
-        }
-        Err(e) => {
-            log::error!("解析假期数据失败: {}", e);
-        }
-    }
-
     // 设置终端
     enable_raw_mode()?;
     io::stdout().execute(EnterAlternateScreen)?;
@@ -93,11 +77,27 @@ fn main() -> Result<()> {
 fn run(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>) -> Result<()> {
     // 获取当前日期
     let now = Local::now();
-    let mut riqi_state = RiqiState {
-        select_day: now.date_naive(),
-    };
+    let mut holiday_map: HolidayMap = HashMap::new();
     let mut calendar = MonthCalendar::new(now.year() as u32, now.month());
 
+    let file_str = load_holidays_file("zh", "cn")?;
+
+    match parse_holidays(&file_str) {
+        Ok(holiday_response) => {
+            log::debug!(
+                "成功解析假期数据，共 {} 个假期",
+                holiday_response.holidays.len()
+            );
+            holiday_response.add_to_holiday_map(&mut holiday_map, "cn", "zh", "2025");
+        }
+        Err(e) => {
+            log::error!("解析假期数据失败: {}", e);
+        }
+    }
+    let mut riqi_state = RiqiState {
+        select_day: now.date_naive(),
+        holiday_map: &holiday_map,
+    };
     loop {
         terminal.draw(|frame| {
             let size = frame.area();

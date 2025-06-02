@@ -7,7 +7,7 @@ use ratatui::{
     widgets::{Block, BorderType, Borders, Paragraph, StatefulWidget, Widget, Wrap},
 };
 
-use crate::{data::CalendarDay, theme::BLUE};
+use crate::{data::CalendarDay, holiday_data::HolidayMap, theme::BLUE};
 use crate::{state::RiqiState, theme::Theme};
 
 pub fn render_day_item<'a>(
@@ -41,7 +41,7 @@ struct DayItem {
 struct CnDayItem<'a> {
     day: &'a CalendarDay,
     theme: Theme,
-    riqi_state: &'a RiqiState,
+    riqi_state: &'a RiqiState<'a>,
 }
 
 /// A button with a label that can be themed.
@@ -100,7 +100,6 @@ impl<'a> CnDayItem<'a> {
     }
     pub fn render_content_3row6col(self, area: Rect, buf: &mut Buffer) {
         let line = Line::from(self.day.day.to_string()).style(self.get_fg_color());
-        let holiday = Line::from("中秋节").centered().style(self.get_fg_color());
         line.render(
             Rect {
                 x: area.left() + 1,
@@ -110,6 +109,8 @@ impl<'a> CnDayItem<'a> {
             },
             buf,
         );
+
+        let holiday = Line::from("中秋节").centered().style(self.get_fg_color());
         holiday.render(
             Rect {
                 x: area.left() + 1,
