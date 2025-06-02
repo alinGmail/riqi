@@ -47,7 +47,6 @@ pub fn process_holiday_json() -> Result<(), Box<dyn std::error::Error>> {
                     obj.remove("states");
                     obj.remove("description");
                     obj.remove("country");
-                    obj.remove("date");
                 });
 
                 // 将 datetime 提升到顶层并移除 date
