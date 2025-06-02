@@ -1,0 +1,1116 @@
+{
+  "holidays": [
+    {
+      "date": {
+        "datetime": {
+          "day": 1,
+          "month": 1,
+          "year": 2025
+        },
+        "iso": "2025-01-01"
+      },
+      "datetime": {
+        "day": 1,
+        "month": 1,
+        "year": 2025
+      },
+      "name": "元旦",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 26,
+          "month": 1,
+          "year": 2025
+        },
+        "iso": "2025-01-26"
+      },
+      "datetime": {
+        "day": 26,
+        "month": 1,
+        "year": 2025
+      },
+      "name": "调休",
+      "primary_type": "Working Day on a Weekend",
+      "type": [
+        "Weekend"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 28,
+          "month": 1,
+          "year": 2025
+        },
+        "iso": "2025-01-28"
+      },
+      "datetime": {
+        "day": 28,
+        "month": 1,
+        "year": 2025
+      },
+      "name": "除夕",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 29,
+          "month": 1,
+          "year": 2025
+        },
+        "iso": "2025-01-29"
+      },
+      "datetime": {
+        "day": 29,
+        "month": 1,
+        "year": 2025
+      },
+      "name": "春节",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 30,
+          "month": 1,
+          "year": 2025
+        },
+        "iso": "2025-01-30"
+      },
+      "datetime": {
+        "day": 30,
+        "month": 1,
+        "year": 2025
+      },
+      "name": "春节假",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 31,
+          "month": 1,
+          "year": 2025
+        },
+        "iso": "2025-01-31"
+      },
+      "datetime": {
+        "day": 31,
+        "month": 1,
+        "year": 2025
+      },
+      "name": "春节假",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 1,
+          "month": 2,
+          "year": 2025
+        },
+        "iso": "2025-02-01"
+      },
+      "datetime": {
+        "day": 1,
+        "month": 2,
+        "year": 2025
+      },
+      "name": "春节假",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 2,
+          "month": 2,
+          "year": 2025
+        },
+        "iso": "2025-02-02"
+      },
+      "datetime": {
+        "day": 2,
+        "month": 2,
+        "year": 2025
+      },
+      "name": "春节假",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 3,
+          "month": 2,
+          "year": 2025
+        },
+        "iso": "2025-02-03"
+      },
+      "datetime": {
+        "day": 3,
+        "month": 2,
+        "year": 2025
+      },
+      "name": "春节假",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 4,
+          "month": 2,
+          "year": 2025
+        },
+        "iso": "2025-02-04"
+      },
+      "datetime": {
+        "day": 4,
+        "month": 2,
+        "year": 2025
+      },
+      "name": "春节假",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 8,
+          "month": 2,
+          "year": 2025
+        },
+        "iso": "2025-02-08"
+      },
+      "datetime": {
+        "day": 8,
+        "month": 2,
+        "year": 2025
+      },
+      "name": "调休",
+      "primary_type": "Working Day on a Weekend",
+      "type": [
+        "Weekend"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 12,
+          "month": 2,
+          "year": 2025
+        },
+        "iso": "2025-02-12"
+      },
+      "datetime": {
+        "day": 12,
+        "month": 2,
+        "year": 2025
+      },
+      "name": "元宵",
+      "primary_type": "Observance",
+      "type": [
+        "Observance"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 1,
+          "month": 3,
+          "year": 2025
+        },
+        "iso": "2025-03-01"
+      },
+      "datetime": {
+        "day": 1,
+        "month": 3,
+        "year": 2025
+      },
+      "name": "中和节",
+      "primary_type": "Observance",
+      "type": [
+        "Observance"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 8,
+          "month": 3,
+          "year": 2025
+        },
+        "iso": "2025-03-08"
+      },
+      "datetime": {
+        "day": 8,
+        "month": 3,
+        "year": 2025
+      },
+      "name": "妇女节",
+      "primary_type": "Half day holiday",
+      "type": [
+        "Half-day holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 12,
+          "month": 3,
+          "year": 2025
+        },
+        "iso": "2025-03-12"
+      },
+      "datetime": {
+        "day": 12,
+        "month": 3,
+        "year": 2025
+      },
+      "name": "植树节",
+      "primary_type": "Observance",
+      "type": [
+        "Observance"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 20,
+          "hour": 17,
+          "minute": 1,
+          "month": 3,
+          "second": 21,
+          "year": 2025
+        },
+        "iso": "2025-03-20T17:01:21+08:00",
+        "timezone": {
+          "offset": "+08:00",
+          "zoneabb": "CST",
+          "zonedst": 0,
+          "zoneoffset": 28800,
+          "zonetotaloffset": 28800
+        }
+      },
+      "datetime": {
+        "day": 20,
+        "hour": 17,
+        "minute": 1,
+        "month": 3,
+        "second": 21,
+        "year": 2025
+      },
+      "name": "春分",
+      "primary_type": "Season",
+      "type": [
+        "Season"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 4,
+          "month": 4,
+          "year": 2025
+        },
+        "iso": "2025-04-04"
+      },
+      "datetime": {
+        "day": 4,
+        "month": 4,
+        "year": 2025
+      },
+      "name": "清明假",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 5,
+          "month": 4,
+          "year": 2025
+        },
+        "iso": "2025-04-05"
+      },
+      "datetime": {
+        "day": 5,
+        "month": 4,
+        "year": 2025
+      },
+      "name": "清明",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 6,
+          "month": 4,
+          "year": 2025
+        },
+        "iso": "2025-04-06"
+      },
+      "datetime": {
+        "day": 6,
+        "month": 4,
+        "year": 2025
+      },
+      "name": "清明假",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 27,
+          "month": 4,
+          "year": 2025
+        },
+        "iso": "2025-04-27"
+      },
+      "datetime": {
+        "day": 27,
+        "month": 4,
+        "year": 2025
+      },
+      "name": "调休",
+      "primary_type": "Working Day on a Weekend",
+      "type": [
+        "Weekend"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 1,
+          "month": 5,
+          "year": 2025
+        },
+        "iso": "2025-05-01"
+      },
+      "datetime": {
+        "day": 1,
+        "month": 5,
+        "year": 2025
+      },
+      "name": "劳动节",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 2,
+          "month": 5,
+          "year": 2025
+        },
+        "iso": "2025-05-02"
+      },
+      "datetime": {
+        "day": 2,
+        "month": 5,
+        "year": 2025
+      },
+      "name": "劳动假",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 3,
+          "month": 5,
+          "year": 2025
+        },
+        "iso": "2025-05-03"
+      },
+      "datetime": {
+        "day": 3,
+        "month": 5,
+        "year": 2025
+      },
+      "name": "劳动假",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 4,
+          "month": 5,
+          "year": 2025
+        },
+        "iso": "2025-05-04"
+      },
+      "datetime": {
+        "day": 4,
+        "month": 5,
+        "year": 2025
+      },
+      "name": "劳动假",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 4,
+          "month": 5,
+          "year": 2025
+        },
+        "iso": "2025-05-04"
+      },
+      "datetime": {
+        "day": 4,
+        "month": 5,
+        "year": 2025
+      },
+      "name": "青年节",
+      "primary_type": "Half day holiday",
+      "type": [
+        "Half-day holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 5,
+          "month": 5,
+          "year": 2025
+        },
+        "iso": "2025-05-05"
+      },
+      "datetime": {
+        "day": 5,
+        "month": 5,
+        "year": 2025
+      },
+      "name": "劳动假",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 31,
+          "month": 5,
+          "year": 2025
+        },
+        "iso": "2025-05-31"
+      },
+      "datetime": {
+        "day": 31,
+        "month": 5,
+        "year": 2025
+      },
+      "name": "端午",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 1,
+          "month": 6,
+          "year": 2025
+        },
+        "iso": "2025-06-01"
+      },
+      "datetime": {
+        "day": 1,
+        "month": 6,
+        "year": 2025
+      },
+      "name": "儿童节",
+      "primary_type": "Other Observance",
+      "type": [
+        "Observance"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 1,
+          "month": 6,
+          "year": 2025
+        },
+        "iso": "2025-06-01"
+      },
+      "datetime": {
+        "day": 1,
+        "month": 6,
+        "year": 2025
+      },
+      "name": "端午假",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 2,
+          "month": 6,
+          "year": 2025
+        },
+        "iso": "2025-06-02"
+      },
+      "datetime": {
+        "day": 2,
+        "month": 6,
+        "year": 2025
+      },
+      "name": "端午假",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 21,
+          "hour": 10,
+          "minute": 42,
+          "month": 6,
+          "second": 15,
+          "year": 2025
+        },
+        "iso": "2025-06-21T10:42:15+08:00",
+        "timezone": {
+          "offset": "+08:00",
+          "zoneabb": "CST",
+          "zonedst": 0,
+          "zoneoffset": 28800,
+          "zonetotaloffset": 28800
+        }
+      },
+      "datetime": {
+        "day": 21,
+        "hour": 10,
+        "minute": 42,
+        "month": 6,
+        "second": 15,
+        "year": 2025
+      },
+      "name": "夏至",
+      "primary_type": "Season",
+      "type": [
+        "Season"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 1,
+          "month": 7,
+          "year": 2025
+        },
+        "iso": "2025-07-01"
+      },
+      "datetime": {
+        "day": 1,
+        "month": 7,
+        "year": 2025
+      },
+      "name": "建党节",
+      "primary_type": "Other Observance",
+      "type": [
+        "Observance"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 11,
+          "month": 7,
+          "year": 2025
+        },
+        "iso": "2025-07-11"
+      },
+      "datetime": {
+        "day": 11,
+        "month": 7,
+        "year": 2025
+      },
+      "name": "航海日",
+      "primary_type": "Other Observance",
+      "type": [
+        "Observance"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 1,
+          "month": 8,
+          "year": 2025
+        },
+        "iso": "2025-08-01"
+      },
+      "datetime": {
+        "day": 1,
+        "month": 8,
+        "year": 2025
+      },
+      "name": "建军节",
+      "primary_type": "Other Observance",
+      "type": [
+        "Observance"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 29,
+          "month": 8,
+          "year": 2025
+        },
+        "iso": "2025-08-29"
+      },
+      "datetime": {
+        "day": 29,
+        "month": 8,
+        "year": 2025
+      },
+      "name": "七夕",
+      "primary_type": "Observance",
+      "type": [
+        "Observance"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 6,
+          "month": 9,
+          "year": 2025
+        },
+        "iso": "2025-09-06"
+      },
+      "datetime": {
+        "day": 6,
+        "month": 9,
+        "year": 2025
+      },
+      "name": "中元节",
+      "primary_type": "Observance",
+      "type": [
+        "Observance"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 10,
+          "month": 9,
+          "year": 2025
+        },
+        "iso": "2025-09-10"
+      },
+      "datetime": {
+        "day": 10,
+        "month": 9,
+        "year": 2025
+      },
+      "name": "教师节",
+      "primary_type": "Observance",
+      "type": [
+        "Observance"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 23,
+          "hour": 2,
+          "minute": 19,
+          "month": 9,
+          "second": 22,
+          "year": 2025
+        },
+        "iso": "2025-09-23T02:19:22+08:00",
+        "timezone": {
+          "offset": "+08:00",
+          "zoneabb": "CST",
+          "zonedst": 0,
+          "zoneoffset": 28800,
+          "zonetotaloffset": 28800
+        }
+      },
+      "datetime": {
+        "day": 23,
+        "hour": 2,
+        "minute": 19,
+        "month": 9,
+        "second": 22,
+        "year": 2025
+      },
+      "name": "秋分",
+      "primary_type": "Season",
+      "type": [
+        "Season"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 28,
+          "month": 9,
+          "year": 2025
+        },
+        "iso": "2025-09-28"
+      },
+      "datetime": {
+        "day": 28,
+        "month": 9,
+        "year": 2025
+      },
+      "name": "调休",
+      "primary_type": "Working Day on a Weekend",
+      "type": [
+        "Weekend"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 1,
+          "month": 10,
+          "year": 2025
+        },
+        "iso": "2025-10-01"
+      },
+      "datetime": {
+        "day": 1,
+        "month": 10,
+        "year": 2025
+      },
+      "name": "国庆",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 2,
+          "month": 10,
+          "year": 2025
+        },
+        "iso": "2025-10-02"
+      },
+      "datetime": {
+        "day": 2,
+        "month": 10,
+        "year": 2025
+      },
+      "name": "国庆假",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 3,
+          "month": 10,
+          "year": 2025
+        },
+        "iso": "2025-10-03"
+      },
+      "datetime": {
+        "day": 3,
+        "month": 10,
+        "year": 2025
+      },
+      "name": "国庆假",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 4,
+          "month": 10,
+          "year": 2025
+        },
+        "iso": "2025-10-04"
+      },
+      "datetime": {
+        "day": 4,
+        "month": 10,
+        "year": 2025
+      },
+      "name": "国庆假",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 5,
+          "month": 10,
+          "year": 2025
+        },
+        "iso": "2025-10-05"
+      },
+      "datetime": {
+        "day": 5,
+        "month": 10,
+        "year": 2025
+      },
+      "name": "国庆假",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 6,
+          "month": 10,
+          "year": 2025
+        },
+        "iso": "2025-10-06"
+      },
+      "datetime": {
+        "day": 6,
+        "month": 10,
+        "year": 2025
+      },
+      "name": "国庆假",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 6,
+          "month": 10,
+          "year": 2025
+        },
+        "iso": "2025-10-06"
+      },
+      "datetime": {
+        "day": 6,
+        "month": 10,
+        "year": 2025
+      },
+      "name": "中秋",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 7,
+          "month": 10,
+          "year": 2025
+        },
+        "iso": "2025-10-07"
+      },
+      "datetime": {
+        "day": 7,
+        "month": 10,
+        "year": 2025
+      },
+      "name": "国庆假",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 8,
+          "month": 10,
+          "year": 2025
+        },
+        "iso": "2025-10-08"
+      },
+      "datetime": {
+        "day": 8,
+        "month": 10,
+        "year": 2025
+      },
+      "name": "国庆假",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 11,
+          "month": 10,
+          "year": 2025
+        },
+        "iso": "2025-10-11"
+      },
+      "datetime": {
+        "day": 11,
+        "month": 10,
+        "year": 2025
+      },
+      "name": "调休",
+      "primary_type": "Working Day on a Weekend",
+      "type": [
+        "Weekend"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 29,
+          "month": 10,
+          "year": 2025
+        },
+        "iso": "2025-10-29"
+      },
+      "datetime": {
+        "day": 29,
+        "month": 10,
+        "year": 2025
+      },
+      "name": "重阳",
+      "primary_type": "Observance",
+      "type": [
+        "Observance"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 8,
+          "month": 11,
+          "year": 2025
+        },
+        "iso": "2025-11-08"
+      },
+      "datetime": {
+        "day": 8,
+        "month": 11,
+        "year": 2025
+      },
+      "name": "记者节",
+      "primary_type": "Other Observance",
+      "type": [
+        "Observance"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 21,
+          "hour": 23,
+          "minute": 3,
+          "month": 12,
+          "second": 5,
+          "year": 2025
+        },
+        "iso": "2025-12-21T23:03:05+08:00",
+        "timezone": {
+          "offset": "+08:00",
+          "zoneabb": "CST",
+          "zonedst": 0,
+          "zoneoffset": 28800,
+          "zonetotaloffset": 28800
+        }
+      },
+      "datetime": {
+        "day": 21,
+        "hour": 23,
+        "minute": 3,
+        "month": 12,
+        "second": 5,
+        "year": 2025
+      },
+      "name": "冬至",
+      "primary_type": "Season",
+      "type": [
+        "Season"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 25,
+          "month": 12,
+          "year": 2025
+        },
+        "iso": "2025-12-25"
+      },
+      "datetime": {
+        "day": 25,
+        "month": 12,
+        "year": 2025
+      },
+      "name": "圣诞",
+      "primary_type": "Observance",
+      "type": [
+        "Observance"
+      ]
+    }
+  ]
+}
