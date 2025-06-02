@@ -39,7 +39,6 @@ impl<'a> Widget for MonthComponent<'a> {
                     10,
                     day_height,
                 );
-                log::debug!("day_area:{:?}", day_area);
                 render_day_item(buf, day, day_area, self.riqi_state);
             }
         }

@@ -28,6 +28,8 @@ mod theme;
 mod month_component;
 use month_component::MonthComponent;
 
+mod holiday;
+use holiday::load_holidays_file;
 mod state;
 mod utils;
 
@@ -44,6 +46,24 @@ fn setup_logger() {
 }
 
 fn main() -> Result<()> {
+    // 处理 JSON 文件
+    // if let Err(e) = riqi::json_processor::process_holiday_json() {
+    //    eprintln!("处理 JSON 文件时出错: {}", e);
+    //}
+
+    log::debug!("start");
+
+    let file_str = load_holidays_file("zh", "cn");
+
+    match file_str {
+        Ok(str) => {
+            log::debug!("{}", str.len().to_string())
+        }
+        Err(e) => {
+            eprintln!("error load josn ,{}", e);
+        }
+    }
+
     setup_logger();
     // 设置终端
     enable_raw_mode()?;
