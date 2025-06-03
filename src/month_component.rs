@@ -35,7 +35,7 @@ impl<'a> Widget for MonthComponent<'a> {
             for (day_idx, day) in week.iter().enumerate() {
                 let day_area = Rect::new(
                     area.left() + day_idx as u16 * (10 + self.day_gap),
-                    area.top() + 3 + day_height * week_idx as u16,
+                    area.top() + 2 + day_height * week_idx as u16,
                     10,
                     day_height,
                 );
