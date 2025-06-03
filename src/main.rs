@@ -18,6 +18,7 @@ use ratatui::{
 use state::RiqiState;
 use std::{collections::HashMap, fs::File, io};
 use theme::BLUE;
+use tyme4rs::tyme::solar::SolarDay;
 use utils::add_months_safe;
 
 mod data;
@@ -35,6 +36,8 @@ use holiday_data::parse_holidays;
 use holiday_data::HolidayMap;
 mod state;
 mod utils;
+
+mod lunar;
 
 fn setup_logger() {
     // 创建或覆盖日志文件
@@ -104,13 +107,20 @@ fn run(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>) -> Result<()> {
             let size = frame.area();
 
             // 创建主框架
+            let solar: SolarDay = SolarDay::from_ymd(2025, 7, 25);
+            // 农历的月份
+            let month = solar.get_lunar_day().get_month();
+            // 农历的日期
+            let day = solar.get_lunar_day().get_day();
+            let month_til_str = format!("{} 月{} 日", month.to_string(), day.to_string());
+            /*
 
-            let month_til_str = format!(
-                "{}年{}月",
-                &calendar.year.to_string(),
-                &calendar.month.to_string()
-            );
-
+                        let month_til_str = format!(
+                            "{}年{}月",
+                            &calendar.year.to_string(),
+                            &calendar.month.to_string()
+                        );
+            */
             let month_til_component = Line::from(month_til_str).centered();
             month_til_component
                 .render(Rect::new(size.x, size.y, size.width, 1), frame.buffer_mut());

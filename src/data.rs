@@ -1,4 +1,5 @@
 use chrono::{Datelike, NaiveDate};
+use tyme4rs::tyme::solar::SolarDay;
 
 // 表示日历中的一天
 #[derive(Debug, Clone)]
@@ -8,16 +9,24 @@ pub struct CalendarDay {
     pub day: u32,
     pub day_of_week: u32,       // 0=Sunday, 6=Saturday
     pub is_current_month: bool, // 是否属于当前月份
+    pub lunar_month: u32,       // 农历月份
+    pub lunar_day: u32,         // 农历日期
 }
 
 impl CalendarDay {
     pub fn new(year: u32, month: u32, day: u32, day_of_week: u32, is_current_month: bool) -> Self {
+        let solar = SolarDay::from_ymd(year as isize, month as usize, day as usize);
+        let lunar_month = solar.get_lunar_day().get_month() as u32;
+        let lunar_day = solar.get_lunar_day().get_day() as u32;
+
         CalendarDay {
             year,
             month,
             day,
             day_of_week,
             is_current_month,
+            lunar_month,
+            lunar_day,
         }
     }
 }

@@ -7,6 +7,7 @@ use ratatui::{
     widgets::{Block, BorderType, Borders, Paragraph, StatefulWidget, Widget, Wrap},
 };
 
+use crate::lunar::{number_to_lunar_day, number_to_lunar_month};
 use crate::{
     data::CalendarDay,
     holiday_data::{Holiday, HolidayMap},
@@ -115,19 +116,39 @@ impl<'a> CnDayItem<'a> {
         );
 
         if self.is_today() {
-            let today_line = Line::from("T")
+            let today_line = Line::from("今")
                 .style(self.get_fg_color().bg(BLUE.background))
                 .centered();
             today_line.render(
                 Rect {
-                    x: area.left() + 4,
+                    x: area.left() + 5,
                     y: area.top(),
-                    width: 3,
+                    width: 2,
                     height: 1,
                 },
                 buf,
             );
         };
+
+        // 显示农历日期
+        let lunar_day = if self.day.lunar_day == 1 {
+            // 如果是初一，显示月份
+            number_to_lunar_month(self.day.lunar_month)
+        } else {
+            // 其他日期显示日期
+            number_to_lunar_day(self.day.lunar_day)
+        };
+        let lunar_line = Line::from(lunar_day).style(self.get_fg_color());
+        lunar_line.render(
+            Rect {
+                x: area.left() + 1,
+                y: area.top() + 1,
+                width: 6,
+                height: 1,
+            },
+            buf,
+        );
+
         let date_str = format!(
             "{:04}-{:02}-{:02}",
             self.day.year, self.day.month, self.day.day

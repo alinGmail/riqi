@@ -842,6 +842,7 @@ dependencies = [
  "ratatui",
  "serde",
  "serde_json",
+ "tyme4rs",
 ]
 
 [[package]]
@@ -1071,6 +1072,16 @@ dependencies = [
  "sharded-slab",
  "thread_local",
  "tracing-core",
+]
+
+[[package]]
+name = "tyme4rs"
+version = "1.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "3b59f23f66fffb6260c1879755e7eaf009720ee8d0736516380fd52c7c184d33"
+dependencies = [
+ "lazy_static",
+ "regex",
 ]
 
 [[package]]
