@@ -97,6 +97,7 @@ fn run(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>) -> Result<()> {
     let mut riqi_state = RiqiState {
         select_day: now.date_naive(),
         holiday_map: &holiday_map,
+        today: now.date_naive(),
     };
     loop {
         terminal.draw(|frame| {

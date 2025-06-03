@@ -62,15 +62,25 @@ impl<'a> CnDayItem<'a> {
 
     pub fn is_selected_day(&self) -> bool {
         let select_day = self.riqi_state.select_day;
-        return select_day.year() as u32 == self.day.year
+        return select_day.day() == self.day.day
             && select_day.month() == self.day.month
-            && select_day.day() == self.day.day;
+            && select_day.year() as u32 == self.day.year;
+    }
+    pub fn is_today(&self) -> bool {
+        let today = self.riqi_state.today;
+        return today.day() == self.day.day
+            && today.month() == self.day.month
+            && today.year() as u32 == self.day.year;
     }
 
     pub fn get_fg_color(&self) -> Style {
-        // 是不是今天
+        // 是不是选中的日期
         if self.is_selected_day() {
             return Style::default().fg(BLUE.focus_day).bold();
+        }
+
+        if self.is_today() {
+            // return Style::default().bold();
         }
 
         // 是不是 这个月
@@ -98,11 +108,26 @@ impl<'a> CnDayItem<'a> {
             Rect {
                 x: area.left() + 1,
                 y: area.top(),
-                width: 6,
+                width: 2,
                 height: 1,
             },
             buf,
         );
+
+        if self.is_today() {
+            let today_line = Line::from("T")
+                .style(self.get_fg_color().bg(BLUE.background))
+                .centered();
+            today_line.render(
+                Rect {
+                    x: area.left() + 4,
+                    y: area.top(),
+                    width: 3,
+                    height: 1,
+                },
+                buf,
+            );
+        };
         let date_str = format!(
             "{:04}-{:02}-{:02}",
             self.day.year, self.day.month, self.day.day
