@@ -117,7 +117,8 @@ impl<'a> CnDayItem<'a> {
 
         if self.is_today() {
             let today_line = Line::from("今")
-                .style(self.get_fg_color().bg(BLUE.background))
+                .style(self.get_fg_color())
+                //.style(self.get_fg_color().bg(BLUE.background))
                 .centered();
             today_line.render(
                 Rect {
