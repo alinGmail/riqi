@@ -11,8 +11,7 @@ pub fn load_holidays_file(lang: &str, region: &str) -> std::io::Result<String> {
     {
         // 方法1：嵌入资源
         match (lang, region) {
-            ("en", "US") => Ok(include_str!("embedded/en_US.json").to_string()),
-            ("zh", "CN") => Ok(include_str!("embedded/zh_CN.json").to_string()),
+            ("zh", "cn") => Ok(include_str!("../resources/holidays/cn_zh.json").to_string()),
             _ => Err(std::io::Error::new(
                 std::io::ErrorKind::NotFound,
                 "Holiday file not found",
