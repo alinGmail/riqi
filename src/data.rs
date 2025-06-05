@@ -96,11 +96,10 @@ impl MonthCalendar {
             }
         }
 
+        let next_month_first_day = last_day.succ_opt().unwrap();
+        let mut next_day = 1;
         // 添加下个月的日期
-        if !current_week.is_empty() {
-            let next_month_first_day = last_day.succ_opt().unwrap();
-            let mut next_day = 1;
-
+        while weeks.len() < 6 {
             while current_week.len() < 7 {
                 let day_of_week = (current_week.len() as u32) % 7;
                 current_week.push(CalendarDay::new(
@@ -114,6 +113,7 @@ impl MonthCalendar {
             }
 
             weeks.push(current_week);
+            current_week = Vec::new();
         }
 
         weeks
@@ -254,5 +254,79 @@ mod tests {
         assert_eq!(april_30.year, 2025, "年份应该是2025");
         assert_eq!(april_30.month, 4, "月份应该是4");
         assert_eq!(april_30.day, 30, "日期应该是30");
+    }
+
+    #[test]
+    fn test_calendar_always_shows_six_weeks() {
+        // 测试不同月份，确保都显示6周
+        let test_cases = vec![
+            (2024, 2), // 2月（闰年）
+            (2024, 3), // 3月
+            (2024, 4), // 4月
+            (2024, 5), // 5月
+            (2024, 6), // 6月
+        ];
+
+        for (year, month) in test_cases {
+            let calendar = MonthCalendar::new(year, month);
+            assert_eq!(
+                calendar.day_data.len(),
+                6,
+                "{}年{}月的日历应该显示6周，实际显示{}周",
+                year,
+                month,
+                calendar.day_data.len()
+            );
+        }
+    }
+
+    #[test]
+    fn test_calendar_week_structure() {
+        let calendar = MonthCalendar::new(2024, 3);
+        
+        // 验证每周都有7天
+        for (week_index, week) in calendar.day_data.iter().enumerate() {
+            assert_eq!(
+                week.len(),
+                7,
+                "第{}周应该有7天，实际有{}天",
+                week_index + 1,
+                week.len()
+            );
+        }
+
+        // 验证第一周包含上个月的日期
+        let first_week = &calendar.day_data[0];
+        let has_prev_month = first_week.iter().any(|day| !day.is_current_month);
+        assert!(has_prev_month, "第一周应该包含上个月的日期");
+
+        // 验证最后一周包含下个月的日期
+        let last_week = &calendar.day_data[5];
+        let has_next_month = last_week.iter().any(|day| !day.is_current_month);
+        assert!(has_next_month, "最后一周应该包含下个月的日期");
+    }
+
+    #[test]
+    fn test_calendar_month_transition() {
+        let calendar = MonthCalendar::new(2024, 3);
+        
+        // 验证月份过渡的正确性
+        let mut found_current_month = false;
+        let mut found_next_month = false;
+        
+        for week in &calendar.day_data {
+            for day in week {
+                if day.is_current_month {
+                    found_current_month = true;
+                    assert_eq!(day.month, 3, "当前月份的日期应该是3月");
+                } else if day.month == 4 {
+                    found_next_month = true;
+                    assert_eq!(day.year, 2024, "下个月的日期应该保持相同的年份");
+                }
+            }
+        }
+        
+        assert!(found_current_month, "应该包含当前月份的日期");
+        assert!(found_next_month, "应该包含下个月的日期");
     }
 }
