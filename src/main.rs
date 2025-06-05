@@ -10,16 +10,15 @@ use layout::get_layout;
 use log::LevelFilter;
 use ratatui::{
     backend::CrosstermBackend,
-    crossterm::event::KeyEventKind,
-    layout::{Constraint, Flex, Layout, Rect},
+    layout::{Constraint, Flex, Layout},
     text::Line,
-    widgets::{Block, Borders, Widget},
+    widgets::Widget,
     Terminal,
 };
 use state::RiqiState;
 use std::{collections::HashMap, fs::File, io};
+use sys_locale::get_locale;
 use theme::BLUE;
-use tyme4rs::tyme::solar::SolarDay;
 use utils::add_months_safe;
 
 mod data;
@@ -38,7 +37,9 @@ use holiday_data::HolidayMap;
 mod state;
 mod utils;
 
+mod i18n;
 mod layout;
+mod locale;
 mod lunar;
 
 fn setup_logger() {
@@ -114,7 +115,9 @@ fn run(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>) -> Result<()> {
                 &calendar.year.to_string(),
                 &calendar.month.to_string()
             );
-            let month_til_component = Line::from(month_til_str).centered();
+
+            let month_til_str1 = get_locale().unwrap_or_else(|| String::from("en-US"));
+            let month_til_component = Line::from(month_til_str1).centered();
             month_til_component.render(til_area, frame.buffer_mut());
 
             //
