@@ -1,0 +1,228 @@
+{
+  "holidays": [
+    {
+      "date": {
+        "datetime": {
+          "day": 1,
+          "month": 1,
+          "year": 2025
+        },
+        "iso": "2025-01-01"
+      },
+      "name": "신정",
+      "primary_type": "National holiday",
+      "note": "2025年元旦是周三，无需补休"
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 28,
+          "month": 1,
+          "year": 2025
+        },
+        "iso": "2025-01-28"
+      },
+      "name": "설날",
+      "primary_type": "National holiday",
+      "note": "春节正日（周二）"
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 29,
+          "month": 1,
+          "year": 2025
+        },
+        "iso": "2025-01-29"
+      },
+      "name": "설날 연휴",
+      "primary_type": "National holiday",
+      "note": "春节后一天（周三）"
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 1,
+          "month": 3,
+          "year": 2025
+        },
+        "iso": "2025-03-01"
+      },
+      "name": "삼일절",
+      "primary_type": "National holiday",
+      "note": "2025年三一节是周六，安排补休"
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 3,
+          "month": 3,
+          "year": 2025
+        },
+        "iso": "2025-03-03"
+      },
+      "name": "삼일절 대체 휴일",
+      "primary_type": "Substitute holiday",
+      "note": "三一节补休（周一）",
+      "is_substitute": true
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 5,
+          "month": 5,
+          "year": 2025
+        },
+        "iso": "2025-05-05"
+      },
+      "name": "어린이날",
+      "primary_type": "National holiday",
+      "note": "儿童节与佛诞日重合（周一）"
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 5,
+          "month": 5,
+          "year": 2025
+        },
+        "iso": "2025-05-05"
+      },
+      "name": "석가탄신일",
+      "primary_type": "National holiday",
+      "note": "佛诞日与儿童节重合（周一）"
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 6,
+          "month": 5,
+          "year": 2025
+        },
+        "iso": "2025-05-06"
+      },
+      "name": "어린이날 대체 휴일",
+      "primary_type": "Substitute holiday",
+      "note": "儿童节补休（周二）",
+      "is_substitute": true
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 6,
+          "month": 6,
+          "year": 2025
+        },
+        "iso": "2025-06-06"
+      },
+      "name": "현충일",
+      "primary_type": "National holiday",
+      "note": "显忠日（周五）"
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 15,
+          "month": 8,
+          "year": 2025
+        },
+        "iso": "2025-08-15"
+      },
+      "name": "광복절",
+      "primary_type": "National holiday",
+      "note": "光复节（周五）"
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 3,
+          "month": 10,
+          "year": 2025
+        },
+        "iso": "2025-10-03"
+      },
+      "name": "개천절",
+      "primary_type": "National holiday",
+      "note": "开天节（周五）"
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 5,
+          "month": 10,
+          "year": 2025
+        },
+        "iso": "2025-10-05"
+      },
+      "name": "추석 전날",
+      "primary_type": "National holiday",
+      "note": "中秋节前一天（周日）"
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 6,
+          "month": 10,
+          "year": 2025
+        },
+        "iso": "2025-10-06"
+      },
+      "name": "추석",
+      "primary_type": "National holiday",
+      "note": "中秋节正日（周一）"
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 7,
+          "month": 10,
+          "year": 2025
+        },
+        "iso": "2025-10-07"
+      },
+      "name": "추석 연휴",
+      "primary_type": "National holiday",
+      "note": "中秋节后一天（周二）"
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 8,
+          "month": 10,
+          "year": 2025
+        },
+        "iso": "2025-10-08"
+      },
+      "name": "추석 대체 휴일",
+      "primary_type": "Substitute holiday",
+      "note": "中秋节补休（周三）",
+      "is_substitute": true
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 9,
+          "month": 10,
+          "year": 2025
+        },
+        "iso": "2025-10-09"
+      },
+      "name": "한글날",
+      "primary_type": "National holiday",
+      "note": "韩文日（周四）"
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 25,
+          "month": 12,
+          "year": 2025
+        },
+        "iso": "2025-12-25"
+      },
+      "name": "크리스마스",
+      "primary_type": "National holiday",
+      "note": "圣诞节（周四）"
+    }
+  ]
+}
