@@ -1,5 +1,5 @@
 #[derive(Debug)]
 pub struct Config {
-    pub region: String,
+    pub country: String,
     pub language: String,
 }

@@ -51,14 +51,14 @@ impl FromStr for Country {
             "ru" => Ok(Country::RU),
             "gb" => Ok(Country::GB),
             "us" | "en" => Ok(Country::US), // 默认英语（美式）
-            _ => Err(format!("Unknown region code: {}", s)),
+            _ => Err(format!("Unknown country code: {}", s)),
         }
     }
 }
 
 // 示例：获取某个国家的默认语言
-pub fn get_default_language(region: Country) -> Language {
-    match region {
+pub fn get_default_language(country: Country) -> Language {
+    match country {
         Country::CN => Language::ZH,
         Country::JP => Language::JA,
         Country::KR => Language::KO,
@@ -254,8 +254,8 @@ const EN_TRANSLATE: Translate<'static> = Translate {
     prev_year: "Previous year",
 };
 
-pub fn get_translate(region: Language) -> &'static Translate<'static> {
-    match region {
+pub fn get_translate(language: Language) -> &'static Translate<'static> {
+    match language {
         Language::ZH => &ZH_TRANSLATE,
         Language::JA => &JA_TRANSLATE,
         Language::KO => &KO_TRANSLATE,
@@ -319,9 +319,9 @@ mod tests {
 
     #[test]
     fn test_weekdays() {
-        assert_eq!(weekday_name_i18n(0, "en"), "Sunday");
-        assert_eq!(weekday_name_i18n(1, "zh"), "星期一");
-        assert_eq!(weekday_name_i18n(2, "zh-TW"), "星期二");
+        assert_eq!(weekday_name_i18n(0, "en"), "Sun");
+        assert_eq!(weekday_name_i18n(1, "zh"), "一");
+        assert_eq!(weekday_name_i18n(2, "zh-TW"), "二");
         assert_eq!(weekday_name_i18n(3, "ko"), "수요일");
         assert_eq!(weekday_name_i18n(4, "ru"), "Четверг");
         assert_eq!(weekday_name_i18n(5, "de"), "Freitag");

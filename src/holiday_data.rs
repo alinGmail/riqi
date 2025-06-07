@@ -44,11 +44,11 @@ impl HolidayResponse {
     pub fn add_to_holiday_map(
         &self,
         holiday_map: &mut HolidayMap,
-        region: &str,
+        country: &str,
         language: &str,
         year: &str,
     ) {
-        let key = format!("{}_{}_{}", year, region, language);
+        let key = format!("{}_{}_{}", year, country, language);
         let mut date_map: HashMap<String, Vec<Holiday>> = HashMap::new();
 
         // 按日期对节假日进行分组
