@@ -2,14 +2,41 @@ use std::str::FromStr;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Country {
-    CN,
-    JP,
-    KR,
-    DE,
-    FR,
-    RU,
-    EN,
-    US,
+    CN, // 中国
+    JP, // 日本
+    KR, // 韩国
+    DE, // 德国
+    GB, // 英国
+    FR, // 法国
+    RU, // 俄罗斯
+    US, // 美国
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum Language {
+    ZH, // 中文
+    JA, // 日语
+    KO, // 韩语
+    DE, // 德语
+    EN, // 英语
+    FR, // 法语
+    RU, // 俄语
+}
+
+impl FromStr for Language {
+    type Err = String;
+    fn from_str(code: &str) -> Result<Self, Self::Err> {
+        match code.to_lowercase().as_str() {
+            "zh" => Ok(Language::ZH),
+            "ja" => Ok(Language::JA),
+            "ko" => Ok(Language::KO),
+            "de" => Ok(Language::DE),
+            "en" => Ok(Language::EN),
+            "fr" => Ok(Language::FR),
+            "ru" => Ok(Language::RU),
+            _ => Err(format!("Unknown language code: {}", code)),
+        }
+    }
 }
 
 impl FromStr for Country {
@@ -22,9 +49,23 @@ impl FromStr for Country {
             "de" => Ok(Country::DE),
             "fr" => Ok(Country::FR),
             "ru" => Ok(Country::RU),
+            "gb" => Ok(Country::GB),
             "us" | "en" => Ok(Country::US), // 默认英语（美式）
             _ => Err(format!("Unknown region code: {}", s)),
         }
+    }
+}
+
+// 示例：获取某个国家的默认语言
+pub fn get_default_language(region: Country) -> Language {
+    match region {
+        Country::CN => Language::ZH,
+        Country::JP => Language::JA,
+        Country::KR => Language::KO,
+        Country::DE => Language::DE,
+        Country::GB | Country::US => Language::EN, // 英美均用英语
+        Country::FR => Language::FR,
+        Country::RU => Language::RU,
     }
 }
 
@@ -151,7 +192,7 @@ pub struct Translate<'a> {
     pub prev_year: &'a str,
 }
 
-const CN_TRANSLATE: Translate<'static> = Translate {
+const ZH_TRANSLATE: Translate<'static> = Translate {
     navigation: "导航",
     next_month: "下一月",
     prev_month: "上一月",
@@ -160,7 +201,7 @@ const CN_TRANSLATE: Translate<'static> = Translate {
 };
 
 // Japanese (日本語)
-const JP_TRANSLATE: Translate<'static> = Translate {
+const JA_TRANSLATE: Translate<'static> = Translate {
     navigation: "ナビゲーション",
     next_month: "翌月",
     prev_month: "前月",
@@ -169,7 +210,7 @@ const JP_TRANSLATE: Translate<'static> = Translate {
 };
 
 // Korean (한국어)
-const KR_TRANSLATE: Translate<'static> = Translate {
+const KO_TRANSLATE: Translate<'static> = Translate {
     navigation: "탐색",
     next_month: "다음 달",
     prev_month: "이전 달",
@@ -213,16 +254,15 @@ const EN_TRANSLATE: Translate<'static> = Translate {
     prev_year: "Previous year",
 };
 
-pub fn get_translate(region: Country) -> &'static Translate<'static> {
+pub fn get_translate(region: Language) -> &'static Translate<'static> {
     match region {
-        Country::CN => &CN_TRANSLATE,
-        Country::JP => &JP_TRANSLATE,
-        Country::KR => &KR_TRANSLATE,
-        Country::DE => &DE_TRANSLATE,
-        Country::FR => &FR_TRANSLATE,
-        Country::RU => &RU_TRANSLATE,
-        Country::EN => &EN_TRANSLATE,
-        Country::US => &EN_TRANSLATE,
+        Language::ZH => &ZH_TRANSLATE,
+        Language::JA => &JA_TRANSLATE,
+        Language::KO => &KO_TRANSLATE,
+        Language::DE => &DE_TRANSLATE,
+        Language::FR => &FR_TRANSLATE,
+        Language::RU => &RU_TRANSLATE,
+        Language::EN => &EN_TRANSLATE,
     }
 }
 

@@ -6,7 +6,7 @@ use ratatui::{
 };
 
 use crate::{
-    i18n::{get_translate, Country},
+    i18n::{get_translate, Language},
     state::RiqiState,
 };
 
@@ -16,8 +16,8 @@ pub struct BottomLineComponent<'a> {
 
 impl<'a> Widget for BottomLineComponent<'a> {
     fn render(self, area: ratatui::prelude::Rect, buf: &mut ratatui::prelude::Buffer) {
-        let country = Country::from_str(&self.riqi_state.config.language);
-        if let Ok(country_item) = country {
+        let language = Language::from_str(&self.riqi_state.config.language);
+        if let Ok(country_item) = language {
             let translate = get_translate(country_item);
             let line = Line::from(vec![
                 Span::from(translate.navigation),

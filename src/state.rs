@@ -7,5 +7,5 @@ pub struct RiqiState<'a> {
     pub select_day: NaiveDate,
     pub holiday_map: &'a HolidayMap,
     pub today: NaiveDate,
-    pub config: Config,
+    pub config: &'a Config,
 }

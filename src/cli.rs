@@ -3,11 +3,11 @@ use clap::Parser;
 #[derive(Debug, Parser)]
 #[command(version,about,long_about = None)]
 pub struct Args {
-    /// the region of holliday
+    /// the country of holliday
     #[arg(short, long)]
-    region: Option<String>,
+    pub country: Option<String>,
 
     /// language
     #[arg(short, long)]
-    language: Option<String>,
+    pub language: Option<String>,
 }

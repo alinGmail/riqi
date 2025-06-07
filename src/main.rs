@@ -69,8 +69,6 @@ fn main() -> Result<()> {
 
     log::debug!("start");
 
-    let args = Args::parse();
-
     // 设置终端
     enable_raw_mode()?;
     io::stdout().execute(EnterAlternateScreen)?;
@@ -89,6 +87,7 @@ fn main() -> Result<()> {
 }
 
 fn run(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>) -> Result<()> {
+    let args = Args::parse();
     // 获取当前日期
     let now = Local::now();
     let mut holiday_map: HolidayMap = HashMap::new();
@@ -108,11 +107,16 @@ fn run(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>) -> Result<()> {
             log::error!("解析假期数据失败: {}", e);
         }
     }
+    let mut config = get_default_config();
+
+    if let Some(country) = args.country {
+        config.region = country;
+    }
     let mut riqi_state = RiqiState {
         select_day: now.date_naive(),
         holiday_map: &holiday_map,
         today: now.date_naive(),
-        config: get_default_config(),
+        config: &config,
     };
     loop {
         terminal.draw(|frame| {
