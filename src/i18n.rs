@@ -1,4 +1,4 @@
-fn format_date_i18n(year: i32, month: u32, lang: &str) -> String {
+pub fn get_month_til_i18n(year: i32, month: u32, lang: &str) -> String {
     let month_names = match lang {
         "en" => [
             "January",
@@ -135,49 +135,49 @@ mod tests {
 
     #[test]
     fn test_english() {
-        assert_eq!(format_date_i18n(2025, 6, "en"), "June 2025");
+        assert_eq!(get_month_til_i18n(2025, 6, "en"), "June 2025");
     }
 
     #[test]
     fn test_french() {
-        assert_eq!(format_date_i18n(2025, 6, "fr"), "Juin 2025");
+        assert_eq!(get_month_til_i18n(2025, 6, "fr"), "Juin 2025");
     }
 
     #[test]
     fn test_german() {
-        assert_eq!(format_date_i18n(2025, 6, "de"), "Juni 2025");
+        assert_eq!(get_month_til_i18n(2025, 6, "de"), "Juni 2025");
     }
 
     #[test]
     fn test_russian() {
-        assert_eq!(format_date_i18n(2025, 6, "ru"), "Июнь 2025");
+        assert_eq!(get_month_til_i18n(2025, 6, "ru"), "Июнь 2025");
     }
 
     #[test]
     fn test_japanese() {
-        assert_eq!(format_date_i18n(2025, 6, "ja"), "2025年6月");
+        assert_eq!(get_month_til_i18n(2025, 6, "ja"), "2025年6月");
     }
 
     #[test]
     fn test_korean() {
-        assert_eq!(format_date_i18n(2025, 6, "ko"), "2025년 6월");
+        assert_eq!(get_month_til_i18n(2025, 6, "ko"), "2025년 6월");
     }
 
     #[test]
     fn test_chinese() {
-        assert_eq!(format_date_i18n(2025, 6, "zh"), "2025年6月");
+        assert_eq!(get_month_til_i18n(2025, 6, "zh"), "2025年6月");
     }
 
     #[test]
     fn test_unknown_language() {
-        assert_eq!(format_date_i18n(2025, 6, "xx"), "2025-6");
+        assert_eq!(get_month_til_i18n(2025, 6, "xx"), "2025-6");
     }
 
     #[test]
     fn test_month_bounds() {
         // 测试1月和12月边界
-        assert_eq!(format_date_i18n(2025, 1, "en"), "January 2025");
-        assert_eq!(format_date_i18n(2025, 12, "fr"), "Décembre 2025");
+        assert_eq!(get_month_til_i18n(2025, 1, "en"), "January 2025");
+        assert_eq!(get_month_til_i18n(2025, 12, "fr"), "Décembre 2025");
     }
 
     #[test]

@@ -9,7 +9,7 @@ pub fn get_default_config() -> Config {
 
     let (language, region) = parse_language_region(&locale);
     Config {
-        language,
-        region: region.unwrap_or_else(|| String::from("us")),
+        language: language.to_lowercase(),
+        region: region.unwrap_or_else(|| String::from("us")).to_lowercase(),
     }
 }

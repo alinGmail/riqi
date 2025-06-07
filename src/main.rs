@@ -10,6 +10,7 @@ use crossterm::{
     ExecutableCommand,
 };
 use env_logger::{Builder, Target};
+use i18n::get_month_til_i18n;
 use layout::get_layout;
 use log::LevelFilter;
 use ratatui::{
@@ -21,7 +22,6 @@ use ratatui::{
 };
 use state::RiqiState;
 use std::{collections::HashMap, fs::File, io};
-use sys_locale::get_locale;
 use theme::BLUE;
 use utils::add_months_safe;
 
@@ -116,13 +116,13 @@ fn run(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>) -> Result<()> {
             let size = frame.area();
             let [til_area, _, calendar_area] = get_layout(size);
 
-            let month_til_str = format!(
-                "{}年{}月",
-                &calendar.year.to_string(),
-                &calendar.month.to_string()
+            let month_til_i18n_str = get_month_til_i18n(
+                calendar.year as i32,
+                calendar.month,
+                &riqi_state.config.language,
             );
 
-            let month_til_component = Line::from(month_til_str).centered();
+            let month_til_component = Line::from(month_til_i18n_str).centered();
             month_til_component.render(til_area, frame.buffer_mut());
 
             //
