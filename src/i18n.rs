@@ -127,7 +127,7 @@ pub fn get_month_til_i18n(year: i32, month: u32, lang: &str) -> String {
             "Ноябрь",
             "Декабрь",
         ],
-        "ja" => return format!("{}年{}月", year, month), // 日语也用“年x月”
+        "ja" => return format!("{}年{}月", year, month), // 日语也用"年x月"
         "ko" => return format!("{}년 {}월", year, month), // 韩语语法
         "zh" | "zh-TW" | "zh-HK" => return format!("{}年{}月", year, month),
         _ => return format!("{}-{}", year, month),
@@ -190,6 +190,7 @@ pub struct Translate<'a> {
     pub prev_month: &'a str,
     pub next_year: &'a str,
     pub prev_year: &'a str,
+    pub back_to_today: &'a str,
 }
 
 const ZH_TRANSLATE: Translate<'static> = Translate {
@@ -198,6 +199,7 @@ const ZH_TRANSLATE: Translate<'static> = Translate {
     prev_month: "上一月",
     next_year: "下一年",
     prev_year: "上一年",
+    back_to_today: "返回今天",
 };
 
 // Japanese (日本語)
@@ -207,6 +209,7 @@ const JA_TRANSLATE: Translate<'static> = Translate {
     prev_month: "前月",
     next_year: "翌年",
     prev_year: "前年",
+    back_to_today: "今日に戻る",
 };
 
 // Korean (한국어)
@@ -216,6 +219,7 @@ const KO_TRANSLATE: Translate<'static> = Translate {
     prev_month: "이전 달",
     next_year: "다음 해",
     prev_year: "이전 해",
+    back_to_today: "오늘로 돌아가기",
 };
 
 // German (Deutsch)
@@ -225,6 +229,7 @@ const DE_TRANSLATE: Translate<'static> = Translate {
     prev_month: "Vorheriger Monat",
     next_year: "Nächstes Jahr",
     prev_year: "Vorheriges Jahr",
+    back_to_today: "Zurück zum Heute",
 };
 
 // French (Français)
@@ -234,6 +239,7 @@ const FR_TRANSLATE: Translate<'static> = Translate {
     prev_month: "Mois précédent",
     next_year: "Année suivante",
     prev_year: "Année précédente",
+    back_to_today: "Retour à aujourd'hui",
 };
 
 // Russian (Русский)
@@ -243,6 +249,7 @@ const RU_TRANSLATE: Translate<'static> = Translate {
     prev_month: "Предыдущий месяц",
     next_year: "Следующий год",
     prev_year: "Предыдущий год",
+    back_to_today: "Вернуться к сегодняшнему дню",
 };
 
 // English (English)
@@ -252,6 +259,7 @@ const EN_TRANSLATE: Translate<'static> = Translate {
     prev_month: "Previous month",
     next_year: "Next year",
     prev_year: "Previous year",
+    back_to_today: "Back to today",
 };
 
 pub fn get_translate(language: Language) -> &'static Translate<'static> {
