@@ -7,10 +7,14 @@ pub struct RiqiLayout {
     pub day_item_col: u32,
 }
 
+/*
+*  return [title_area, _ ,calendar_area,_command_line]
+*
+*/
 pub fn get_layout(area: Rect) -> [Rect; 3] {
     let layout: [Rect; 3] = Layout::vertical([
         Constraint::Length(1),
-        Constraint::Length(1),
+        Constraint::Max(1),
         Constraint::Length(32),
     ])
     .flex(Flex::Center)

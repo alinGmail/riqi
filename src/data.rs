@@ -193,7 +193,7 @@ mod tests {
                     // 验证星期几的计算是否正确
                     let date =
                         NaiveDate::from_ymd_opt(day.year as i32, day.month, day.day).unwrap();
-                    let expected_weekday = date.weekday().num_days_from_sunday() as u32;
+                    let expected_weekday = date.weekday().num_days_from_sunday();
                     assert_eq!(
                         day.day_of_week, expected_weekday,
                         "日期 {}-{}-{} 的星期几计算错误，期望 {}，实际 {}",
@@ -241,7 +241,7 @@ mod tests {
 
         // 使用 chrono 验证正确的星期几
         let date = NaiveDate::from_ymd_opt(2025, 4, 30).unwrap();
-        let expected_weekday = date.weekday().num_days_from_sunday() as u32;
+        let expected_weekday = date.weekday().num_days_from_sunday();
 
         assert_eq!(
             april_30.day_of_week, expected_weekday,
@@ -283,7 +283,7 @@ mod tests {
     #[test]
     fn test_calendar_week_structure() {
         let calendar = MonthCalendar::new(2024, 3);
-        
+
         // 验证每周都有7天
         for (week_index, week) in calendar.day_data.iter().enumerate() {
             assert_eq!(
@@ -309,11 +309,11 @@ mod tests {
     #[test]
     fn test_calendar_month_transition() {
         let calendar = MonthCalendar::new(2024, 3);
-        
+
         // 验证月份过渡的正确性
         let mut found_current_month = false;
         let mut found_next_month = false;
-        
+
         for week in &calendar.day_data {
             for day in week {
                 if day.is_current_month {
@@ -325,7 +325,7 @@ mod tests {
                 }
             }
         }
-        
+
         assert!(found_current_month, "应该包含当前月份的日期");
         assert!(found_next_month, "应该包含下个月的日期");
     }

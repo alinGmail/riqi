@@ -1,4 +1,6 @@
 use chrono::{Datelike, Duration, Local};
+use clap::Parser;
+use cli::Args;
 use color_eyre::Result;
 use crossterm::{
     event::{self, Event, KeyCode},
@@ -37,6 +39,7 @@ use holiday_data::HolidayMap;
 mod state;
 mod utils;
 
+mod cli;
 mod i18n;
 mod layout;
 mod locale;
@@ -62,6 +65,8 @@ fn main() -> Result<()> {
     setup_logger();
 
     log::debug!("start");
+
+    let args = Args::parse();
 
     // 设置终端
     enable_raw_mode()?;

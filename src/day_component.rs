@@ -1,10 +1,10 @@
 use chrono::Datelike;
 use ratatui::{
     buffer::Buffer,
-    layout::{Constraint, Layout, Rect},
-    style::{Color, Style, Stylize},
+    layout::Rect,
+    style::{Style, Stylize},
     text::Line,
-    widgets::{Block, BorderType, Borders, Paragraph, StatefulWidget, Widget, Wrap},
+    widgets::{Block, BorderType, Borders, StatefulWidget, Widget},
 };
 
 use crate::lunar::{number_to_lunar_day, number_to_lunar_month};
@@ -96,13 +96,9 @@ impl<'a> CnDayItem<'a> {
             // 工作日使用工作颜色
             Style::default().fg(BLUE.work_day)
         };
-        return style;
+        style
     }
 
-    pub const fn theme(mut self, theme: Theme) -> Self {
-        self.theme = theme;
-        self
-    }
     pub fn render_content_3row6col(self, area: Rect, buf: &mut Buffer) {
         let line = Line::from(self.day.day.to_string()).style(self.get_fg_color());
         line.render(
