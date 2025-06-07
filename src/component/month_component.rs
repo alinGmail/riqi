@@ -1,10 +1,4 @@
-use ratatui::{
-    buffer::Buffer,
-    layout::Rect,
-    style::Style,
-    text::Line,
-    widgets::{Block, Borders, Widget},
-};
+use ratatui::{buffer::Buffer, layout::Rect, style::Style, text::Line, widgets::Widget};
 
 use crate::{data::MonthCalendar, i18n::weekday_name_i18n, state::RiqiState, theme::Theme};
 
@@ -25,7 +19,6 @@ impl<'a> Widget for MonthComponent<'a> {
             let line_txt = Line::from(day.clone())
                 .centered()
                 .style(Style::default().fg(self.theme.text));
-            let day_block = Block::default().borders(Borders::ALL);
             line_txt.render(
                 Rect::new(area.left() + 12 * i as u16, area.top(), 10, 1),
                 buf,

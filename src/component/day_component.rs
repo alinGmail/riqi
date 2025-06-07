@@ -15,12 +15,7 @@ use crate::{
 };
 use crate::{state::RiqiState, theme::Theme};
 
-pub fn render_day_item<'a>(
-    buffer: &mut Buffer,
-    day: &'a CalendarDay,
-    rect: Rect,
-    riqi_state: &RiqiState,
-) {
+pub fn render_day_item(buffer: &mut Buffer, day: &CalendarDay, rect: Rect, riqi_state: &RiqiState) {
     let day_item = CnDayItem::new(day, riqi_state);
 
     StatefulWidget::render(
@@ -63,15 +58,15 @@ impl<'a> CnDayItem<'a> {
 
     pub fn is_selected_day(&self) -> bool {
         let select_day = self.riqi_state.select_day;
-        return select_day.day() == self.day.day
+        select_day.day() == self.day.day
             && select_day.month() == self.day.month
-            && select_day.year() as u32 == self.day.year;
+            && select_day.year() as u32 == self.day.year
     }
     pub fn is_today(&self) -> bool {
         let today = self.riqi_state.today;
-        return today.day() == self.day.day
+        today.day() == self.day.day
             && today.month() == self.day.month
-            && today.year() as u32 == self.day.year;
+            && today.year() as u32 == self.day.year
     }
 
     pub fn get_fg_color(&self) -> Style {
@@ -89,14 +84,13 @@ impl<'a> CnDayItem<'a> {
             return Style::default().fg(BLUE.not_cur_month);
         }
 
-        let style = if self.day.day_of_week == 6 || self.day.day_of_week == 0 {
+        if self.day.day_of_week == 6 || self.day.day_of_week == 0 {
             // 周六日使用节假日颜色
             Style::default().fg(BLUE.holi_day)
         } else {
             // 工作日使用工作颜色
             Style::default().fg(BLUE.work_day)
-        };
-        style
+        }
     }
 
     pub fn render_content_3row6col(self, area: Rect, buf: &mut Buffer) {

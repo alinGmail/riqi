@@ -1,4 +1,4 @@
-use serde_json::{json, Value};
+use serde_json::Value;
 use std::fs;
 
 #[derive(serde::Deserialize)]
@@ -39,23 +39,22 @@ pub fn process_holiday_json() -> Result<(), Box<dyn std::error::Error>> {
         if let Some(holidays_array) = holidays.as_array_mut() {
             // 处理每个假期
             for holiday in holidays_array {
-                // 移除不需要的字段
-                holiday.as_object_mut().map(|obj| {
+                if let Some(obj) = holiday.as_object_mut() {
                     obj.remove("canonical_url");
                     obj.remove("urlid");
                     obj.remove("locations");
                     obj.remove("states");
                     obj.remove("description");
                     obj.remove("country");
-                });
+                }
 
                 // 将 datetime 提升到顶层并移除 date
                 if let Some(date) = holiday.get("date") {
                     if let Some(datetime) = date.get("datetime") {
                         let datetime_clone = datetime.clone();
-                        holiday.as_object_mut().map(|obj| {
+                        if let Some(obj) = holiday.as_object_mut() {
                             obj.insert("datetime".to_string(), datetime_clone);
-                        });
+                        }
                     }
                 }
             }

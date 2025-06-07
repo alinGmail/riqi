@@ -109,8 +109,8 @@ fn run(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>) -> Result<()> {
     }
     let mut config = get_default_config();
 
-    if let Some(country) = args.country {
-        config.region = country;
+    if let Some(language) = args.language {
+        config.language = language;
     }
     let mut riqi_state = RiqiState {
         select_day: now.date_naive(),
