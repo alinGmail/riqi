@@ -11,11 +11,12 @@ pub struct RiqiLayout {
 *  return [title_area, _ ,calendar_area,_command_line]
 *
 */
-pub fn get_layout(area: Rect) -> [Rect; 3] {
-    let layout: [Rect; 3] = Layout::vertical([
+pub fn get_layout(area: Rect) -> [Rect; 4] {
+    let layout: [Rect; 4] = Layout::vertical([
         Constraint::Length(1),
         Constraint::Max(1),
         Constraint::Length(32),
+        Constraint::Length(1),
     ])
     .flex(Flex::Center)
     .areas(area);

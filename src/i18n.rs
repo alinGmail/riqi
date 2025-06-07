@@ -1,3 +1,33 @@
+use std::str::FromStr;
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum Country {
+    CN,
+    JP,
+    KR,
+    DE,
+    FR,
+    RU,
+    EN,
+    US,
+}
+
+impl FromStr for Country {
+    type Err = String;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s.to_lowercase().as_str() {
+            "cn" | "zh" => Ok(Country::CN),
+            "jp" | "ja" => Ok(Country::JP),
+            "kr" | "ko" => Ok(Country::KR),
+            "de" => Ok(Country::DE),
+            "fr" => Ok(Country::FR),
+            "ru" => Ok(Country::RU),
+            "us" | "en" => Ok(Country::US), // 默认英语（美式）
+            _ => Err(format!("Unknown region code: {}", s)),
+        }
+    }
+}
+
 pub fn get_month_til_i18n(year: i32, month: u32, lang: &str) -> String {
     let month_names = match lang {
         "en" => [
@@ -66,15 +96,7 @@ pub fn get_month_til_i18n(year: i32, month: u32, lang: &str) -> String {
 
 pub fn weekday_name_i18n(weekday: u32, lang: &str) -> String {
     let names = match lang {
-        "en" => [
-            "Sun",
-            "Mon",
-            "Tue",
-            "Wed",
-            "Thu",
-            "Fri",
-            "Sat",
-        ],
+        "en" => ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
         "fr" => [
             "Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi",
         ],
@@ -114,19 +136,94 @@ pub fn weekday_name_i18n(weekday: u32, lang: &str) -> String {
             "금요일",
             "토요일",
         ],
-        "zh" | "zh-TW" | "zh-HK" => [
-            "日",
-            "一",
-            "二",
-            "三",
-            "四",
-            "五",
-            "六",
-        ],
+        "zh" | "zh-TW" | "zh-HK" => ["日", "一", "二", "三", "四", "五", "六"],
         _ => ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"], // fallback
     };
 
     names.get(weekday as usize % 7).unwrap_or(&"").to_string()
+}
+
+pub struct Translate<'a> {
+    pub navigation: &'a str,
+    pub next_month: &'a str,
+    pub prev_month: &'a str,
+    pub next_year: &'a str,
+    pub prev_year: &'a str,
+}
+
+const CN_TRANSLATE: Translate<'static> = Translate {
+    navigation: "导航",
+    next_month: "下一月",
+    prev_month: "上一月",
+    next_year: "下一年",
+    prev_year: "上一年",
+};
+
+// Japanese (日本語)
+const JP_TRANSLATE: Translate<'static> = Translate {
+    navigation: "ナビゲーション",
+    next_month: "翌月",
+    prev_month: "前月",
+    next_year: "翌年",
+    prev_year: "前年",
+};
+
+// Korean (한국어)
+const KR_TRANSLATE: Translate<'static> = Translate {
+    navigation: "탐색",
+    next_month: "다음 달",
+    prev_month: "이전 달",
+    next_year: "다음 해",
+    prev_year: "이전 해",
+};
+
+// German (Deutsch)
+const DE_TRANSLATE: Translate<'static> = Translate {
+    navigation: "Navigation",
+    next_month: "Nächster Monat",
+    prev_month: "Vorheriger Monat",
+    next_year: "Nächstes Jahr",
+    prev_year: "Vorheriges Jahr",
+};
+
+// French (Français)
+const FR_TRANSLATE: Translate<'static> = Translate {
+    navigation: "Navigation",
+    next_month: "Mois suivant",
+    prev_month: "Mois précédent",
+    next_year: "Année suivante",
+    prev_year: "Année précédente",
+};
+
+// Russian (Русский)
+const RU_TRANSLATE: Translate<'static> = Translate {
+    navigation: "Навигация",
+    next_month: "Следующий месяц",
+    prev_month: "Предыдущий месяц",
+    next_year: "Следующий год",
+    prev_year: "Предыдущий год",
+};
+
+// English (English)
+const EN_TRANSLATE: Translate<'static> = Translate {
+    navigation: "Navigation",
+    next_month: "Next month",
+    prev_month: "Previous month",
+    next_year: "Next year",
+    prev_year: "Previous year",
+};
+
+pub fn get_translate(region: Country) -> &'static Translate<'static> {
+    match region {
+        Country::CN => &CN_TRANSLATE,
+        Country::JP => &JP_TRANSLATE,
+        Country::KR => &KR_TRANSLATE,
+        Country::DE => &DE_TRANSLATE,
+        Country::FR => &FR_TRANSLATE,
+        Country::RU => &RU_TRANSLATE,
+        Country::EN => &EN_TRANSLATE,
+        Country::US => &EN_TRANSLATE,
+    }
 }
 
 #[cfg(test)]

@@ -2,7 +2,10 @@ use chrono::{Datelike, Duration, Local};
 use clap::Parser;
 use cli::Args;
 use color_eyre::Result;
-use component::month_component::MonthComponent;
+use component::{
+    bottom_line_component::{self, BottomLineComponent},
+    month_component::MonthComponent,
+};
 use config::{config_init::get_default_config, config_struct::Config};
 use crossterm::{
     event::{self, Event, KeyCode},
@@ -114,13 +117,18 @@ fn run(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>) -> Result<()> {
     loop {
         terminal.draw(|frame| {
             let size = frame.area();
-            let [til_area, _, calendar_area] = get_layout(size);
+            let [til_area, _, calendar_area, bottom_line_area] = get_layout(size);
 
             let month_til_i18n_str = get_month_til_i18n(
                 calendar.year as i32,
                 calendar.month,
                 &riqi_state.config.language,
             );
+
+            let bottom_line = BottomLineComponent {
+                riqi_state: &riqi_state,
+            };
+            bottom_line.render(bottom_line_area, frame.buffer_mut());
 
             let month_til_component = Line::from(month_til_i18n_str).centered();
             month_til_component.render(til_area, frame.buffer_mut());
