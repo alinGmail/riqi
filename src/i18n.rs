@@ -67,13 +67,13 @@ pub fn get_month_til_i18n(year: i32, month: u32, lang: &str) -> String {
 pub fn weekday_name_i18n(weekday: u32, lang: &str) -> String {
     let names = match lang {
         "en" => [
-            "Sunday",
-            "Monday",
-            "Tuesday",
-            "Wednesday",
-            "Thursday",
-            "Friday",
-            "Saturday",
+            "Sun",
+            "Mon",
+            "Tue",
+            "Wed",
+            "Thu",
+            "Fri",
+            "Sat",
         ],
         "fr" => [
             "Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi",
@@ -115,13 +115,13 @@ pub fn weekday_name_i18n(weekday: u32, lang: &str) -> String {
             "토요일",
         ],
         "zh" | "zh-TW" | "zh-HK" => [
-            "星期日",
-            "星期一",
-            "星期二",
-            "星期三",
-            "星期四",
-            "星期五",
-            "星期六",
+            "日",
+            "一",
+            "二",
+            "三",
+            "四",
+            "五",
+            "六",
         ],
         _ => ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"], // fallback
     };

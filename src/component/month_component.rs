@@ -6,7 +6,7 @@ use ratatui::{
     widgets::{Block, Borders, Widget},
 };
 
-use crate::{data::MonthCalendar, state::RiqiState, theme::Theme};
+use crate::{data::MonthCalendar, i18n::weekday_name_i18n, state::RiqiState, theme::Theme};
 
 use super::day_component::render_day_item;
 
@@ -20,14 +20,14 @@ pub struct MonthComponent<'a> {
 impl<'a> Widget for MonthComponent<'a> {
     fn render(self, area: ratatui::prelude::Rect, buf: &mut Buffer) {
         // 渲染星期标题
-        let weekdays = ["日", "一", "二", "三", "四", "五", "六"];
-        for (i, &day) in weekdays.iter().enumerate() {
-            let line_txt = Line::from(day)
+        for i in 0..7 {
+            let day = weekday_name_i18n(i, &self.riqi_state.config.language);
+            let line_txt = Line::from(day.clone())
                 .centered()
-                .style(Style::default().fg(self.theme.holi_day));
-            let day_block = Block::default().title(day).borders(Borders::ALL);
+                .style(Style::default().fg(self.theme.text));
+            let day_block = Block::default().borders(Borders::ALL);
             line_txt.render(
-                Rect::new(area.left() + 12 * i as u16, area.top(), 12, 1),
+                Rect::new(area.left() + 12 * i as u16, area.top(), 10, 1),
                 buf,
             );
         }
