@@ -2,6 +2,8 @@ use chrono::{Datelike, Duration, Local};
 use clap::Parser;
 use cli::Args;
 use color_eyre::Result;
+use component::month_component::MonthComponent;
+use config::{config_init::get_default_config, config_struct::Config};
 use crossterm::{
     event::{self, Event, KeyCode},
     terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
@@ -25,11 +27,7 @@ use utils::add_months_safe;
 
 mod data;
 use data::MonthCalendar;
-mod day_component;
 mod theme;
-
-mod month_component;
-use month_component::MonthComponent;
 
 mod holiday;
 use holiday::load_holidays_file;
@@ -40,6 +38,8 @@ mod state;
 mod utils;
 
 mod cli;
+mod component;
+mod config;
 mod i18n;
 mod layout;
 mod locale;
@@ -109,6 +109,7 @@ fn run(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>) -> Result<()> {
         select_day: now.date_naive(),
         holiday_map: &holiday_map,
         today: now.date_naive(),
+        config: get_default_config(),
     };
     loop {
         terminal.draw(|frame| {
@@ -121,8 +122,7 @@ fn run(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>) -> Result<()> {
                 &calendar.month.to_string()
             );
 
-            let month_til_str1 = get_locale().unwrap_or_else(|| String::from("en-US"));
-            let month_til_component = Line::from(month_til_str1).centered();
+            let month_til_component = Line::from(month_til_str).centered();
             month_til_component.render(til_area, frame.buffer_mut());
 
             //

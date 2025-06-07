@@ -1,12 +1,14 @@
 use ratatui::{
     buffer::Buffer,
     layout::Rect,
-    style::{Color, Style},
+    style::Style,
     text::Line,
     widgets::{Block, Borders, Widget},
 };
 
-use crate::{data::MonthCalendar, day_component::render_day_item, state::RiqiState, theme::Theme};
+use crate::{data::MonthCalendar, state::RiqiState, theme::Theme};
+
+use super::day_component::render_day_item;
 
 pub struct MonthComponent<'a> {
     pub data: &'a MonthCalendar,
