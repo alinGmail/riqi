@@ -7,7 +7,7 @@ pub fn parse_language_region(locale: &str) -> (String, Option<String>) {
     let locale = locale.split('.').next().unwrap_or(locale);
 
     // 拆分语言标签，支持 '-' 和 '_'
-    let parts: Vec<&str> = locale.split(|c| c == '-' || c == '_').collect();
+    let parts: Vec<&str> = locale.split(['-', '_']).collect();
 
     if parts.is_empty() {
         return (String::new(), None);

@@ -54,10 +54,7 @@ impl HolidayResponse {
         // 按日期对节假日进行分组
         for holiday in &self.holidays {
             let date_key = holiday.date.iso.clone();
-            date_map
-                .entry(date_key)
-                .or_insert_with(Vec::new)
-                .push(holiday.clone());
+            date_map.entry(date_key).or_default().push(holiday.clone());
         }
 
         // 将分组后的数据插入到 holiday_map 中，如果已存在则替换

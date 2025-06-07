@@ -160,19 +160,19 @@ fn run(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>) -> Result<()> {
             }
             if key.code == KeyCode::Char('j') {
                 // go to next week
-                riqi_state.select_day = riqi_state.select_day + Duration::weeks(1);
+                riqi_state.select_day += Duration::weeks(1);
             }
             if key.code == KeyCode::Char('k') {
                 // go to pre week
-                riqi_state.select_day = riqi_state.select_day + Duration::weeks(-1);
+                riqi_state.select_day += Duration::weeks(-1);
             }
             if key.code == KeyCode::Char('h') {
                 // go to pre day
-                riqi_state.select_day = riqi_state.select_day + Duration::days(-1);
+                riqi_state.select_day += Duration::days(-1);
             }
             if key.code == KeyCode::Char('l') {
                 // go to pre day
-                riqi_state.select_day = riqi_state.select_day + Duration::days(1);
+                riqi_state.select_day += Duration::days(1);
             }
             if key.code == KeyCode::Char('d') {
                 // go to next month

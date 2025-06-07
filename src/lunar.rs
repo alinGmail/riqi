@@ -1,5 +1,5 @@
 pub fn number_to_lunar_day(day: i32) -> String {
-    if day < 1 || day > 30 {
+    if !(1..=30).contains(&day) {
         return "无效日期".to_string();
     }
 
@@ -93,4 +93,3 @@ mod tests {
         assert_eq!(number_to_lunar_month(13), "无效月份");
     }
 }
-

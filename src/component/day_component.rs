@@ -148,7 +148,7 @@ impl<'a> CnDayItem<'a> {
         if let Some(holidays) = get_holidays(&self.riqi_state.holiday_map, "2025_cn_zh", &date_str)
         {
             // 处理 holidays
-            if let Some(holiday) = holidays.get(0) {
+            if let Some(holiday) = holidays.first() {
                 let holiday = Line::from(holiday.name.clone())
                     .centered()
                     .style(self.get_fg_color());
