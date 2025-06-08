@@ -12,7 +12,6 @@ use crate::state::RiqiState;
 use crate::{
     data::CalendarDay,
     holiday_data::{Holiday, HolidayMap},
-    theme::BLUE,
 };
 
 use super::utils::get_style_from_config;
