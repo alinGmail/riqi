@@ -3,13 +3,33 @@ use std::collections::HashMap;
 
 pub type HolidayMap = HashMap<String, HashMap<String, Vec<Holiday>>>;
 
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub enum PrimaryType {
+    #[serde(rename = "Substitute holiday")]
+    SubstituteHoliday,
+    #[serde(rename = "National holiday")]
+    NationalHoliday,
+    #[serde(rename = "Common holiday")]
+    CommonHoliday,
+    #[serde(rename = "Working Day on a Weekend")]
+    WorkingDayOnWeekend,
+    #[serde(rename = "Observance")]
+    Observance,
+    #[serde(rename = "Season")]
+    Season,
+    #[serde(rename = "Half day holiday")]
+    HalfDayHoliday,
+    #[serde(rename = "Regional holiday")]
+    RegionalHoliday,
+}
+
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Holiday {
     pub name: String,
     pub date: Date,
     #[serde(rename = "type")]
     pub holiday_type: Vec<String>,
-    pub primary_type: String,
+    pub primary_type: PrimaryType,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -48,7 +68,7 @@ impl HolidayResponse {
         language: &str,
         year: &str,
     ) {
-        let key = format!("{}_{}_{}", year, country, language);
+        let key = format!("{}-{}-{}", year, country, language);
         let mut date_map: HashMap<String, Vec<Holiday>> = HashMap::new();
 
         // 按日期对节假日进行分组

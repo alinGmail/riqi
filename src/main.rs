@@ -112,7 +112,12 @@ fn run(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>) -> Result<()> {
                 "成功解析假期数据，共 {} 个假期",
                 holiday_response.holidays.len()
             );
-            holiday_response.add_to_holiday_map(&mut holiday_map, "cn", "zh", "2025");
+            holiday_response.add_to_holiday_map(
+                &mut holiday_map,
+                &config.country,
+                &config.language,
+                now.year().to_string().as_str(),
+            );
         }
         Err(e) => {
             log::error!("解析假期数据失败: {}", e);

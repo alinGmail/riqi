@@ -7,11 +7,11 @@ use ratatui::{
     widgets::{Block, BorderType, Borders, Widget},
 };
 
-use crate::lunar::{number_to_lunar_day, number_to_lunar_month};
 use crate::state::RiqiState;
+use crate::{data::CalendarDay, holiday_data::Holiday};
 use crate::{
-    data::CalendarDay,
-    holiday_data::{Holiday, HolidayMap},
+    holiday_data::PrimaryType,
+    lunar::{number_to_lunar_day, number_to_lunar_month},
 };
 
 use super::utils::get_style_from_config;
@@ -25,14 +25,6 @@ pub fn render_day_item(buffer: &mut Buffer, day: &CalendarDay, rect: Rect, riqi_
 struct DayItem<'a> {
     day: &'a CalendarDay,
     riqi_state: &'a RiqiState<'a>,
-}
-
-fn get_holidays<'a>(
-    holiday_map: &'a HolidayMap,
-    key1: &str,
-    key2: &str,
-) -> Option<&'a Vec<Holiday>> {
-    holiday_map.get(key1)?.get(key2)
 }
 
 /// A button with a label that can be themed.
@@ -54,9 +46,54 @@ impl<'a> DayItem<'a> {
             && today.year() as u32 == self.day.year
     }
 
-    pub fn get_day_item_style(&self) -> Style {
+    pub fn get_holidays(&self) -> Option<&Vec<Holiday>> {
+        let date_str = format!(
+            "{:04}-{:02}-{:02}",
+            self.day.year, self.day.month, self.day.day
+        );
+        let holiday_map_key = format!(
+            "{}-{}-{}",
+            &self.day.year.to_string().as_str(),
+            &self.riqi_state.config.country,
+            &self.riqi_state.config.language
+        );
+        self.riqi_state
+            .holiday_map
+            .get(&holiday_map_key)?
+            .get(date_str.as_str())
+    }
+
+    // 判断今天是否是节日，
+    // return (是否放假, true 放假，false 上班:bool  | 是否国家节日,用于是否显示图标:bool)
+    pub fn is_holiday(&self) -> (bool, bool) {
+        let holidays = self.get_holidays();
+        if let Some(holiday_vec) = holidays {
+            let is_holiday = holiday_vec.iter().any(|holiday| {
+                matches!(
+                    holiday.primary_type,
+                    PrimaryType::SubstituteHoliday | PrimaryType::NationalHoliday
+                )
+            });
+            if is_holiday {
+                return (true, true);
+            }
+            let is_workday = holiday_vec
+                .iter()
+                .any(|holiday| matches!(holiday.primary_type, PrimaryType::WorkingDayOnWeekend));
+            if is_workday {
+                return (false, true);
+            }
+        };
+
+        (
+            self.day.day_of_week == 6 || self.day.day_of_week == 0,
+            false,
+        )
+    }
+
+    pub fn get_day_item_style(&self, is_holiday: bool) -> Style {
         let mut style = self.riqi_state.theme.get_default_style();
-        if self.day.day_of_week == 6 || self.day.day_of_week == 0 {
+        if is_holiday {
             // 周六日使用节假日颜色
             if self.day.is_current_month {
                 style = get_style_from_config(Some(style), self.riqi_state.theme.holiday);
@@ -83,8 +120,14 @@ impl<'a> DayItem<'a> {
         style
     }
 
-    pub fn normal_render_content(self, area: Rect, buf: &mut Buffer) {
-        let day_item_style = self.get_day_item_style();
+    pub fn normal_render_content(
+        self,
+        area: Rect,
+        buf: &mut Buffer,
+        is_holiday: bool,
+        show_holiday_icon: bool,
+    ) {
+        let day_item_style = self.get_day_item_style(is_holiday);
         let line = Line::from(self.day.day.to_string()).style(day_item_style);
         line.render(
             Rect {
@@ -100,7 +143,7 @@ impl<'a> DayItem<'a> {
             let today_line = Line::from("今").style(day_item_style).centered();
             today_line.render(
                 Rect {
-                    x: area.left() + 5,
+                    x: area.left() + if show_holiday_icon { 3 } else { 5 },
                     y: area.top(),
                     width: 2,
                     height: 1,
@@ -108,6 +151,21 @@ impl<'a> DayItem<'a> {
                 buf,
             );
         };
+
+        if show_holiday_icon {
+            let holiday_line = Line::from(if is_holiday { "休" } else { "班" })
+                .style(day_item_style)
+                .centered();
+            holiday_line.render(
+                Rect {
+                    x: area.left() + 5,
+                    y: area.top(),
+                    width: 2,
+                    height: 1,
+                },
+                buf,
+            );
+        }
 
         // 显示农历日期
         let lunar_day = if self.day.lunar_day == 1 {
@@ -128,17 +186,11 @@ impl<'a> DayItem<'a> {
             buf,
         );
 
-        let date_str = format!(
-            "{:04}-{:02}-{:02}",
-            self.day.year, self.day.month, self.day.day
-        );
         // 使用
-        if let Some(holidays) = get_holidays(self.riqi_state.holiday_map, "2025_cn_zh", &date_str) {
+        if let Some(holidays) = self.get_holidays() {
             // 处理 holidays
             if let Some(holiday) = holidays.first() {
-                let holiday = Line::from(holiday.name.clone())
-                    .centered()
-                    .style(day_item_style);
+                let holiday = Line::from(holiday.name.clone()).style(day_item_style);
                 holiday.render(
                     Rect {
                         x: area.left() + 1,
@@ -157,12 +209,13 @@ impl<'a> DayItem<'a> {
 
 impl<'a> Widget for DayItem<'a> {
     fn render(self, area: Rect, buf: &mut Buffer) {
+        let (is_holiday, show_holiday_icon) = self.is_holiday();
         let block = Block::new()
             .borders(Borders::ALL)
             .border_type(BorderType::Rounded)
-            .border_style(Style::default().fg(self.get_day_item_style().fg.unwrap()));
+            .border_style(Style::default().fg(self.get_day_item_style(is_holiday).fg.unwrap()));
         let inner_area = block.inner(area);
         block.render(area, buf);
-        self.normal_render_content(inner_area, buf);
+        self.normal_render_content(inner_area, buf, is_holiday, show_holiday_icon);
     }
 }
