@@ -1,0 +1,201 @@
+{
+    "holidays": [
+      {
+        "date": {
+          "datetime": {
+            "day": 1,
+            "month": 1,
+            "year": 2025
+          },
+          "iso": "2025-01-01"
+        },
+        "name": "Jour de l'An",
+        "primary_type": "National holiday",
+        "type": [
+          "National holiday"
+        ]
+      },
+      {
+        "date": {
+          "datetime": {
+            "day": 18,
+            "month": 4,
+            "year": 2025
+          },
+          "iso": "2025-04-18"
+        },
+        "name": "Vendredi Saint",
+        "primary_type": "Regional holiday",
+        "type": [
+          "Regional holiday"
+        ],
+        "note": "Alsace et Moselle uniquement"
+      },
+      {
+        "date": {
+          "datetime": {
+            "day": 21,
+            "month": 4,
+            "year": 2025
+          },
+          "iso": "2025-04-21"
+        },
+        "name": "Lundi de Pâques",
+        "primary_type": "National holiday",
+        "type": [
+          "National holiday"
+        ]
+      },
+      {
+        "date": {
+          "datetime": {
+            "day": 1,
+            "month": 5,
+            "year": 2025
+          },
+          "iso": "2025-05-01"
+        },
+        "name": "Fête du Travail",
+        "primary_type": "National holiday",
+        "type": [
+          "National holiday"
+        ]
+      },
+      {
+        "date": {
+          "datetime": {
+            "day": 8,
+            "month": 5,
+            "year": 2025
+          },
+          "iso": "2025-05-08"
+        },
+        "name": "Victoire 1945",
+        "primary_type": "National holiday",
+        "type": [
+          "National holiday"
+        ]
+      },
+      {
+        "date": {
+          "datetime": {
+            "day": 29,
+            "month": 5,
+            "year": 2025
+          },
+          "iso": "2025-05-29"
+        },
+        "name": "Ascension",
+        "primary_type": "National holiday",
+        "type": [
+          "National holiday"
+        ]
+      },
+      {
+        "date": {
+          "datetime": {
+            "day": 9,
+            "month": 6,
+            "year": 2025
+          },
+          "iso": "2025-06-09"
+        },
+        "name": "Lundi de Pentecôte",
+        "primary_type": "National holiday",
+        "type": [
+          "National holiday"
+        ]
+      },
+      {
+        "date": {
+          "datetime": {
+            "day": 14,
+            "month": 7,
+            "year": 2025
+          },
+          "iso": "2025-07-14"
+        },
+        "name": "Fête Nationale",
+        "primary_type": "National holiday",
+        "type": [
+          "National holiday"
+        ]
+      },
+      {
+        "date": {
+          "datetime": {
+            "day": 15,
+            "month": 8,
+            "year": 2025
+          },
+          "iso": "2025-08-15"
+        },
+        "name": "Assomption",
+        "primary_type": "National holiday",
+        "type": [
+          "National holiday"
+        ]
+      },
+      {
+        "date": {
+          "datetime": {
+            "day": 1,
+            "month": 11,
+            "year": 2025
+          },
+          "iso": "2025-11-01"
+        },
+        "name": "Toussaint",
+        "primary_type": "National holiday",
+        "type": [
+          "National holiday"
+        ]
+      },
+      {
+        "date": {
+          "datetime": {
+            "day": 11,
+            "month": 11,
+            "year": 2025
+          },
+          "iso": "2025-11-11"
+        },
+        "name": "Armistice 1918",
+        "primary_type": "National holiday",
+        "type": [
+          "National holiday"
+        ]
+      },
+      {
+        "date": {
+          "datetime": {
+            "day": 25,
+            "month": 12,
+            "year": 2025
+          },
+          "iso": "2025-12-25"
+        },
+        "name": "Noël",
+        "primary_type": "National holiday",
+        "type": [
+          "National holiday"
+        ]
+      },
+      {
+        "date": {
+          "datetime": {
+            "day": 26,
+            "month": 12,
+            "year": 2025
+          },
+          "iso": "2025-12-26"
+        },
+        "name": "Saint Étienne",
+        "primary_type": "Regional holiday",
+        "type": [
+          "Regional holiday"
+        ],
+        "note": "Alsace et Moselle uniquement"
+      }
+    ]
+  }

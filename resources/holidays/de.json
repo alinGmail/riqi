@@ -1,0 +1,175 @@
+{
+  "holidays": [
+    {
+      "date": {
+        "datetime": { "day": 1, "month": 1, "year": 2025 },
+        "iso": "2025-01-01"
+      },
+      "name": "Neujahrstag",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": {
+        "datetime": { "day": 6, "month": 1, "year": 2025 },
+        "iso": "2025-01-06"
+      },
+      "name": "Heilige Drei Könige",
+      "primary_type": "Regional holiday",
+      "type": ["Regional holiday"]
+    },
+    {
+      "date": {
+        "datetime": { "day": 20, "month": 3, "year": 2025 },
+        "iso": "2025-03-20"
+      },
+      "name": "Frühlingsanfang",
+      "primary_type": "Season",
+      "type": ["Season"]
+    },
+    {
+      "date": {
+        "datetime": { "day": 18, "month": 4, "year": 2025 },
+        "iso": "2025-04-18"
+      },
+      "name": "Karfreitag",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": {
+        "datetime": { "day": 21, "month": 4, "year": 2025 },
+        "iso": "2025-04-21"
+      },
+      "name": "Ostermontag",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": {
+        "datetime": { "day": 1, "month": 5, "year": 2025 },
+        "iso": "2025-05-01"
+      },
+      "name": "Tag der Arbeit",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": {
+        "datetime": { "day": 29, "month": 5, "year": 2025 },
+        "iso": "2025-05-29"
+      },
+      "name": "Christi Himmelfahrt",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": {
+        "datetime": { "day": 9, "month": 6, "year": 2025 },
+        "iso": "2025-06-09"
+      },
+      "name": "Pfingstmontag",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": {
+        "datetime": { "day": 19, "month": 6, "year": 2025 },
+        "iso": "2025-06-19"
+      },
+      "name": "Fronleichnam",
+      "primary_type": "Regional holiday",
+      "type": ["Regional holiday"]
+    },
+    {
+      "date": {
+        "datetime": { "day": 15, "month": 8, "year": 2025 },
+        "iso": "2025-08-15"
+      },
+      "name": "Mariä Himmelfahrt",
+      "primary_type": "Regional holiday",
+      "type": ["Regional holiday"]
+    },
+    {
+      "date": {
+        "datetime": { "day": 3, "month": 10, "year": 2025 },
+        "iso": "2025-10-03"
+      },
+      "name": "Tag der Deutschen Einheit",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": {
+        "datetime": { "day": 26, "month": 10, "year": 2025 },
+        "iso": "2025-10-26"
+      },
+      "name": "Ende der Sommerzeit",
+      "primary_type": "Observance",
+      "type": ["Observance"]
+    },
+    {
+      "date": {
+        "datetime": { "day": 31, "month": 10, "year": 2025 },
+        "iso": "2025-10-31"
+      },
+      "name": "Reformationstag",
+      "primary_type": "Regional holiday",
+      "type": ["Regional holiday"]
+    },
+    {
+      "date": {
+        "datetime": { "day": 1, "month": 11, "year": 2025 },
+        "iso": "2025-11-01"
+      },
+      "name": "Allerheiligen",
+      "primary_type": "Regional holiday",
+      "type": ["Regional holiday"]
+    },
+    {
+      "date": {
+        "datetime": { "day": 19, "month": 11, "year": 2025 },
+        "iso": "2025-11-19"
+      },
+      "name": "Buß- und Bettag",
+      "primary_type": "Regional holiday",
+      "type": ["Regional holiday"]
+    },
+    {
+      "date": {
+        "datetime": { "day": 24, "month": 12, "year": 2025 },
+        "iso": "2025-12-24"
+      },
+      "name": "Heiligabend",
+      "primary_type": "Common holiday",
+      "type": ["Common holiday"]
+    },
+    {
+      "date": {
+        "datetime": { "day": 25, "month": 12, "year": 2025 },
+        "iso": "2025-12-25"
+      },
+      "name": "Erster Weihnachtstag",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": {
+        "datetime": { "day": 26, "month": 12, "year": 2025 },
+        "iso": "2025-12-26"
+      },
+      "name": "Zweiter Weihnachtstag",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": {
+        "datetime": { "day": 31, "month": 12, "year": 2025 },
+        "iso": "2025-12-31"
+      },
+      "name": "Silvester",
+      "primary_type": "Common holiday",
+      "type": ["Common holiday"]
+    }
+  ]
+}
