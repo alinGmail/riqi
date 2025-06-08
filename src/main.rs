@@ -5,6 +5,7 @@ use color_eyre::Result;
 use component::{
     bottom_line_component::{self, BottomLineComponent},
     month_component::MonthComponent,
+    utils::get_style_from_config,
 };
 use config::{config_init::get_default_config, config_struct::Config};
 use crossterm::{
@@ -141,7 +142,9 @@ fn run(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>) -> Result<()> {
             };
             bottom_line.render(bottom_line_area, frame.buffer_mut());
 
-            let month_til_component = Line::from(month_til_i18n_str).centered();
+            let month_til_component = Line::from(month_til_i18n_str)
+                .centered()
+                .style(get_style_from_config(BLUE.month_til));
             month_til_component.render(til_area, frame.buffer_mut());
 
             //

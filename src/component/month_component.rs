@@ -18,7 +18,7 @@ impl<'a> MonthComponent<'a> {
             let day = weekday_name_i18n(i, &self.riqi_state.config.language);
             let line_txt = Line::from(day.clone())
                 .centered()
-                .style(Style::default().fg(self.theme.text));
+                .style(Style::default().fg(self.theme.fg));
             line_txt.render(
                 Rect::new(area.left() + 12 * i as u16, area.top(), 10, 1),
                 buf,
