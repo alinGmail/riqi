@@ -2,14 +2,30 @@ use sys_locale::get_locale;
 
 use crate::locale::parse_language_country;
 
-use super::config_struct::Config;
+use super::config_struct::{CalendarType, Config};
 
 pub fn get_default_config() -> Config {
-    let locale = get_locale().unwrap_or_else(|| String::from("en-US"));
+    let (sys_language, sys_country) = get_system_language_country();
 
-    let (language, country) = parse_language_country(&locale);
+    let mut calendar_type = CalendarType::WideScreen;
+    if let Some(country) = &sys_country {
+        if country.to_lowercase().as_str() == "cn" {
+            calendar_type = CalendarType::Normal
+        }
+    };
+
     Config {
-        language: language.to_lowercase(),
-        country: country.unwrap_or_else(|| String::from("us")).to_lowercase(),
+        language: sys_language.to_lowercase(),
+        country: sys_country
+            .unwrap_or_else(|| String::from("us"))
+            .to_lowercase(),
+        calendar_type,
     }
+}
+
+// 获取系统的语言和国家
+// 返回 (language, Option<country>)，
+pub fn get_system_language_country() -> (String, Option<String>) {
+    let locale = get_locale().unwrap_or_else(|| String::from("en-US"));
+    parse_language_country(&locale)
 }

@@ -11,8 +11,8 @@ pub struct MonthComponent<'a> {
     pub theme: Theme,
 }
 
-impl<'a> Widget for MonthComponent<'a> {
-    fn render(self, area: ratatui::prelude::Rect, buf: &mut Buffer) {
+impl<'a> MonthComponent<'a> {
+    fn normal_render(self, area: ratatui::prelude::Rect, buf: &mut Buffer) {
         // 渲染星期标题
         for i in 0..7 {
             let day = weekday_name_i18n(i, &self.riqi_state.config.language);
@@ -37,5 +37,11 @@ impl<'a> Widget for MonthComponent<'a> {
                 render_day_item(buf, day, day_area, self.riqi_state);
             }
         }
+    }
+}
+
+impl<'a> Widget for MonthComponent<'a> {
+    fn render(self, area: ratatui::prelude::Rect, buf: &mut Buffer) {
+        self.normal_render(area, buf);
     }
 }

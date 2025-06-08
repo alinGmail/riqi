@@ -4,37 +4,25 @@ use ratatui::{
     layout::Rect,
     style::{Style, Stylize},
     text::Line,
-    widgets::{Block, BorderType, Borders, StatefulWidget, Widget},
+    widgets::{Block, BorderType, Borders, Widget},
 };
 
 use crate::lunar::{number_to_lunar_day, number_to_lunar_month};
+use crate::state::RiqiState;
 use crate::{
     data::CalendarDay,
     holiday_data::{Holiday, HolidayMap},
     theme::BLUE,
 };
-use crate::{state::RiqiState, theme::Theme};
 
 pub fn render_day_item(buffer: &mut Buffer, day: &CalendarDay, rect: Rect, riqi_state: &RiqiState) {
-    let day_item = CnDayItem::new(day, riqi_state);
-
-    StatefulWidget::render(
-        day_item,
-        rect,
-        buffer,
-        &mut DayItemState { selected: false },
-    );
+    let day_item = DayItem::new(day, riqi_state);
+    day_item.render(rect, buffer);
 }
 
 #[derive(Debug, Clone)]
-struct DayItemState {
-    selected: bool,
-}
-
-#[derive(Debug, Clone)]
-struct CnDayItem<'a> {
+struct DayItem<'a> {
     day: &'a CalendarDay,
-    theme: Theme,
     riqi_state: &'a RiqiState<'a>,
 }
 
@@ -47,13 +35,9 @@ fn get_holidays<'a>(
 }
 
 /// A button with a label that can be themed.
-impl<'a> CnDayItem<'a> {
+impl<'a> DayItem<'a> {
     pub fn new(day: &'a CalendarDay, riqi_state: &'a RiqiState) -> Self {
-        CnDayItem {
-            day,
-            theme: BLUE,
-            riqi_state,
-        }
+        DayItem { day, riqi_state }
     }
 
     pub fn is_selected_day(&self) -> bool {
@@ -93,7 +77,7 @@ impl<'a> CnDayItem<'a> {
         }
     }
 
-    pub fn render_content_3row6col(self, area: Rect, buf: &mut Buffer) {
+    pub fn normal_render_content(self, area: Rect, buf: &mut Buffer) {
         let line = Line::from(self.day.day.to_string()).style(self.get_fg_color());
         line.render(
             Rect {
@@ -145,8 +129,7 @@ impl<'a> CnDayItem<'a> {
             self.day.year, self.day.month, self.day.day
         );
         // 使用
-        if let Some(holidays) = get_holidays(&self.riqi_state.holiday_map, "2025_cn_zh", &date_str)
-        {
+        if let Some(holidays) = get_holidays(self.riqi_state.holiday_map, "2025_cn_zh", &date_str) {
             // 处理 holidays
             if let Some(holiday) = holidays.first() {
                 let holiday = Line::from(holiday.name.clone())
@@ -165,39 +148,17 @@ impl<'a> CnDayItem<'a> {
         }
     }
 
-    pub fn render_content_2row6col(self, area: Rect, buf: &mut Buffer) {
-        let line = Line::from(self.day.day.to_string()).style(Style::default());
-        let holiday = Line::from("中秋节").centered().style(Style::default());
-        line.render(
-            Rect {
-                x: area.left() + 1,
-                y: area.top(),
-                width: 6,
-                height: 1,
-            },
-            buf,
-        );
-        holiday.render(
-            Rect {
-                x: area.left() + 1,
-                y: area.top() + 1,
-                width: 6,
-                height: 1,
-            },
-            buf,
-        );
-    }
+    pub fn widly_render_content(self, area: Rect, buf: &mut Buffer) {}
 }
 
-impl<'a> StatefulWidget for CnDayItem<'a> {
-    type State = DayItemState;
-    fn render(self, area: Rect, buf: &mut Buffer, state: &mut Self::State) {
+impl<'a> Widget for DayItem<'a> {
+    fn render(self, area: Rect, buf: &mut Buffer) {
         let block = Block::new()
             .borders(Borders::ALL)
             .border_type(BorderType::Rounded)
             .border_style(self.get_fg_color());
         let inner_area = block.inner(area);
         block.render(area, buf);
-        self.render_content_3row6col(inner_area, buf);
+        self.normal_render_content(inner_area, buf);
     }
 }

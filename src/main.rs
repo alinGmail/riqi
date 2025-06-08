@@ -93,7 +93,17 @@ fn run(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>) -> Result<()> {
     let mut holiday_map: HolidayMap = HashMap::new();
     let mut calendar = MonthCalendar::new(now.year() as u32, now.month());
 
-    let file_str = load_holidays_file("zh", "cn")?;
+    let mut config = get_default_config();
+
+    if let Some(language) = args.language {
+        config.language = language;
+    }
+
+    if let Some(country) = args.country {
+        config.country = country;
+    }
+
+    let file_str = load_holidays_file(&config.language, &config.country)?;
 
     match parse_holidays(&file_str) {
         Ok(holiday_response) => {
@@ -107,17 +117,14 @@ fn run(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>) -> Result<()> {
             log::error!("解析假期数据失败: {}", e);
         }
     }
-    let mut config = get_default_config();
 
-    if let Some(language) = args.language {
-        config.language = language;
-    }
     let mut riqi_state = RiqiState {
         select_day: now.date_naive(),
         holiday_map: &holiday_map,
         today: now.date_naive(),
         config: &config,
     };
+
     loop {
         terminal.draw(|frame| {
             let size = frame.area();
