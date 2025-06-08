@@ -55,30 +55,6 @@ impl<'a> DayItem<'a> {
             && today.year() as u32 == self.day.year
     }
 
-    pub fn get_fg_color(&self) -> Style {
-        // 是不是选中的日期
-        if self.is_selected_day() {
-            return Style::default().fg(BLUE.focus_day).bold();
-        }
-
-        if self.is_today() {
-            // return Style::default().bold();
-        }
-
-        // 是不是 这个月
-        if !self.day.is_current_month {
-            return Style::default().fg(BLUE.not_cur_month);
-        }
-
-        if self.day.day_of_week == 6 || self.day.day_of_week == 0 {
-            // 周六日使用节假日颜色
-            Style::default().fg(BLUE.holi_day)
-        } else {
-            // 工作日使用工作颜色
-            Style::default().fg(BLUE.work_day)
-        }
-    }
-
     pub fn get_day_item_style(&self) -> Style {
         let mut style = self.riqi_state.theme.get_default_style();
         if self.day.day_of_week == 6 || self.day.day_of_week == 0 {
@@ -96,11 +72,21 @@ impl<'a> DayItem<'a> {
                 style = get_style_from_config(Some(style), self.riqi_state.theme.workday_adjacent);
             }
         }
+
+        if self.is_today() {
+            style = style.bold();
+        }
+
+        if self.is_selected_day() {
+            style = get_style_from_config(Some(style), self.riqi_state.theme.focus_day)
+        }
+
         style
     }
 
     pub fn normal_render_content(self, area: Rect, buf: &mut Buffer) {
-        let line = Line::from(self.day.day.to_string()).style(self.get_fg_color());
+        let day_item_style = self.get_day_item_style();
+        let line = Line::from(self.day.day.to_string()).style(day_item_style);
         line.render(
             Rect {
                 x: area.left() + 1,
@@ -112,10 +98,7 @@ impl<'a> DayItem<'a> {
         );
 
         if self.is_today() {
-            let today_line = Line::from("今")
-                .style(self.get_fg_color())
-                //.style(self.get_fg_color().bg(BLUE.background))
-                .centered();
+            let today_line = Line::from("今").style(day_item_style).centered();
             today_line.render(
                 Rect {
                     x: area.left() + 5,
@@ -135,7 +118,7 @@ impl<'a> DayItem<'a> {
             // 其他日期显示日期
             number_to_lunar_day(self.day.lunar_day)
         };
-        let lunar_line = Line::from(lunar_day).style(self.get_fg_color());
+        let lunar_line = Line::from(lunar_day).style(day_item_style);
         lunar_line.render(
             Rect {
                 x: area.left() + 1,
@@ -156,7 +139,7 @@ impl<'a> DayItem<'a> {
             if let Some(holiday) = holidays.first() {
                 let holiday = Line::from(holiday.name.clone())
                     .centered()
-                    .style(self.get_fg_color());
+                    .style(day_item_style);
                 holiday.render(
                     Rect {
                         x: area.left() + 1,
@@ -178,7 +161,7 @@ impl<'a> Widget for DayItem<'a> {
         let block = Block::new()
             .borders(Borders::ALL)
             .border_type(BorderType::Rounded)
-            .border_style(self.get_fg_color());
+            .border_style(Style::default().fg(self.get_day_item_style().fg.unwrap()));
         let inner_area = block.inner(area);
         block.render(area, buf);
         self.normal_render_content(inner_area, buf);

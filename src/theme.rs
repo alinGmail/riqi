@@ -7,7 +7,7 @@ pub struct Theme {
     pub shadow: Color,
     pub holi_day: Color,
     pub work_day: Color,
-    pub focus_day: Color,
+    pub focus_day: ItemStyle,
     pub today: Color,
     pub not_cur_month: Color,
 
@@ -42,7 +42,6 @@ pub const BLUE: Theme = Theme {
     shadow: Color::Rgb(32, 48, 96),
     holi_day: Color::Rgb(233, 101, 165),
     work_day: Color::Rgb(177, 242, 167),
-    focus_day: Color::Rgb(177, 186, 244),
     today: Color::Rgb(235, 222, 118),
     not_cur_month: Color::Rgb(120, 120, 120),
 
@@ -66,7 +65,7 @@ pub const BLUE: Theme = Theme {
 
     workday_adjacent: ItemStyle {
         bg: None,
-        fg: Some(Color::Rgb(177, 186, 244)),
+        fg: Some(Color::Rgb(147, 138, 173)),
         bold: Some(false),
         italic: Some(false),
         under_line: Some(false),
@@ -75,7 +74,7 @@ pub const BLUE: Theme = Theme {
 
     holiday_adjacent: ItemStyle {
         bg: None,
-        fg: Some(Color::Rgb(177, 186, 244)),
+        fg: Some(Color::Rgb(126, 53, 88)),
         bold: Some(false),
         italic: Some(false),
         under_line: Some(false),
@@ -93,7 +92,7 @@ pub const BLUE: Theme = Theme {
 
     workday: ItemStyle {
         bg: None,
-        fg: Some(Color::Rgb(177, 186, 244)),
+        fg: Some(Color::Rgb(178, 244, 243)),
         bold: Some(false),
         italic: Some(false),
         under_line: Some(false),
@@ -101,8 +100,16 @@ pub const BLUE: Theme = Theme {
     },
     holiday: ItemStyle {
         bg: None,
-        fg: Some(Color::Rgb(177, 186, 244)),
+        fg: Some(Color::Rgb(233, 101, 165)),
         bold: Some(false),
+        italic: Some(false),
+        under_line: Some(false),
+        transparent_bg: Some(false),
+    },
+    focus_day: ItemStyle {
+        bg: None,
+        fg: Some(Color::Rgb(177, 242, 167)),
+        bold: Some(true),
         italic: Some(false),
         under_line: Some(false),
         transparent_bg: Some(false),
