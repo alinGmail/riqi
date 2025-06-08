@@ -1,14 +1,13 @@
-use ratatui::{buffer::Buffer, layout::Rect, style::Style, text::Line, widgets::Widget};
+use ratatui::{buffer::Buffer, layout::Rect, text::Line, widgets::Widget};
 
-use crate::{data::MonthCalendar, i18n::weekday_name_i18n, state::RiqiState, theme::Theme};
+use crate::{data::MonthCalendar, i18n::weekday_name_i18n, state::RiqiState, theme::BLUE};
 
-use super::day_component::render_day_item;
+use super::{day_component::render_day_item, utils::get_style_from_config};
 
 pub struct MonthComponent<'a> {
     pub data: &'a MonthCalendar,
     pub riqi_state: &'a RiqiState<'a>,
     pub day_gap: u16,
-    pub theme: Theme,
 }
 
 impl<'a> MonthComponent<'a> {
@@ -18,7 +17,10 @@ impl<'a> MonthComponent<'a> {
             let day = weekday_name_i18n(i, &self.riqi_state.config.language);
             let line_txt = Line::from(day.clone())
                 .centered()
-                .style(Style::default().fg(self.theme.fg));
+                .style(get_style_from_config(
+                    Some(self.riqi_state.theme.get_default_style()),
+                    BLUE.month_head,
+                ));
             line_txt.render(
                 Rect::new(area.left() + 12 * i as u16, area.top(), 10, 1),
                 buf,

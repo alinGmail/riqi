@@ -15,6 +15,8 @@ use crate::{
     theme::BLUE,
 };
 
+use super::utils::get_style_from_config;
+
 pub fn render_day_item(buffer: &mut Buffer, day: &CalendarDay, rect: Rect, riqi_state: &RiqiState) {
     let day_item = DayItem::new(day, riqi_state);
     day_item.render(rect, buffer);
@@ -75,6 +77,26 @@ impl<'a> DayItem<'a> {
             // 工作日使用工作颜色
             Style::default().fg(BLUE.work_day)
         }
+    }
+
+    pub fn get_day_item_style(&self) -> Style {
+        let mut style = self.riqi_state.theme.get_default_style();
+        if self.day.day_of_week == 6 || self.day.day_of_week == 0 {
+            // 周六日使用节假日颜色
+            if self.day.is_current_month {
+                style = get_style_from_config(Some(style), self.riqi_state.theme.holiday);
+            } else {
+                style = get_style_from_config(Some(style), self.riqi_state.theme.holiday_adjacent);
+            }
+        } else {
+            // 工作日使用工作颜色
+            if self.day.is_current_month {
+                style = get_style_from_config(Some(style), self.riqi_state.theme.workday);
+            } else {
+                style = get_style_from_config(Some(style), self.riqi_state.theme.workday_adjacent);
+            }
+        }
+        style
     }
 
     pub fn normal_render_content(self, area: Rect, buf: &mut Buffer) {

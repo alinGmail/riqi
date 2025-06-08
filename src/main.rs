@@ -3,11 +3,10 @@ use clap::Parser;
 use cli::Args;
 use color_eyre::Result;
 use component::{
-    bottom_line_component::{self, BottomLineComponent},
-    month_component::MonthComponent,
+    bottom_line_component::BottomLineComponent, month_component::MonthComponent,
     utils::get_style_from_config,
 };
-use config::{config_init::get_default_config, config_struct::Config};
+use config::config_init::get_default_config;
 use crossterm::{
     event::{self, Event, KeyCode},
     terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
@@ -20,6 +19,7 @@ use log::LevelFilter;
 use ratatui::{
     backend::CrosstermBackend,
     layout::{Constraint, Flex, Layout},
+    style::Style,
     text::Line,
     widgets::Widget,
     Terminal,
@@ -124,6 +124,7 @@ fn run(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>) -> Result<()> {
         holiday_map: &holiday_map,
         today: now.date_naive(),
         config: &config,
+        theme: &BLUE,
     };
 
     loop {
@@ -142,9 +143,13 @@ fn run(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>) -> Result<()> {
             };
             bottom_line.render(bottom_line_area, frame.buffer_mut());
 
-            let month_til_component = Line::from(month_til_i18n_str)
-                .centered()
-                .style(get_style_from_config(BLUE.month_til));
+            let month_til_component =
+                Line::from(month_til_i18n_str)
+                    .centered()
+                    .style(get_style_from_config(
+                        Some(Style::default()),
+                        riqi_state.theme.month_til,
+                    ));
             month_til_component.render(til_area, frame.buffer_mut());
 
             //
@@ -156,7 +161,6 @@ fn run(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>) -> Result<()> {
                 data: &calendar,
                 riqi_state: &riqi_state,
                 day_gap: 2,
-                theme: BLUE,
             };
             month_component.render(layout[0], frame.buffer_mut());
         })?;
