@@ -425,7 +425,7 @@
         "iso": "2025-06-01"
       },
       "name": "儿童节",
-      "primary_type": "Other Observance",
+      "primary_type": "Observance",
       "type": [
         "Observance"
       ]
@@ -495,7 +495,7 @@
         "iso": "2025-07-01"
       },
       "name": "建党节",
-      "primary_type": "Other Observance",
+      "primary_type": "Observance",
       "type": [
         "Observance"
       ]
@@ -510,7 +510,7 @@
         "iso": "2025-07-11"
       },
       "name": "航海日",
-      "primary_type": "Other Observance",
+      "primary_type": "Observance",
       "type": [
         "Observance"
       ]
@@ -525,7 +525,7 @@
         "iso": "2025-08-01"
       },
       "name": "建军节",
-      "primary_type": "Other Observance",
+      "primary_type": "Observance",
       "type": [
         "Observance"
       ]
@@ -790,7 +790,7 @@
         "iso": "2025-11-08"
       },
       "name": "记者节",
-      "primary_type": "Other Observance",
+      "primary_type": "Observance",
       "type": [
         "Observance"
       ]

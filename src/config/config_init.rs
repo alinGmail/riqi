@@ -8,9 +8,11 @@ pub fn get_default_config() -> Config {
     let (sys_language, sys_country) = get_system_language_country();
 
     let mut calendar_type = CalendarType::WideScreen;
+    let mut show_lunar = false;
     if let Some(country) = &sys_country {
         if country.to_lowercase().as_str() == "cn" {
-            calendar_type = CalendarType::Normal
+            calendar_type = CalendarType::Normal;
+            show_lunar = true;
         }
     };
 
@@ -20,6 +22,7 @@ pub fn get_default_config() -> Config {
             .unwrap_or_else(|| String::from("us"))
             .to_lowercase(),
         calendar_type,
+        show_lunar,
     }
 }
 

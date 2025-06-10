@@ -101,8 +101,13 @@ fn run(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>) -> Result<()> {
     }
 
     if let Some(country) = args.country {
+        if country.to_lowercase() == "cn" {
+            config.show_lunar = true;
+        }
         config.country = country;
     }
+
+    log::debug!("init config {:?}", config);
 
     let file_str = load_holidays_file(&config.language, &config.country)?;
 

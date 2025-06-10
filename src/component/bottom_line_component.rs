@@ -18,7 +18,6 @@ impl<'a> Widget for BottomLineComponent<'a> {
     fn render(self, area: ratatui::prelude::Rect, buf: &mut ratatui::prelude::Buffer) {
         let language = Language::from_str(&self.riqi_state.config.language);
         if let Ok(country_item) = language {
-            log::debug!("{:?}", country_item);
             let translate = get_translate(country_item);
             let line = Line::from(vec![
                 Span::from(translate.navigation),

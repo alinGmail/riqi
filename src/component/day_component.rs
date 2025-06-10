@@ -4,7 +4,7 @@ use ratatui::{
     layout::Rect,
     style::{Style, Stylize},
     text::Line,
-    widgets::{Block, BorderType, Borders, Widget},
+    widgets::{Block, BorderType, Borders, Paragraph, Widget, Wrap},
 };
 
 use crate::state::RiqiState;
@@ -139,11 +139,28 @@ impl<'a> DayItem<'a> {
             buf,
         );
 
+        let mut icon_x = area.left() + area.width - 3;
+
+        if show_holiday_icon {
+            let holiday_line = Line::from(if is_holiday { "休" } else { "班" })
+                .style(day_item_style)
+                .centered();
+            holiday_line.render(
+                Rect {
+                    x: icon_x,
+                    y: area.top(),
+                    width: 2,
+                    height: 1,
+                },
+                buf,
+            );
+            icon_x -= 2;
+        }
         if self.is_today() {
             let today_line = Line::from("今").style(day_item_style).centered();
             today_line.render(
                 Rect {
-                    x: area.left() + if show_holiday_icon { 3 } else { 5 },
+                    x: icon_x,
                     y: area.top(),
                     width: 2,
                     height: 1,
@@ -152,21 +169,34 @@ impl<'a> DayItem<'a> {
             );
         };
 
-        if show_holiday_icon {
-            let holiday_line = Line::from(if is_holiday { "休" } else { "班" })
-                .style(day_item_style)
-                .centered();
-            holiday_line.render(
-                Rect {
-                    x: area.left() + 5,
-                    y: area.top(),
-                    width: 2,
-                    height: 1,
-                },
-                buf,
-            );
+        let mut content_lines: Vec<Line> = vec![];
+
+        if self.riqi_state.config.show_lunar {
+            content_lines.push(self.get_lunar_line(day_item_style));
         }
 
+        // 使用
+        if let Some(holidays) = self.get_holidays() {
+            // 处理 holidays
+            if let Some(holiday) = holidays.first() {
+                let holiday = Line::from(holiday.name.clone()).style(day_item_style);
+                content_lines.push(holiday);
+            }
+        }
+
+        let paragraph = Paragraph::new(content_lines).wrap(Wrap { trim: false });
+        paragraph.render(
+            Rect {
+                x: area.left() + 1,
+                y: area.top() + 1,
+                width: area.width - 2,
+                height: area.height - 1,
+            },
+            buf,
+        );
+    }
+
+    pub fn get_lunar_line(&self, style: Style) -> Line {
         // 显示农历日期
         let lunar_day = if self.day.lunar_day == 1 {
             // 如果是初一，显示月份
@@ -175,33 +205,8 @@ impl<'a> DayItem<'a> {
             // 其他日期显示日期
             number_to_lunar_day(self.day.lunar_day)
         };
-        let lunar_line = Line::from(lunar_day).style(day_item_style);
-        lunar_line.render(
-            Rect {
-                x: area.left() + 1,
-                y: area.top() + 1,
-                width: 6,
-                height: 1,
-            },
-            buf,
-        );
-
-        // 使用
-        if let Some(holidays) = self.get_holidays() {
-            // 处理 holidays
-            if let Some(holiday) = holidays.first() {
-                let holiday = Line::from(holiday.name.clone()).style(day_item_style);
-                holiday.render(
-                    Rect {
-                        x: area.left() + 1,
-                        y: area.top() + 2,
-                        width: area.width - 4,
-                        height: 1,
-                    },
-                    buf,
-                );
-            }
-        }
+        let lunar_line = Line::from(lunar_day).style(style);
+        lunar_line
     }
 
     pub fn widly_render_content(self, area: Rect, buf: &mut Buffer) {}

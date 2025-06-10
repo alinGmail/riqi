@@ -1,0 +1,1316 @@
+{
+  "holidays": [
+    {
+      "name": "New Year's Day",
+      "description": "New Year’s Day is the first day of the year, or January 1, in the Gregorian calendar.",
+      "country": {
+        "id": "cn",
+        "name": "China"
+      },
+      "date": {
+        "iso": "2025-01-01",
+        "datetime": {
+          "year": 2025,
+          "month": 1,
+          "day": 1
+        }
+      },
+      "type": [
+        "National holiday"
+      ],
+      "primary_type": "National holiday",
+      "canonical_url": "https://calendarific.com/holiday/china/new-year-day",
+      "urlid": "china/new-year-day",
+      "locations": "All",
+      "states": "All"
+    },
+    {
+      "name": "Special Working Day",
+      "description": "Special Working Day is a working day on a weekend in China",
+      "country": {
+        "id": "cn",
+        "name": "China"
+      },
+      "date": {
+        "iso": "2025-01-26",
+        "datetime": {
+          "year": 2025,
+          "month": 1,
+          "day": 26
+        }
+      },
+      "type": [
+        "Weekend"
+      ],
+      "primary_type": "Working Day on a Weekend",
+      "canonical_url": "https://calendarific.com/holiday/china/spring-festival-moved-weekend-7",
+      "urlid": "china/spring-festival-moved-weekend-7",
+      "locations": "All",
+      "states": "All"
+    },
+    {
+      "name": "Spring Festival Eve",
+      "description": "Spring Festival Eve is a national holiday in China",
+      "country": {
+        "id": "cn",
+        "name": "China"
+      },
+      "date": {
+        "iso": "2025-01-28",
+        "datetime": {
+          "year": 2025,
+          "month": 1,
+          "day": 28
+        }
+      },
+      "type": [
+        "National holiday"
+      ],
+      "primary_type": "National holiday",
+      "canonical_url": "https://calendarific.com/holiday/china/spring-festival-eve",
+      "urlid": "china/spring-festival-eve",
+      "locations": "All",
+      "states": "All"
+    },
+    {
+      "name": "Chinese New Year",
+      "description": "Lunar New Year, also known as the Spring Festival, is one of the largest celebratory events in China.",
+      "country": {
+        "id": "cn",
+        "name": "China"
+      },
+      "date": {
+        "iso": "2025-01-29",
+        "datetime": {
+          "year": 2025,
+          "month": 1,
+          "day": 29
+        }
+      },
+      "type": [
+        "National holiday"
+      ],
+      "primary_type": "National holiday",
+      "canonical_url": "https://calendarific.com/holiday/china/spring-festival",
+      "urlid": "china/spring-festival",
+      "locations": "All",
+      "states": "All"
+    },
+    {
+      "name": "Spring Festival Golden Week holiday",
+      "description": "Spring Festival Golden Week holiday is a national holiday in China",
+      "country": {
+        "id": "cn",
+        "name": "China"
+      },
+      "date": {
+        "iso": "2025-01-30",
+        "datetime": {
+          "year": 2025,
+          "month": 1,
+          "day": 30
+        }
+      },
+      "type": [
+        "National holiday"
+      ],
+      "primary_type": "National holiday",
+      "canonical_url": "https://calendarific.com/holiday/china/spring-festival-golden-week-2",
+      "urlid": "china/spring-festival-golden-week-2",
+      "locations": "All",
+      "states": "All"
+    },
+    {
+      "name": "Spring Festival Golden Week holiday",
+      "description": "Spring Festival Golden Week holiday is a national holiday in China",
+      "country": {
+        "id": "cn",
+        "name": "China"
+      },
+      "date": {
+        "iso": "2025-01-31",
+        "datetime": {
+          "year": 2025,
+          "month": 1,
+          "day": 31
+        }
+      },
+      "type": [
+        "National holiday"
+      ],
+      "primary_type": "National holiday",
+      "canonical_url": "https://calendarific.com/holiday/china/spring-festival-golden-week-3-a",
+      "urlid": "china/spring-festival-golden-week-3-a",
+      "locations": "All",
+      "states": "All"
+    },
+    {
+      "name": "Spring Festival Golden Week holiday",
+      "description": "Spring Festival Golden Week holiday is a national holiday in China",
+      "country": {
+        "id": "cn",
+        "name": "China"
+      },
+      "date": {
+        "iso": "2025-02-01",
+        "datetime": {
+          "year": 2025,
+          "month": 2,
+          "day": 1
+        }
+      },
+      "type": [
+        "National holiday"
+      ],
+      "primary_type": "National holiday",
+      "canonical_url": "https://calendarific.com/holiday/china/spring-festival-golden-week-4",
+      "urlid": "china/spring-festival-golden-week-4",
+      "locations": "All",
+      "states": "All"
+    },
+    {
+      "name": "Spring Festival Golden Week holiday",
+      "description": "Spring Festival Golden Week holiday is a national holiday in China",
+      "country": {
+        "id": "cn",
+        "name": "China"
+      },
+      "date": {
+        "iso": "2025-02-02",
+        "datetime": {
+          "year": 2025,
+          "month": 2,
+          "day": 2
+        }
+      },
+      "type": [
+        "National holiday"
+      ],
+      "primary_type": "National holiday",
+      "canonical_url": "https://calendarific.com/holiday/china/spring-festival-golden-week-5",
+      "urlid": "china/spring-festival-golden-week-5",
+      "locations": "All",
+      "states": "All"
+    },
+    {
+      "name": "Spring Festival Golden Week holiday",
+      "description": "Spring Festival Golden Week holiday is a national holiday in China",
+      "country": {
+        "id": "cn",
+        "name": "China"
+      },
+      "date": {
+        "iso": "2025-02-03",
+        "datetime": {
+          "year": 2025,
+          "month": 2,
+          "day": 3
+        }
+      },
+      "type": [
+        "National holiday"
+      ],
+      "primary_type": "National holiday",
+      "canonical_url": "https://calendarific.com/holiday/china/spring-festival-golden-week-6",
+      "urlid": "china/spring-festival-golden-week-6",
+      "locations": "All",
+      "states": "All"
+    },
+    {
+      "name": "Spring Festival Golden Week holiday",
+      "description": "Spring Festival Golden Week holiday is a national holiday in China",
+      "country": {
+        "id": "cn",
+        "name": "China"
+      },
+      "date": {
+        "iso": "2025-02-04",
+        "datetime": {
+          "year": 2025,
+          "month": 2,
+          "day": 4
+        }
+      },
+      "type": [
+        "National holiday"
+      ],
+      "primary_type": "National holiday",
+      "canonical_url": "https://calendarific.com/holiday/china/spring-festival-golden-week-7",
+      "urlid": "china/spring-festival-golden-week-7",
+      "locations": "All",
+      "states": "All"
+    },
+    {
+      "name": "Special Working Day",
+      "description": "Special Working Day is a working day on a weekend in China",
+      "country": {
+        "id": "cn",
+        "name": "China"
+      },
+      "date": {
+        "iso": "2025-02-08",
+        "datetime": {
+          "year": 2025,
+          "month": 2,
+          "day": 8
+        }
+      },
+      "type": [
+        "Weekend"
+      ],
+      "primary_type": "Working Day on a Weekend",
+      "canonical_url": "https://calendarific.com/holiday/china/spring-festival-moved-weekend-8",
+      "urlid": "china/spring-festival-moved-weekend-8",
+      "locations": "All",
+      "states": "All"
+    },
+    {
+      "name": "Lantern Festival",
+      "description": "Lantern Festival is a observance in China",
+      "country": {
+        "id": "cn",
+        "name": "China"
+      },
+      "date": {
+        "iso": "2025-02-12",
+        "datetime": {
+          "year": 2025,
+          "month": 2,
+          "day": 12
+        }
+      },
+      "type": [
+        "Observance"
+      ],
+      "primary_type": "Observance",
+      "canonical_url": "https://calendarific.com/holiday/china/lantern-festival",
+      "urlid": "china/lantern-festival",
+      "locations": "All",
+      "states": "All"
+    },
+    {
+      "name": "Zhonghe Festival",
+      "description": "Zhonghe Festival is a observance in China",
+      "country": {
+        "id": "cn",
+        "name": "China"
+      },
+      "date": {
+        "iso": "2025-03-01",
+        "datetime": {
+          "year": 2025,
+          "month": 3,
+          "day": 1
+        }
+      },
+      "type": [
+        "Observance"
+      ],
+      "primary_type": "Observance",
+      "canonical_url": "https://calendarific.com/holiday/china/zhonghe-festival",
+      "urlid": "china/zhonghe-festival",
+      "locations": "All",
+      "states": "All"
+    },
+    {
+      "name": "International Women's Day",
+      "description": "International Women's Day is a half day holiday in China",
+      "country": {
+        "id": "cn",
+        "name": "China"
+      },
+      "date": {
+        "iso": "2025-03-08",
+        "datetime": {
+          "year": 2025,
+          "month": 3,
+          "day": 8
+        }
+      },
+      "type": [
+        "Half-day holiday"
+      ],
+      "primary_type": "Half day holiday",
+      "canonical_url": "https://calendarific.com/holiday/china/international-womens-day",
+      "urlid": "china/international-womens-day",
+      "locations": "All",
+      "states": "All"
+    },
+    {
+      "name": "Arbor Day",
+      "description": "Arbor Day is a observance in China",
+      "country": {
+        "id": "cn",
+        "name": "China"
+      },
+      "date": {
+        "iso": "2025-03-12",
+        "datetime": {
+          "year": 2025,
+          "month": 3,
+          "day": 12
+        }
+      },
+      "type": [
+        "Observance"
+      ],
+      "primary_type": "Observance",
+      "canonical_url": "https://calendarific.com/holiday/china/arbor-day",
+      "urlid": "china/arbor-day",
+      "locations": "All",
+      "states": "All"
+    },
+    {
+      "name": "March Equinox",
+      "description": "March Equinox in China (Beijing)",
+      "country": {
+        "id": "cn",
+        "name": "China"
+      },
+      "date": {
+        "iso": "2025-03-20T17:01:21+08:00",
+        "datetime": {
+          "year": 2025,
+          "month": 3,
+          "day": 20,
+          "hour": 17,
+          "minute": 1,
+          "second": 21
+        },
+        "timezone": {
+          "offset": "+08:00",
+          "zoneabb": "CST",
+          "zoneoffset": 28800,
+          "zonedst": 0,
+          "zonetotaloffset": 28800
+        }
+      },
+      "type": [
+        "Season"
+      ],
+      "primary_type": "Season",
+      "canonical_url": "https://calendarific.com/holiday/seasons/vernal-equinox",
+      "urlid": "seasons/vernal-equinox",
+      "locations": "All",
+      "states": "All"
+    },
+    {
+      "name": "Qing Ming Jie holiday",
+      "description": "Qing Ming Jie holiday is a national holiday in China",
+      "country": {
+        "id": "cn",
+        "name": "China"
+      },
+      "date": {
+        "iso": "2025-04-04",
+        "datetime": {
+          "year": 2025,
+          "month": 4,
+          "day": 4
+        }
+      },
+      "type": [
+        "National holiday"
+      ],
+      "primary_type": "National holiday",
+      "canonical_url": "https://calendarific.com/holiday/china/qing-ming-jie-3",
+      "urlid": "china/qing-ming-jie-3",
+      "locations": "All",
+      "states": "All"
+    },
+    {
+      "name": "Qing Ming Jie",
+      "description": "Qing Ming Jie is a national holiday in China",
+      "country": {
+        "id": "cn",
+        "name": "China"
+      },
+      "date": {
+        "iso": "2025-04-05",
+        "datetime": {
+          "year": 2025,
+          "month": 4,
+          "day": 5
+        }
+      },
+      "type": [
+        "National holiday"
+      ],
+      "primary_type": "National holiday",
+      "canonical_url": "https://calendarific.com/holiday/china/qing-ming-jie",
+      "urlid": "china/qing-ming-jie",
+      "locations": "All",
+      "states": "All"
+    },
+    {
+      "name": "Qing Ming Jie holiday",
+      "description": "Qing Ming Jie holiday is a national holiday in China",
+      "country": {
+        "id": "cn",
+        "name": "China"
+      },
+      "date": {
+        "iso": "2025-04-06",
+        "datetime": {
+          "year": 2025,
+          "month": 4,
+          "day": 6
+        }
+      },
+      "type": [
+        "National holiday"
+      ],
+      "primary_type": "National holiday",
+      "canonical_url": "https://calendarific.com/holiday/china/qing-ming-jie-2",
+      "urlid": "china/qing-ming-jie-2",
+      "locations": "All",
+      "states": "All"
+    },
+    {
+      "name": "Special Working Day",
+      "description": "Special Working Day is a working day on a weekend in China",
+      "country": {
+        "id": "cn",
+        "name": "China"
+      },
+      "date": {
+        "iso": "2025-04-27",
+        "datetime": {
+          "year": 2025,
+          "month": 4,
+          "day": 27
+        }
+      },
+      "type": [
+        "Weekend"
+      ],
+      "primary_type": "Working Day on a Weekend",
+      "canonical_url": "https://calendarific.com/holiday/china/labour-day-moved-weekend-29",
+      "urlid": "china/labour-day-moved-weekend-29",
+      "locations": "All",
+      "states": "All"
+    },
+    {
+      "name": "Labour Day",
+      "description": "Labor Day, International Workers' Day, and May Day, is a day off for workers in many countries around the world.",
+      "country": {
+        "id": "cn",
+        "name": "China"
+      },
+      "date": {
+        "iso": "2025-05-01",
+        "datetime": {
+          "year": 2025,
+          "month": 5,
+          "day": 1
+        }
+      },
+      "type": [
+        "National holiday"
+      ],
+      "primary_type": "National holiday",
+      "canonical_url": "https://calendarific.com/holiday/china/labor-day",
+      "urlid": "china/labor-day",
+      "locations": "All",
+      "states": "All"
+    },
+    {
+      "name": "Labour Day Holiday",
+      "description": "Labour Day Holiday is a national holiday in China",
+      "country": {
+        "id": "cn",
+        "name": "China"
+      },
+      "date": {
+        "iso": "2025-05-02",
+        "datetime": {
+          "year": 2025,
+          "month": 5,
+          "day": 2
+        }
+      },
+      "type": [
+        "National holiday"
+      ],
+      "primary_type": "National holiday",
+      "canonical_url": "https://calendarific.com/holiday/china/labor-day-holiday",
+      "urlid": "china/labor-day-holiday",
+      "locations": "All",
+      "states": "All"
+    },
+    {
+      "name": "Labour Day Holiday",
+      "description": "Labour Day Holiday is a national holiday in China",
+      "country": {
+        "id": "cn",
+        "name": "China"
+      },
+      "date": {
+        "iso": "2025-05-03",
+        "datetime": {
+          "year": 2025,
+          "month": 5,
+          "day": 3
+        }
+      },
+      "type": [
+        "National holiday"
+      ],
+      "primary_type": "National holiday",
+      "canonical_url": "https://calendarific.com/holiday/china/labor-day-holiday-2",
+      "urlid": "china/labor-day-holiday-2",
+      "locations": "All",
+      "states": "All"
+    },
+    {
+      "name": "Labour Day Holiday",
+      "description": "Labour Day Holiday is a national holiday in China",
+      "country": {
+        "id": "cn",
+        "name": "China"
+      },
+      "date": {
+        "iso": "2025-05-04",
+        "datetime": {
+          "year": 2025,
+          "month": 5,
+          "day": 4
+        }
+      },
+      "type": [
+        "National holiday"
+      ],
+      "primary_type": "National holiday",
+      "canonical_url": "https://calendarific.com/holiday/china/labor-day-holiday-3",
+      "urlid": "china/labor-day-holiday-3",
+      "locations": "All",
+      "states": "All"
+    },
+    {
+      "name": "Youth Day",
+      "description": "Youth Day is a half day holiday in China",
+      "country": {
+        "id": "cn",
+        "name": "China"
+      },
+      "date": {
+        "iso": "2025-05-04",
+        "datetime": {
+          "year": 2025,
+          "month": 5,
+          "day": 4
+        }
+      },
+      "type": [
+        "Half-day holiday"
+      ],
+      "primary_type": "Half day holiday",
+      "canonical_url": "https://calendarific.com/holiday/china/youth-day",
+      "urlid": "china/youth-day",
+      "locations": "All",
+      "states": "All"
+    },
+    {
+      "name": "Labour Day Holiday",
+      "description": "Labour Day Holiday is a national holiday in China",
+      "country": {
+        "id": "cn",
+        "name": "China"
+      },
+      "date": {
+        "iso": "2025-05-05",
+        "datetime": {
+          "year": 2025,
+          "month": 5,
+          "day": 5
+        }
+      },
+      "type": [
+        "National holiday"
+      ],
+      "primary_type": "National holiday",
+      "canonical_url": "https://calendarific.com/holiday/china/labor-day-holiday-4",
+      "urlid": "china/labor-day-holiday-4",
+      "locations": "All",
+      "states": "All"
+    },
+    {
+      "name": "Dragon Boat Festival",
+      "description": "The Dragon Boat Festival is also known as the Duanwu Festival in China. It is celebrated on the fifth day of the fifth month on the Chinese lunisolar calendar.",
+      "country": {
+        "id": "cn",
+        "name": "China"
+      },
+      "date": {
+        "iso": "2025-05-31",
+        "datetime": {
+          "year": 2025,
+          "month": 5,
+          "day": 31
+        }
+      },
+      "type": [
+        "National holiday"
+      ],
+      "primary_type": "National holiday",
+      "canonical_url": "https://calendarific.com/holiday/china/dragon-boat-festival",
+      "urlid": "china/dragon-boat-festival",
+      "locations": "All",
+      "states": "All"
+    },
+    {
+      "name": "Children's Day",
+      "description": "Children's Day is a other observance in China",
+      "country": {
+        "id": "cn",
+        "name": "China"
+      },
+      "date": {
+        "iso": "2025-06-01",
+        "datetime": {
+          "year": 2025,
+          "month": 6,
+          "day": 1
+        }
+      },
+      "type": [
+        "Observance"
+      ],
+      "primary_type": "Other Observance",
+      "canonical_url": "https://calendarific.com/holiday/china/children-day",
+      "urlid": "china/children-day",
+      "locations": "All",
+      "states": "All"
+    },
+    {
+      "name": "Dragon Boat Festival holiday",
+      "description": "Dragon Boat Festival holiday is a national holiday in China",
+      "country": {
+        "id": "cn",
+        "name": "China"
+      },
+      "date": {
+        "iso": "2025-06-01",
+        "datetime": {
+          "year": 2025,
+          "month": 6,
+          "day": 1
+        }
+      },
+      "type": [
+        "National holiday"
+      ],
+      "primary_type": "National holiday",
+      "canonical_url": "https://calendarific.com/holiday/china/dragon-boat-festival-holiday",
+      "urlid": "china/dragon-boat-festival-holiday",
+      "locations": "All",
+      "states": "All"
+    },
+    {
+      "name": "Dragon Boat Festival holiday",
+      "description": "Dragon Boat Festival holiday is a national holiday in China",
+      "country": {
+        "id": "cn",
+        "name": "China"
+      },
+      "date": {
+        "iso": "2025-06-02",
+        "datetime": {
+          "year": 2025,
+          "month": 6,
+          "day": 2
+        }
+      },
+      "type": [
+        "National holiday"
+      ],
+      "primary_type": "National holiday",
+      "canonical_url": "https://calendarific.com/holiday/china/dragon-boat-festival-holiday-2",
+      "urlid": "china/dragon-boat-festival-holiday-2",
+      "locations": "All",
+      "states": "All"
+    },
+    {
+      "name": "June Solstice",
+      "description": "June Solstice in China (Beijing)",
+      "country": {
+        "id": "cn",
+        "name": "China"
+      },
+      "date": {
+        "iso": "2025-06-21T10:42:15+08:00",
+        "datetime": {
+          "year": 2025,
+          "month": 6,
+          "day": 21,
+          "hour": 10,
+          "minute": 42,
+          "second": 15
+        },
+        "timezone": {
+          "offset": "+08:00",
+          "zoneabb": "CST",
+          "zoneoffset": 28800,
+          "zonedst": 0,
+          "zonetotaloffset": 28800
+        }
+      },
+      "type": [
+        "Season"
+      ],
+      "primary_type": "Season",
+      "canonical_url": "https://calendarific.com/holiday/seasons/june-solstice",
+      "urlid": "seasons/june-solstice",
+      "locations": "All",
+      "states": "All"
+    },
+    {
+      "name": "CPC Founding Day",
+      "description": "CPC Founding Day is a other observance in China",
+      "country": {
+        "id": "cn",
+        "name": "China"
+      },
+      "date": {
+        "iso": "2025-07-01",
+        "datetime": {
+          "year": 2025,
+          "month": 7,
+          "day": 1
+        }
+      },
+      "type": [
+        "Observance"
+      ],
+      "primary_type": "Other Observance",
+      "canonical_url": "https://calendarific.com/holiday/china/founding-day",
+      "urlid": "china/founding-day",
+      "locations": "All",
+      "states": "All"
+    },
+    {
+      "name": "Maritime Day",
+      "description": "Maritime Day is a other observance in China",
+      "country": {
+        "id": "cn",
+        "name": "China"
+      },
+      "date": {
+        "iso": "2025-07-11",
+        "datetime": {
+          "year": 2025,
+          "month": 7,
+          "day": 11
+        }
+      },
+      "type": [
+        "Observance"
+      ],
+      "primary_type": "Other Observance",
+      "canonical_url": "https://calendarific.com/holiday/china/maritime-day",
+      "urlid": "china/maritime-day",
+      "locations": "All",
+      "states": "All"
+    },
+    {
+      "name": "Army Day",
+      "description": "Army Day is a other observance in China",
+      "country": {
+        "id": "cn",
+        "name": "China"
+      },
+      "date": {
+        "iso": "2025-08-01",
+        "datetime": {
+          "year": 2025,
+          "month": 8,
+          "day": 1
+        }
+      },
+      "type": [
+        "Observance"
+      ],
+      "primary_type": "Other Observance",
+      "canonical_url": "https://calendarific.com/holiday/china/army-day",
+      "urlid": "china/army-day",
+      "locations": "All",
+      "states": "All"
+    },
+    {
+      "name": "Chinese Valentine's Day",
+      "description": "Chinese Valentine's Day is a observance in China",
+      "country": {
+        "id": "cn",
+        "name": "China"
+      },
+      "date": {
+        "iso": "2025-08-29",
+        "datetime": {
+          "year": 2025,
+          "month": 8,
+          "day": 29
+        }
+      },
+      "type": [
+        "Observance"
+      ],
+      "primary_type": "Observance",
+      "canonical_url": "https://calendarific.com/holiday/china/double-seven-festival",
+      "urlid": "china/double-seven-festival",
+      "locations": "All",
+      "states": "All"
+    },
+    {
+      "name": "Spirit Festival",
+      "description": "Spirit Festival is a observance in China",
+      "country": {
+        "id": "cn",
+        "name": "China"
+      },
+      "date": {
+        "iso": "2025-09-06",
+        "datetime": {
+          "year": 2025,
+          "month": 9,
+          "day": 6
+        }
+      },
+      "type": [
+        "Observance"
+      ],
+      "primary_type": "Observance",
+      "canonical_url": "https://calendarific.com/holiday/china/spirit-festival",
+      "urlid": "china/spirit-festival",
+      "locations": "All",
+      "states": "All"
+    },
+    {
+      "name": "Teachers' Day",
+      "description": "Teachers' Day is a observance in China",
+      "country": {
+        "id": "cn",
+        "name": "China"
+      },
+      "date": {
+        "iso": "2025-09-10",
+        "datetime": {
+          "year": 2025,
+          "month": 9,
+          "day": 10
+        }
+      },
+      "type": [
+        "Observance"
+      ],
+      "primary_type": "Observance",
+      "canonical_url": "https://calendarific.com/holiday/china/teachers-day",
+      "urlid": "china/teachers-day",
+      "locations": "All",
+      "states": "All"
+    },
+    {
+      "name": "September Equinox",
+      "description": "September Equinox in China (Beijing)",
+      "country": {
+        "id": "cn",
+        "name": "China"
+      },
+      "date": {
+        "iso": "2025-09-23T02:19:22+08:00",
+        "datetime": {
+          "year": 2025,
+          "month": 9,
+          "day": 23,
+          "hour": 2,
+          "minute": 19,
+          "second": 22
+        },
+        "timezone": {
+          "offset": "+08:00",
+          "zoneabb": "CST",
+          "zoneoffset": 28800,
+          "zonedst": 0,
+          "zonetotaloffset": 28800
+        }
+      },
+      "type": [
+        "Season"
+      ],
+      "primary_type": "Season",
+      "canonical_url": "https://calendarific.com/holiday/seasons/autumnal-equinox",
+      "urlid": "seasons/autumnal-equinox",
+      "locations": "All",
+      "states": "All"
+    },
+    {
+      "name": "Special Working Day",
+      "description": "Special Working Day is a working day on a weekend in China",
+      "country": {
+        "id": "cn",
+        "name": "China"
+      },
+      "date": {
+        "iso": "2025-09-28",
+        "datetime": {
+          "year": 2025,
+          "month": 9,
+          "day": 28
+        }
+      },
+      "type": [
+        "Weekend"
+      ],
+      "primary_type": "Working Day on a Weekend",
+      "canonical_url": "https://calendarific.com/holiday/china/national-day-moved-29",
+      "urlid": "china/national-day-moved-29",
+      "locations": "All",
+      "states": "All"
+    },
+    {
+      "name": "National Day",
+      "description": "National Day is a national holiday in China",
+      "country": {
+        "id": "cn",
+        "name": "China"
+      },
+      "date": {
+        "iso": "2025-10-01",
+        "datetime": {
+          "year": 2025,
+          "month": 10,
+          "day": 1
+        }
+      },
+      "type": [
+        "National holiday"
+      ],
+      "primary_type": "National holiday",
+      "canonical_url": "https://calendarific.com/holiday/china/national-day",
+      "urlid": "china/national-day",
+      "locations": "All",
+      "states": "All"
+    },
+    {
+      "name": "National Day Golden Week Holiday",
+      "description": "National Day Golden Week Holiday is a national holiday in China",
+      "country": {
+        "id": "cn",
+        "name": "China"
+      },
+      "date": {
+        "iso": "2025-10-02",
+        "datetime": {
+          "year": 2025,
+          "month": 10,
+          "day": 2
+        }
+      },
+      "type": [
+        "National holiday"
+      ],
+      "primary_type": "National holiday",
+      "canonical_url": "https://calendarific.com/holiday/china/national-day-golden-week-2",
+      "urlid": "china/national-day-golden-week-2",
+      "locations": "All",
+      "states": "All"
+    },
+    {
+      "name": "National Day Golden Week holiday",
+      "description": "National Day Golden Week holiday is a national holiday in China",
+      "country": {
+        "id": "cn",
+        "name": "China"
+      },
+      "date": {
+        "iso": "2025-10-03",
+        "datetime": {
+          "year": 2025,
+          "month": 10,
+          "day": 3
+        }
+      },
+      "type": [
+        "National holiday"
+      ],
+      "primary_type": "National holiday",
+      "canonical_url": "https://calendarific.com/holiday/china/national-day-golden-week-3",
+      "urlid": "china/national-day-golden-week-3",
+      "locations": "All",
+      "states": "All"
+    },
+    {
+      "name": "National Day Golden Week holiday",
+      "description": "National Day Golden Week holiday is a national holiday in China",
+      "country": {
+        "id": "cn",
+        "name": "China"
+      },
+      "date": {
+        "iso": "2025-10-04",
+        "datetime": {
+          "year": 2025,
+          "month": 10,
+          "day": 4
+        }
+      },
+      "type": [
+        "National holiday"
+      ],
+      "primary_type": "National holiday",
+      "canonical_url": "https://calendarific.com/holiday/china/national-day-golden-week-4",
+      "urlid": "china/national-day-golden-week-4",
+      "locations": "All",
+      "states": "All"
+    },
+    {
+      "name": "National Day Golden Week holiday",
+      "description": "National Day Golden Week holiday is a national holiday in China",
+      "country": {
+        "id": "cn",
+        "name": "China"
+      },
+      "date": {
+        "iso": "2025-10-05",
+        "datetime": {
+          "year": 2025,
+          "month": 10,
+          "day": 5
+        }
+      },
+      "type": [
+        "National holiday"
+      ],
+      "primary_type": "National holiday",
+      "canonical_url": "https://calendarific.com/holiday/china/national-day-golden-week-5",
+      "urlid": "china/national-day-golden-week-5",
+      "locations": "All",
+      "states": "All"
+    },
+    {
+      "name": "National Day Golden Week holiday",
+      "description": "National Day Golden Week holiday is a national holiday in China",
+      "country": {
+        "id": "cn",
+        "name": "China"
+      },
+      "date": {
+        "iso": "2025-10-06",
+        "datetime": {
+          "year": 2025,
+          "month": 10,
+          "day": 6
+        }
+      },
+      "type": [
+        "National holiday"
+      ],
+      "primary_type": "National holiday",
+      "canonical_url": "https://calendarific.com/holiday/china/national-day-golden-week-6",
+      "urlid": "china/national-day-golden-week-6",
+      "locations": "All",
+      "states": "All"
+    },
+    {
+      "name": "Mid-Autumn Festival",
+      "description": "Mid-Autumn Festival is a national holiday in China",
+      "country": {
+        "id": "cn",
+        "name": "China"
+      },
+      "date": {
+        "iso": "2025-10-06",
+        "datetime": {
+          "year": 2025,
+          "month": 10,
+          "day": 6
+        }
+      },
+      "type": [
+        "National holiday"
+      ],
+      "primary_type": "National holiday",
+      "canonical_url": "https://calendarific.com/holiday/china/mid-autumn-festival",
+      "urlid": "china/mid-autumn-festival",
+      "locations": "All",
+      "states": "All"
+    },
+    {
+      "name": "National Day Golden Week holiday",
+      "description": "National Day Golden Week holiday is a national holiday in China",
+      "country": {
+        "id": "cn",
+        "name": "China"
+      },
+      "date": {
+        "iso": "2025-10-07",
+        "datetime": {
+          "year": 2025,
+          "month": 10,
+          "day": 7
+        }
+      },
+      "type": [
+        "National holiday"
+      ],
+      "primary_type": "National holiday",
+      "canonical_url": "https://calendarific.com/holiday/china/national-day-golden-week-7",
+      "urlid": "china/national-day-golden-week-7",
+      "locations": "All",
+      "states": "All"
+    },
+    {
+      "name": "National Day Golden Week holiday",
+      "description": "National Day Golden Week holiday is a national holiday in China",
+      "country": {
+        "id": "cn",
+        "name": "China"
+      },
+      "date": {
+        "iso": "2025-10-08",
+        "datetime": {
+          "year": 2025,
+          "month": 10,
+          "day": 8
+        }
+      },
+      "type": [
+        "National holiday"
+      ],
+      "primary_type": "National holiday",
+      "canonical_url": "https://calendarific.com/holiday/china/national-day-golden-week-8",
+      "urlid": "china/national-day-golden-week-8",
+      "locations": "All",
+      "states": "All"
+    },
+    {
+      "name": "Special Working Day",
+      "description": "Special Working Day is a working day on a weekend in China",
+      "country": {
+        "id": "cn",
+        "name": "China"
+      },
+      "date": {
+        "iso": "2025-10-11",
+        "datetime": {
+          "year": 2025,
+          "month": 10,
+          "day": 11
+        }
+      },
+      "type": [
+        "Weekend"
+      ],
+      "primary_type": "Working Day on a Weekend",
+      "canonical_url": "https://calendarific.com/holiday/china/national-day-moved-30",
+      "urlid": "china/national-day-moved-30",
+      "locations": "All",
+      "states": "All"
+    },
+    {
+      "name": "Double Ninth Festival",
+      "description": "Double Ninth Festival is a observance in China",
+      "country": {
+        "id": "cn",
+        "name": "China"
+      },
+      "date": {
+        "iso": "2025-10-29",
+        "datetime": {
+          "year": 2025,
+          "month": 10,
+          "day": 29
+        }
+      },
+      "type": [
+        "Observance"
+      ],
+      "primary_type": "Observance",
+      "canonical_url": "https://calendarific.com/holiday/china/double-ninth-festival",
+      "urlid": "china/double-ninth-festival",
+      "locations": "All",
+      "states": "All"
+    },
+    {
+      "name": "Journalists' Day",
+      "description": "Journalists' Day is a other observance in China",
+      "country": {
+        "id": "cn",
+        "name": "China"
+      },
+      "date": {
+        "iso": "2025-11-08",
+        "datetime": {
+          "year": 2025,
+          "month": 11,
+          "day": 8
+        }
+      },
+      "type": [
+        "Observance"
+      ],
+      "primary_type": "Other Observance",
+      "canonical_url": "https://calendarific.com/holiday/china/journalists-day",
+      "urlid": "china/journalists-day",
+      "locations": "All",
+      "states": "All"
+    },
+    {
+      "name": "December Solstice",
+      "description": "December Solstice in China (Beijing)",
+      "country": {
+        "id": "cn",
+        "name": "China"
+      },
+      "date": {
+        "iso": "2025-12-21T23:03:05+08:00",
+        "datetime": {
+          "year": 2025,
+          "month": 12,
+          "day": 21,
+          "hour": 23,
+          "minute": 3,
+          "second": 5
+        },
+        "timezone": {
+          "offset": "+08:00",
+          "zoneabb": "CST",
+          "zoneoffset": 28800,
+          "zonedst": 0,
+          "zonetotaloffset": 28800
+        }
+      },
+      "type": [
+        "Season"
+      ],
+      "primary_type": "Season",
+      "canonical_url": "https://calendarific.com/holiday/seasons/december-solstice",
+      "urlid": "seasons/december-solstice",
+      "locations": "All",
+      "states": "All"
+    },
+    {
+      "name": "Christmas Day",
+      "description": "Christmas Day is one of the biggest Christian celebrations and falls on December 25 in the Gregorian calendar.",
+      "country": {
+        "id": "cn",
+        "name": "China"
+      },
+      "date": {
+        "iso": "2025-12-25",
+        "datetime": {
+          "year": 2025,
+          "month": 12,
+          "day": 25
+        }
+      },
+      "type": [
+        "Observance"
+      ],
+      "primary_type": "Observance",
+      "canonical_url": "https://calendarific.com/holiday/china/christmas-day",
+      "urlid": "china/christmas-day",
+      "locations": "All",
+      "states": "All"
+    }
+  ]
+}

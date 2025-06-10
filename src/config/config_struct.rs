@@ -5,6 +5,7 @@ pub struct Config {
     pub country: String,
     pub language: String,
     pub calendar_type: CalendarType,
+    pub show_lunar: bool,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
