@@ -13,7 +13,7 @@ use crossterm::{
     ExecutableCommand,
 };
 use env_logger::{Builder, Target};
-use i18n::get_month_til_i18n;
+use i18n::{get_month_til_i18n, Language};
 use layout::get_layout;
 use log::LevelFilter;
 use ratatui::{
@@ -25,7 +25,7 @@ use ratatui::{
     Terminal,
 };
 use state::RiqiState;
-use std::{collections::HashMap, fs::File, io};
+use std::{collections::HashMap, fs::File, io, str::FromStr};
 use theme::BLUE;
 use utils::add_months_safe;
 
@@ -157,15 +157,21 @@ fn run(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>) -> Result<()> {
                     ));
             month_til_component.render(til_area, frame.buffer_mut());
 
+            let mut calendar_width = calendar_area.width - 2;
+
+            if Language::from_str(riqi_state.config.language.as_str()).unwrap() == Language::ZH {
+                // calendar_width = 76;
+            }
+
             //
-            let layout = Layout::horizontal([Constraint::Length(82)])
+            let layout = Layout::horizontal([Constraint::Length(calendar_width)])
                 .flex(Flex::Center)
                 .split(calendar_area);
 
             let month_component = MonthComponent {
                 data: &calendar,
                 riqi_state: &riqi_state,
-                day_gap: 2,
+                day_gap: 1,
             };
             month_component.render(layout[0], frame.buffer_mut());
         })?;

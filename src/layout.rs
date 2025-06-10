@@ -15,7 +15,7 @@ pub fn get_layout(area: Rect) -> [Rect; 4] {
     let layout: [Rect; 4] = Layout::vertical([
         Constraint::Length(1),
         Constraint::Max(1),
-        Constraint::Length(32),
+        Constraint::Min(32),
         Constraint::Length(1),
     ])
     .flex(Flex::Center)

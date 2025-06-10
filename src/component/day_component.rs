@@ -195,7 +195,7 @@ impl<'a> DayItem<'a> {
                     Rect {
                         x: area.left() + 1,
                         y: area.top() + 2,
-                        width: 6,
+                        width: area.width - 4,
                         height: 1,
                     },
                     buf,
@@ -209,6 +209,7 @@ impl<'a> DayItem<'a> {
 
 impl<'a> Widget for DayItem<'a> {
     fn render(self, area: Rect, buf: &mut Buffer) {
+        // area 包括了边框
         let (is_holiday, show_holiday_icon) = self.is_holiday();
         let block = Block::new()
             .borders(Borders::ALL)
