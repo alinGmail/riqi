@@ -1,0 +1,12 @@
+
+language = "fr"
+country = "fr"
+show_lunar = false
+
+[calendar]
+# width = 100  "20%" 
+# height = 200
+
+[day_cell]
+width = 20
+height = 3
