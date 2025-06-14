@@ -2,7 +2,7 @@ use std::str::FromStr;
 
 #[derive(Debug)]
 pub struct Config {
-    pub country: String,
+    pub country: Option<String>,
     pub language: String,
     pub calendar_type: CalendarType,
     pub show_lunar: bool,

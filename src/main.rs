@@ -6,7 +6,10 @@ use component::{
     bottom_line_component::BottomLineComponent, month_component::MonthComponent,
     utils::get_style_from_config,
 };
-use config::config_init::get_default_config;
+use config::{
+    config_init::{get_config, get_system_language_country},
+    file_config_loader::load_file_config,
+};
 use crossterm::{
     event::{self, Event, KeyCode},
     terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
@@ -34,7 +37,7 @@ use data::MonthCalendar;
 mod theme;
 
 mod holiday;
-use holiday::load_holidays_file;
+use holiday::{get_holiday_code, load_holidays_file};
 mod holiday_data;
 use holiday_data::parse_holidays;
 use holiday_data::HolidayMap;
@@ -88,45 +91,49 @@ fn main() -> Result<()> {
 }
 
 fn run(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>) -> Result<()> {
+    let file_config = load_file_config();
+    log::debug!("file_config {:?}", file_config);
     let args = Args::parse();
+
+    let (sys_language, sys_country) = get_system_language_country();
+
     // 获取当前日期
     let now = Local::now();
     let mut holiday_map: HolidayMap = HashMap::new();
     let mut calendar = MonthCalendar::new(now.year() as u32, now.month());
 
-    let mut config = get_default_config();
-
-    if let Some(language) = args.language {
-        config.language = language;
-    }
-
-    if let Some(country) = args.country {
-        if country.to_lowercase() == "cn" {
-            config.show_lunar = true;
-        }
-        config.country = country;
-    }
+    let config = get_config(&sys_language, &sys_country, &file_config, &args);
 
     log::debug!("init config {:?}", config);
 
-    let file_str = load_holidays_file(&config.language, &config.country)?;
+    let holiday_code_result = get_holiday_code(true, &config.country, &config.language);
 
-    match parse_holidays(&file_str) {
-        Ok(holiday_response) => {
-            log::debug!(
-                "成功解析假期数据，共 {} 个假期",
-                holiday_response.holidays.len()
-            );
-            holiday_response.add_to_holiday_map(
-                &mut holiday_map,
-                &config.country,
-                &config.language,
-                now.year().to_string().as_str(),
-            );
-        }
-        Err(e) => {
-            log::error!("解析假期数据失败: {}", e);
-        }
+    match holiday_code_result {
+        Ok(holiday_code) => match holiday_code {
+            Some(code) => {
+                let file_str_result = load_holidays_file(&code);
+                if let Ok(file_str) = file_str_result {
+                    match parse_holidays(&file_str) {
+                        Ok(holiday_response) => {
+                            log::debug!(
+                                "成功解析假期数据，共 {} 个假期",
+                                holiday_response.holidays.len()
+                            );
+                            holiday_response.add_to_holiday_map(
+                                &mut holiday_map,
+                                &code,
+                                now.year().to_string().as_str(),
+                            );
+                        }
+                        Err(e) => {
+                            log::error!("解析假期数据失败: {}", e);
+                        }
+                    }
+                }
+            }
+            None => {}
+        },
+        Err(err_str) => {}
     }
 
     let mut riqi_state = RiqiState {

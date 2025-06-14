@@ -61,14 +61,8 @@ pub fn parse_holidays(json_str: &str) -> Result<HolidayResponse, serde_json::Err
 }
 
 impl HolidayResponse {
-    pub fn add_to_holiday_map(
-        &self,
-        holiday_map: &mut HolidayMap,
-        country: &str,
-        language: &str,
-        year: &str,
-    ) {
-        let key = format!("{}-{}-{}", year, country, language);
+    pub fn add_to_holiday_map(&self, holiday_map: &mut HolidayMap, holiday_code: &str, year: &str) {
+        let key = format!("{}_{}", year, holiday_code);
         let mut date_map: HashMap<String, Vec<Holiday>> = HashMap::new();
 
         // 按日期对节假日进行分组
