@@ -47,14 +47,16 @@ impl<'a> DayItem<'a> {
     }
 
     pub fn get_holidays(&self) -> Option<&Vec<Holiday>> {
+        self.riqi_state.config.country.as_ref()?;
+
         let date_str = format!(
             "{:04}-{:02}-{:02}",
             self.day.year, self.day.month, self.day.day
         );
         let holiday_map_key = format!(
-            "{}-{}-{}",
+            "{}_{}_{}",
             &self.day.year.to_string().as_str(),
-            &self.riqi_state.config.country,
+            &self.riqi_state.config.country.clone().unwrap().clone(),
             &self.riqi_state.config.language
         );
         self.riqi_state

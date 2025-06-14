@@ -1,3 +1,5 @@
+use crate::holiday_data::{parse_holidays, HolidayMap};
+
 pub fn load_holidays_file(holiday_code: &String) -> std::io::Result<String> {
     // 开发环境：从项目目录加载
     #[cfg(debug_assertions)]
@@ -54,4 +56,46 @@ pub fn get_holiday_code(
     } else {
         Ok(None)
     }
+}
+
+pub fn load_holidays(
+    holiday_code_result: Result<Option<String>, String>,
+    holiday_map: &mut HolidayMap,
+    year: &String,
+) {
+    // 1. 获取 code
+    let code = match holiday_code_result {
+        Ok(Some(code)) => code,
+        Ok(None) => {
+            log::warn!("未找到假期区域代码");
+            return;
+        }
+        Err(err_str) => {
+            log::error!("获取假期区域代码失败: {}", err_str);
+            return;
+        }
+    };
+    // 2. 加载假期文件
+    let file_str = match load_holidays_file(&code) {
+        Ok(content) => content,
+        Err(e) => {
+            log::error!("加载假期文件失败: {}", e);
+            return;
+        }
+    };
+    // 3. 解析假期
+    let holiday_response = match parse_holidays(&file_str) {
+        Ok(data) => data,
+        Err(e) => {
+            log::error!("解析假期数据失败: {}", e);
+            return;
+        }
+    };
+
+    // 4. 正常处理假期数据
+    log::debug!(
+        "成功解析假期数据，共 {} 个假期",
+        holiday_response.holidays.len()
+    );
+    holiday_response.add_to_holiday_map(holiday_map, &code, &year);
 }

@@ -37,7 +37,7 @@ use data::MonthCalendar;
 mod theme;
 
 mod holiday;
-use holiday::{get_holiday_code, load_holidays_file};
+use holiday::{get_holiday_code, load_holidays, load_holidays_file};
 mod holiday_data;
 use holiday_data::parse_holidays;
 use holiday_data::HolidayMap;
@@ -96,6 +96,8 @@ fn run(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>) -> Result<()> {
     let args = Args::parse();
 
     let (sys_language, sys_country) = get_system_language_country();
+    log::debug!("sys_language {:?}", sys_language);
+    log::debug!("sys_country {:?}", sys_country);
 
     // 获取当前日期
     let now = Local::now();
@@ -107,34 +109,11 @@ fn run(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>) -> Result<()> {
     log::debug!("init config {:?}", config);
 
     let holiday_code_result = get_holiday_code(true, &config.country, &config.language);
-
-    match holiday_code_result {
-        Ok(holiday_code) => match holiday_code {
-            Some(code) => {
-                let file_str_result = load_holidays_file(&code);
-                if let Ok(file_str) = file_str_result {
-                    match parse_holidays(&file_str) {
-                        Ok(holiday_response) => {
-                            log::debug!(
-                                "成功解析假期数据，共 {} 个假期",
-                                holiday_response.holidays.len()
-                            );
-                            holiday_response.add_to_holiday_map(
-                                &mut holiday_map,
-                                &code,
-                                now.year().to_string().as_str(),
-                            );
-                        }
-                        Err(e) => {
-                            log::error!("解析假期数据失败: {}", e);
-                        }
-                    }
-                }
-            }
-            None => {}
-        },
-        Err(err_str) => {}
-    }
+    load_holidays(
+        holiday_code_result,
+        &mut holiday_map,
+        &now.year().to_string(),
+    );
 
     let mut riqi_state = RiqiState {
         select_day: now.date_naive(),
@@ -169,7 +148,7 @@ fn run(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>) -> Result<()> {
                     ));
             month_til_component.render(til_area, frame.buffer_mut());
 
-            let mut calendar_width = calendar_area.width - 2;
+            let calendar_width = calendar_area.width - 2;
 
             if Language::from_str(riqi_state.config.language.as_str()).unwrap() == Language::ZH {
                 // calendar_width = 76;
