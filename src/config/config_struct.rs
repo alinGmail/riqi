@@ -1,3 +1,4 @@
+use serde::{Deserialize, Serialize};
 use std::str::FromStr;
 
 #[derive(Debug)]
@@ -6,6 +7,7 @@ pub struct Config {
     pub language: String,
     pub calendar_type: CalendarType,
     pub show_lunar: bool,
+    pub day_cell: Option<DayCell>,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -25,4 +27,10 @@ impl FromStr for CalendarType {
             _ => Err(format!("Unknown language code: {}", calendar_type)),
         }
     }
+}
+
+#[derive(Debug, Deserialize, Serialize, Clone)]
+pub struct DayCell {
+    pub width: Option<u32>,
+    pub height: Option<u32>,
 }

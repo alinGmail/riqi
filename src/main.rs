@@ -125,7 +125,8 @@ fn run(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>) -> Result<()> {
     loop {
         terminal.draw(|frame| {
             let size = frame.area();
-            let [til_area, _, calendar_area, bottom_line_area] = get_layout(size);
+            let [til_area, _, calendar_area, bottom_line_area] =
+                get_layout(size, riqi_state.config);
 
             let month_til_i18n_str = get_month_til_i18n(
                 calendar.year as i32,

@@ -1,12 +1,12 @@
 use sys_locale::get_locale;
 
-use crate::locale::parse_language_country;
-use crate::{cli::Args, i18n::Language};
-
 use super::{
     config_struct::{CalendarType, Config},
     file_config_struct::FileConfig,
 };
+use crate::config::config_struct::DayCell;
+use crate::locale::parse_language_country;
+use crate::{cli::Args, i18n::Language};
 
 pub fn get_config(
     sys_language: &str,
@@ -20,11 +20,17 @@ pub fn get_config(
     let calendar_type = get_calendar_type(&country);
     let show_lunar = get_show_lunar(&country, file_config, args);
 
+    let mut day_cell: Option<DayCell> = None;
+    if let Some(file_config) = file_config {
+        day_cell = file_config.day_cell.clone()
+    }
+
     Config {
         language,
         country,
         calendar_type,
         show_lunar,
+        day_cell,
     }
 }
 
