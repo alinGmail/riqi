@@ -20,14 +20,12 @@ pub fn get_config(
     let calendar_type = get_calendar_type(&country);
     let show_lunar = get_show_lunar(&country, file_config, args);
 
-    let config = Config {
+    Config {
         language,
         country,
         calendar_type,
         show_lunar,
-    };
-
-    config
+    }
 }
 
 fn get_language(sys_language: &str, file_config: &Option<FileConfig>, args: &Args) -> String {
@@ -74,7 +72,7 @@ fn get_show_lunar(
             return true;
         }
     }
-    return false;
+    false
 }
 
 fn get_calendar_type(final_country: &Option<String>) -> CalendarType {

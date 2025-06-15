@@ -56,8 +56,8 @@ impl<'a> DayItem<'a> {
         let holiday_map_key = format!(
             "{}_{}_{}",
             &self.day.year.to_string().as_str(),
-            &self.riqi_state.config.country.clone().unwrap().clone(),
-            &self.riqi_state.config.language
+            &self.riqi_state.config.language,
+            &self.riqi_state.config.country.clone().unwrap().clone()
         );
         self.riqi_state
             .holiday_map

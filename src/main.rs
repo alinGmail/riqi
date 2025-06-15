@@ -37,9 +37,8 @@ use data::MonthCalendar;
 mod theme;
 
 mod holiday;
-use holiday::{get_holiday_code, load_holidays, load_holidays_file};
+use holiday::{get_holiday_code, load_holidays};
 mod holiday_data;
-use holiday_data::parse_holidays;
 use holiday_data::HolidayMap;
 mod state;
 mod utils;
