@@ -18,7 +18,8 @@ pub fn get_layout(area: Rect, config: &Config) -> [Rect; 4] {
         if let Some(height) = day_cell.height {
             let (day_cell_row, day_cell_column) = get_day_cell_size(height, 0);
             let (month_row, month_col) = get_month_calender_size(day_cell_row, day_cell_column);
-            month_content_constraint = Constraint::Length(month_row as u16);
+            // 2 行是标题
+            month_content_constraint = Constraint::Length(month_row as u16 + 2);
         }
     }
 
@@ -46,5 +47,5 @@ pub fn get_day_cell_size(content_row: u32, content_column: u32) -> (u32, u32) {
 *  更具 day cell 的宽度 和高度，决定日历的宽度和高度，不包括头部（星期几部分和 几年几月的标题）
 */
 pub fn get_month_calender_size(row: u32, column: u32) -> (u32, u32) {
-    return (row * 7 + 6, column * 6);
+    return (row * 6, column * 7 + 6);
 }

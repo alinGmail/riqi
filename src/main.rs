@@ -148,7 +148,13 @@ fn run(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>) -> Result<()> {
                     ));
             month_til_component.render(til_area, frame.buffer_mut());
 
-            let calendar_width = calendar_area.width - 2;
+            let mut calendar_width = calendar_area.width - 2;
+            
+            if let Some(day_cell) = &riqi_state.config.day_cell {
+                if let Some(width) = day_cell.width {
+                    calendar_width = (width as u16 + 4 ) * 7 + 6;
+                }
+            }
 
             if Language::from_str(riqi_state.config.language.as_str()).unwrap() == Language::ZH {
                 // calendar_width = 76;
