@@ -4,7 +4,6 @@ use cli::Args;
 use color_eyre::Result;
 use component::{
     bottom_line_component::BottomLineComponent, month_component::MonthComponent,
-    utils::get_style_from_config,
 };
 use config::{
     config_init::{get_config, get_system_language_country},
@@ -16,19 +15,18 @@ use crossterm::{
     ExecutableCommand,
 };
 use env_logger::{Builder, Target};
-use i18n::{get_month_til_i18n, Language};
 use layout::get_layout;
 use log::LevelFilter;
 use ratatui::{
     backend::CrosstermBackend,
-    layout::{Constraint, Flex, Layout},
+    layout::{ Flex, Layout},
     style::Style,
     text::Line,
     widgets::Widget,
     Terminal,
 };
 use state::RiqiState;
-use std::{collections::HashMap, fs::File, io, str::FromStr};
+use std::{collections::HashMap, fs::File, io};
 use theme::BLUE;
 use utils::add_months_safe;
 
@@ -48,6 +46,7 @@ mod component;
 mod config;
 mod i18n;
 mod layout;
+mod layout_struct;
 mod locale;
 mod lunar;
 
@@ -76,12 +75,35 @@ fn main() -> Result<()> {
     enable_raw_mode()?;
     io::stdout().execute(EnterAlternateScreen)?;
 
+    // 设置全局 panic hook
+    std::panic::set_hook(Box::new(|panic_info| {
+        let msg = if let Some(s) = panic_info.payload().downcast_ref::<&str>() {
+            s
+        } else if let Some(s) = panic_info.payload().downcast_ref::<String>() {
+            s
+        } else {
+            "Unknown panic"
+        };
+
+        // 记录 panic 信息到日志
+        log::error!("PANIC: {}", msg);
+
+        // 可选：打印 panic 位置（文件 + 行号）
+        if let Some(location) = panic_info.location() {
+            log::error!("Panic occurred in file '{}' at line {}", location.file(), location.line());
+        }
+    }));
+
+
     let backend = CrosstermBackend::new(io::stdout());
     let mut terminal = Terminal::new(backend)?;
 
     // 运行应用
     let result = run(&mut terminal);
-
+    if let Err(e) = result {
+        log::error!("Operation failed: {}", e); // 记录错误
+        return Err(e.into());
+    }
     // 清理终端
     disable_raw_mode()?;
     io::stdout().execute(LeaveAlternateScreen)?;
@@ -125,52 +147,20 @@ fn run(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>) -> Result<()> {
     loop {
         terminal.draw(|frame| {
             let size = frame.area();
-            let [til_area, _, calendar_area, bottom_line_area] =
-                get_layout(size, riqi_state.config);
-
-            let month_til_i18n_str = get_month_til_i18n(
-                calendar.year as i32,
-                calendar.month,
-                &riqi_state.config.language,
-            );
+            let riqi_layout = get_layout(size, riqi_state.config);
 
             let bottom_line = BottomLineComponent {
                 riqi_state: &riqi_state,
             };
-            bottom_line.render(bottom_line_area, frame.buffer_mut());
-
-            let month_til_component =
-                Line::from(month_til_i18n_str)
-                    .centered()
-                    .style(get_style_from_config(
-                        Some(Style::default()),
-                        riqi_state.theme.month_til,
-                    ));
-            month_til_component.render(til_area, frame.buffer_mut());
-
-            let mut calendar_width = calendar_area.width - 2;
-            
-            if let Some(day_cell) = &riqi_state.config.day_cell {
-                if let Some(width) = day_cell.width {
-                    calendar_width = (width as u16 + 4 ) * 7 + 6;
-                }
-            }
-
-            if Language::from_str(riqi_state.config.language.as_str()).unwrap() == Language::ZH {
-                // calendar_width = 76;
-            }
-
-            //
-            let layout = Layout::horizontal([Constraint::Length(calendar_width)])
-                .flex(Flex::Center)
-                .split(calendar_area);
+            bottom_line.render(riqi_layout.bottom_line, frame.buffer_mut());
 
             let month_component = MonthComponent {
                 data: &calendar,
                 riqi_state: &riqi_state,
                 day_gap: 1,
+                riqi_layout: &riqi_layout,
             };
-            month_component.render(layout[0], frame.buffer_mut());
+            month_component.render(riqi_layout.month_calendar.area, frame.buffer_mut());
         })?;
 
         if let Event::Key(key) = event::read()? {

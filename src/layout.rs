@@ -1,51 +1,95 @@
-use crate::config::config_struct::Config;
+use crate::{
+    config::config_struct::Config,
+    layout_struct::{MonthCalendarLayout, RiqiLayout},
+};
 use ratatui::layout::{Constraint, Flex, Layout, Rect};
 
-pub struct RiqiLayout {
-    // 不包括边框
-    pub day_item_row: u32,
-    // 不包括边框
-    pub day_item_col: u32,
-}
-
 /*
-*  return [title_area, _ ,calendar_area,_command_line]
+*  return [calendar_area,_command_line]
 *
 */
-pub fn get_layout(area: Rect, config: &Config) -> [Rect; 4] {
-    let mut month_content_constraint: Constraint = Constraint::Min(32);
+pub fn get_layout(frame_area: Rect, config: &Config) -> RiqiLayout {
+    let mut month_calendar_row_constraint: Constraint = Constraint::Min(34);
+    let mut month_content_column_constraint: Constraint = Constraint::Length(frame_area.width - 2);
     if let Some(day_cell) = &config.day_cell {
-        if let Some(height) = day_cell.height {
-            let (day_cell_row, day_cell_column) = get_day_cell_size(height, 0);
-            let (month_row, month_col) = get_month_calender_size(day_cell_row, day_cell_column);
-            // 2 行是标题
-            month_content_constraint = Constraint::Length(month_row as u16 + 2);
+        if let Some(row) = day_cell.height {
+            let day_cell_row = get_day_cell_row(row);
+            let month_row = get_month_calender_row(day_cell_row);
+            // 4 行是标题 和 星期的行
+            month_calendar_row_constraint = Constraint::Length(month_row as u16 + 4);
+        }
+
+        if let Some(column) = day_cell.width {
+            let day_cell_column = get_day_cell_column(column);
+            let month_column = get_month_calender_column(day_cell_column);
+            month_content_column_constraint = Constraint::Length(month_column as u16);
         }
     }
 
-    let layout: [Rect; 4] = Layout::vertical([
-        Constraint::Length(1),
-        Constraint::Max(1),
-        month_content_constraint,
-        Constraint::Length(1),
-    ])
-    .flex(Flex::Center)
-    .areas(area);
-    layout
+    // [calendar_area,_command_line]
+    let vertical_rows: [Rect; 2] =
+        Layout::vertical([month_calendar_row_constraint, Constraint::Max(2)])
+            .flex(Flex::Center)
+            .areas(frame_area);
+
+    let month_calendar_area = vertical_rows.get(0).unwrap().clone();
+    let bottom_line_are = vertical_rows.get(1).unwrap().clone();
+
+    let month_cal_center_area = Layout::horizontal([month_content_column_constraint])
+        .flex(Flex::Center)
+        .split(month_calendar_area)
+        .get(0)
+        .unwrap()
+        .clone();
+
+    let month_calendar = MonthCalendarLayout {
+        area: month_cal_center_area,
+        title: Rect {
+            x: month_cal_center_area.x,
+            y: month_cal_center_area.y,
+            width: month_cal_center_area.width,
+            height: 2,
+        },
+        head: Rect {
+            x: month_cal_center_area.x,
+            y: month_cal_center_area.y + 2,
+            width: month_cal_center_area.width,
+            height: 2,
+        },
+        content: Rect {
+            x: month_cal_center_area.x,
+            y: month_cal_center_area.y + 4,
+            width: month_cal_center_area.width,
+            height: month_cal_center_area.height - 4,
+        },
+        day_item_column: (month_cal_center_area.width as u32 - 6) / 7,
+        day_item_row: (month_cal_center_area.height as u32 - 4) / 6,
+    };
+    let riqi_layout = RiqiLayout {
+        title: Rect {
+            x: 0,
+            y: 0,
+            width: 0,
+            height: 0,
+        },
+        month_calendar,
+        bottom_line: vertical_rows.get(1).unwrap().clone(),
+    };
+    riqi_layout
 }
 
-/**
-*  return [day_item_row,day_item_col]
-*  根据day cell的内容，得到day cell的总大小，上下2行边框，左右多一个空格
-*/
-pub fn get_day_cell_size(content_row: u32, content_column: u32) -> (u32, u32) {
-    return (content_row + 2, content_column + 4);
+pub fn get_day_cell_row(content_row: u32) -> u32 {
+    content_row + 2
+}
+/// 左右多一个空格
+pub fn get_day_cell_column(content_column: u32) -> u32 {
+    content_column + 4
 }
 
-/**
-*  return [day_item_row, day_item_col]
-*  更具 day cell 的宽度 和高度，决定日历的宽度和高度，不包括头部（星期几部分和 几年几月的标题）
-*/
-pub fn get_month_calender_size(row: u32, column: u32) -> (u32, u32) {
-    return (row * 6, column * 7 + 6);
+pub fn get_month_calender_row(day_cell_row: u32) -> u32 {
+    day_cell_row * 6
+}
+
+pub fn get_month_calender_column(day_cell_column: u32) -> u32 {
+    day_cell_column * 7 + 6
 }
