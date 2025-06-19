@@ -6,8 +6,8 @@ use ratatui::{
 };
 
 use crate::{
-    i18n::{get_translate, Language},
     state::RiqiState,
+    translate::{get_translate, Language},
 };
 
 pub struct BottomLineComponent<'a> {

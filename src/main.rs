@@ -2,9 +2,7 @@ use chrono::{Datelike, Duration, Local};
 use clap::Parser;
 use cli::Args;
 use color_eyre::Result;
-use component::{
-    bottom_line_component::BottomLineComponent, month_component::MonthComponent,
-};
+use component::{bottom_line_component::BottomLineComponent, month_component::MonthComponent};
 use config::{
     config_init::{get_config, get_system_language_country},
     file_config_loader::load_file_config,
@@ -17,14 +15,7 @@ use crossterm::{
 use env_logger::{Builder, Target};
 use layout::get_layout;
 use log::LevelFilter;
-use ratatui::{
-    backend::CrosstermBackend,
-    layout::{ Flex, Layout},
-    style::Style,
-    text::Line,
-    widgets::Widget,
-    Terminal,
-};
+use ratatui::{backend::CrosstermBackend, widgets::Widget, Terminal};
 use state::RiqiState;
 use std::{collections::HashMap, fs::File, io};
 use theme::BLUE;
@@ -44,11 +35,10 @@ mod utils;
 mod cli;
 mod component;
 mod config;
-mod i18n;
 mod layout;
 mod layout_struct;
-mod locale;
 mod lunar;
+mod translate;
 
 fn setup_logger() {
     // 创建或覆盖日志文件
@@ -90,10 +80,13 @@ fn main() -> Result<()> {
 
         // 可选：打印 panic 位置（文件 + 行号）
         if let Some(location) = panic_info.location() {
-            log::error!("Panic occurred in file '{}' at line {}", location.file(), location.line());
+            log::error!(
+                "Panic occurred in file '{}' at line {}",
+                location.file(),
+                location.line()
+            );
         }
     }));
-
 
     let backend = CrosstermBackend::new(io::stdout());
     let mut terminal = Terminal::new(backend)?;

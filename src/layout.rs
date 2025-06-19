@@ -32,15 +32,13 @@ pub fn get_layout(frame_area: Rect, config: &Config) -> RiqiLayout {
             .flex(Flex::Center)
             .areas(frame_area);
 
-    let month_calendar_area = vertical_rows.get(0).unwrap().clone();
-    let bottom_line_are = vertical_rows.get(1).unwrap().clone();
+    let month_calendar_area = *vertical_rows.first().unwrap();
 
-    let month_cal_center_area = Layout::horizontal([month_content_column_constraint])
+    let month_cal_center_area = *Layout::horizontal([month_content_column_constraint])
         .flex(Flex::Center)
         .split(month_calendar_area)
-        .get(0)
-        .unwrap()
-        .clone();
+        .first()
+        .unwrap();
 
     let month_calendar = MonthCalendarLayout {
         area: month_cal_center_area,
@@ -73,7 +71,7 @@ pub fn get_layout(frame_area: Rect, config: &Config) -> RiqiLayout {
             height: 0,
         },
         month_calendar,
-        bottom_line: vertical_rows.get(1).unwrap().clone(),
+        bottom_line: *vertical_rows.get(1).unwrap(),
     };
     riqi_layout
 }

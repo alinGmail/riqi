@@ -4,9 +4,9 @@ use super::{
     config_struct::{CalendarType, Config},
     file_config_struct::FileConfig,
 };
+use crate::cli::Args;
 use crate::config::config_struct::DayCell;
-use crate::locale::parse_language_country;
-use crate::{cli::Args, i18n::Language};
+use crate::config::locale::parse_language_country;
 
 pub fn get_config(
     sys_language: &str,
