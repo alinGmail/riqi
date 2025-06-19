@@ -19,16 +19,12 @@ use ratatui::{backend::CrosstermBackend, widgets::Widget, Terminal};
 use state::RiqiState;
 use std::{collections::HashMap, fs::File, io};
 use theme::BLUE;
+use types::{calendar::MonthCalendar, holiday::HolidayMap};
 use utils::add_months_safe;
 
-mod data;
-use data::MonthCalendar;
-mod theme;
-
 mod holiday;
+mod theme;
 use holiday::{get_holiday_code, load_holidays};
-mod holiday_data;
-use holiday_data::HolidayMap;
 mod state;
 mod utils;
 
@@ -36,9 +32,9 @@ mod cli;
 mod component;
 mod config;
 mod layout;
-mod layout_struct;
 mod lunar;
 mod translate;
+mod types;
 
 fn setup_logger() {
     // 创建或覆盖日志文件

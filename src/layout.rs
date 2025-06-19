@@ -1,6 +1,6 @@
 use crate::{
     config::config_struct::Config,
-    layout_struct::{MonthCalendarLayout, RiqiLayout},
+    types::layout::{MonthCalendarLayout, RiqiLayout},
 };
 use ratatui::layout::{Constraint, Flex, Layout, Rect};
 

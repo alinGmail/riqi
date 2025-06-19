@@ -7,12 +7,11 @@ use ratatui::{
     widgets::{Block, BorderType, Borders, Paragraph, Widget, Wrap},
 };
 
-use crate::state::RiqiState;
-use crate::{data::CalendarDay, holiday_data::Holiday};
 use crate::{
-    holiday_data::PrimaryType,
     lunar::{number_to_lunar_day, number_to_lunar_month},
+    types::{calendar::CalendarDay, holiday::PrimaryType},
 };
+use crate::{state::RiqiState, types::holiday::Holiday};
 
 use super::utils::get_style_from_config;
 

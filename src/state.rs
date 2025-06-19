@@ -1,6 +1,6 @@
 use chrono::NaiveDate;
 
-use crate::{config::config_struct::Config, holiday_data::HolidayMap, theme::Theme};
+use crate::{config::config_struct::Config, theme::Theme, types::holiday::HolidayMap};
 
 #[derive(Debug)]
 pub struct RiqiState<'a> {

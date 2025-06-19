@@ -1,7 +1,8 @@
 use super::{day_component::render_day_item, utils::get_style_from_config};
-use crate::layout_struct::RiqiLayout;
 use crate::translate::get_month_til_i18n;
-use crate::{data::MonthCalendar, state::RiqiState, theme::BLUE, translate::weekday_name_i18n};
+use crate::types::calendar::MonthCalendar;
+use crate::types::layout::RiqiLayout;
+use crate::{state::RiqiState, theme::BLUE, translate::weekday_name_i18n};
 use ratatui::prelude::Style;
 use ratatui::{buffer::Buffer, layout::Rect, text::Line, widgets::Widget};
 
