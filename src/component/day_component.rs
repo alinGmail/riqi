@@ -122,7 +122,7 @@ impl<'a> DayItem<'a> {
         style
     }
 
-    pub fn normal_render_content(
+    pub fn render_content(
         self,
         area: Rect,
         buf: &mut Buffer,
@@ -224,6 +224,6 @@ impl<'a> Widget for DayItem<'a> {
             .border_style(Style::default().fg(self.get_day_item_style(is_holiday).fg.unwrap()));
         let inner_area = block.inner(area);
         block.render(area, buf);
-        self.normal_render_content(inner_area, buf, is_holiday, show_holiday_icon);
+        self.render_content(inner_area, buf, is_holiday, show_holiday_icon);
     }
 }

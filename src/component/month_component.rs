@@ -42,7 +42,7 @@ impl<'a> MonthComponent<'a> {
                 Rect::new(
                     area.left() + (day_item_width + self.day_gap) * i as u16,
                     area.top() + 2,
-                    day_item_width as u16,
+                    day_item_width,
                     1,
                 ),
                 buf,
