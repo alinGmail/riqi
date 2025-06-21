@@ -15,7 +15,12 @@ use crossterm::{
 use env_logger::{Builder, Target};
 use layout::get_layout;
 use log::LevelFilter;
-use ratatui::{backend::CrosstermBackend, widgets::Widget, Terminal};
+use ratatui::{
+    backend::CrosstermBackend,
+    style::{Color, Style},
+    widgets::{Block, Widget},
+    Terminal,
+};
 use state::RiqiState;
 use std::{collections::HashMap, fs::File, io};
 use theme::BLUE;
@@ -135,6 +140,15 @@ fn run(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>) -> Result<()> {
 
     loop {
         terminal.draw(|frame| {
+            // 2. 创建一个填充背景色的 `Block`
+            // 深灰色背景
+
+            // 3. 渲染 `Block` 到整个窗口
+            frame.render_widget(
+                Block::default().style(Style::default().bg(Color::Rgb(30, 30, 30))),
+                frame.area(),
+            );
+
             let size = frame.area();
             let riqi_layout = get_layout(size, riqi_state.config);
 
