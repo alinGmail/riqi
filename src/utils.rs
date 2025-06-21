@@ -6,16 +6,9 @@ pub fn add_months_safe(date: NaiveDate, months: i32) -> NaiveDate {
     let mut month = date.month() as i32 + months;
     let day = date.day();
 
-    // 处理年份溢出（例如 12月 + 3个月 = 次年3月）
-    while month > 12 {
-        year += 1;
-        month -= 12;
-    }
-
-    while month < 1 {
-        year -= 1;
-        month += 12;
-    }
+    // 处理年份和月份溢出
+    year += (month - 1).div_euclid(12);
+    month = (month - 1).rem_euclid(12) + 1;
 
     // 检查目标月份是否有该日期（例如 2月31日 -> 无效）
     if let Some(d) = NaiveDate::from_ymd_opt(year, month as u32, day) {

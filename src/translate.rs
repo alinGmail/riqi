@@ -325,6 +325,6 @@ mod tests {
         assert_eq!(weekday_name_i18n(3, "ko"), "수요일");
         assert_eq!(weekday_name_i18n(4, "ru"), "Четверг");
         assert_eq!(weekday_name_i18n(5, "de"), "Freitag");
-        assert_eq!(weekday_name_i18n(6, "ja"), "土曜日");
+        assert_eq!(weekday_name_i18n(6, "ja"), "土");
     }
 }

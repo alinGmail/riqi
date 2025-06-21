@@ -185,6 +185,16 @@ fn run(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>) -> Result<()> {
                 riqi_state.select_day = add_months_safe(riqi_state.select_day, -1);
             }
 
+            if key.code == KeyCode::Char('y') {
+                // go to pre year
+                riqi_state.select_day = add_months_safe(riqi_state.select_day, -12);
+            }
+
+            if key.code == KeyCode::Char('x') {
+                // go to next year
+                riqi_state.select_day = add_months_safe(riqi_state.select_day, 12);
+            }
+
             if riqi_state.select_day.year() as u32 != calendar.year
                 || riqi_state.select_day.month() != calendar.month
             {
