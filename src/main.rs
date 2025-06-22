@@ -173,19 +173,19 @@ fn run(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>) -> Result<()> {
             if key.code == KeyCode::Char('q') {
                 break;
             }
-            if key.code == KeyCode::Char('j') {
+            if key.code == KeyCode::Char('j') || key.code == KeyCode::Down {
                 // go to next week
                 riqi_state.select_day += Duration::weeks(1);
             }
-            if key.code == KeyCode::Char('k') {
+            if key.code == KeyCode::Char('k') || key.code == KeyCode::Up {
                 // go to pre week
                 riqi_state.select_day += Duration::weeks(-1);
             }
-            if key.code == KeyCode::Char('h') {
+            if key.code == KeyCode::Char('h') || key.code == KeyCode::Left {
                 // go to pre day
                 riqi_state.select_day += Duration::days(-1);
             }
-            if key.code == KeyCode::Char('l') {
+            if key.code == KeyCode::Char('l') || key.code == KeyCode::Right {
                 // go to pre day
                 riqi_state.select_day += Duration::days(1);
             }
@@ -207,6 +207,11 @@ fn run(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>) -> Result<()> {
             if key.code == KeyCode::Char('x') {
                 // go to next year
                 riqi_state.select_day = add_months_safe(riqi_state.select_day, 12);
+            }
+
+            if key.code == KeyCode::Char('t') {
+                // got back to today
+                riqi_state.select_day = now.date_naive();
             }
 
             if riqi_state.select_day.year() as u32 != calendar.year
