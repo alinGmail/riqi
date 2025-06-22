@@ -21,8 +21,14 @@ pub fn get_config(
     let show_lunar = get_show_lunar(&country, file_config, args);
 
     let mut day_cell: Option<DayCell> = None;
+
+    let mut hide_bg = false;
+
     if let Some(file_config) = file_config {
-        day_cell = file_config.day_cell.clone()
+        day_cell = file_config.day_cell.clone();
+        if let Some(fc_hide_bg) = file_config.hide_bg {
+            hide_bg = fc_hide_bg;
+        }
     }
 
     Config {
@@ -31,6 +37,7 @@ pub fn get_config(
         calendar_type,
         show_lunar,
         day_cell,
+        hide_bg,
     }
 }
 

@@ -8,6 +8,7 @@ pub struct Config {
     pub calendar_type: CalendarType,
     pub show_lunar: bool,
     pub day_cell: Option<DayCell>,
+    pub hide_bg: bool,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]

@@ -144,10 +144,12 @@ fn run(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>) -> Result<()> {
             // 深灰色背景
 
             // 3. 渲染 `Block` 到整个窗口
-            frame.render_widget(
-                Block::default().style(Style::default().bg(Color::Rgb(30, 30, 30))),
-                frame.area(),
-            );
+            if !riqi_state.config.hide_bg {
+                frame.render_widget(
+                    Block::default().style(Style::default().bg(riqi_state.theme.bg)),
+                    frame.area(),
+                );
+            }
 
             let size = frame.area();
             let riqi_layout = get_layout(size, riqi_state.config);

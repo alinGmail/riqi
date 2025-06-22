@@ -7,4 +7,5 @@ pub struct FileConfig {
     pub country: Option<String>,
     pub show_lunar: Option<bool>,
     pub day_cell: Option<DayCell>,
+    pub hide_bg: Option<bool>,
 }
