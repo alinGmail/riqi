@@ -2,7 +2,7 @@ use super::{day_component::render_day_item, utils::get_style_from_config};
 use crate::translate::get_month_til_i18n;
 use crate::types::calendar::MonthCalendar;
 use crate::types::layout::RiqiLayout;
-use crate::{state::RiqiState, theme::BLUE, translate::weekday_name_i18n};
+use crate::{state::RiqiState, translate::weekday_name_i18n};
 use ratatui::prelude::Style;
 use ratatui::{buffer::Buffer, layout::Rect, text::Line, widgets::Widget};
 
@@ -37,7 +37,7 @@ impl<'a> MonthComponent<'a> {
                 .centered()
                 .style(get_style_from_config(
                     Some(self.riqi_state.theme.get_default_style()),
-                    BLUE.month_head,
+                    self.riqi_state.theme.month_head,
                 ));
             line_txt.render(
                 Rect::new(

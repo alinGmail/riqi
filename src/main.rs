@@ -17,19 +17,20 @@ use layout::get_layout;
 use log::LevelFilter;
 use ratatui::{
     backend::CrosstermBackend,
-    style::{Color, Style},
+    style::Style,
     widgets::{Block, Widget},
     Terminal,
 };
 use state::RiqiState;
 use std::{collections::HashMap, fs::File, io};
-use theme::BLUE;
 use types::{calendar::MonthCalendar, holiday::HolidayMap};
 use utils::add_months_safe;
 
 mod holiday;
 mod theme;
+use crate::config::theme_loader::load_theme_from_file;
 use holiday::{get_holiday_code, load_holidays};
+
 mod state;
 mod utils;
 
@@ -130,12 +131,14 @@ fn run(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>) -> Result<()> {
         &now.year().to_string(),
     );
 
+    let theme = load_theme_from_file("resources/theme/ningmen.toml").expect("主题加载失败");
+
     let mut riqi_state = RiqiState {
         select_day: now.date_naive(),
         holiday_map: &holiday_map,
         today: now.date_naive(),
         config: &config,
-        theme: &BLUE,
+        theme: &theme,
     };
 
     loop {

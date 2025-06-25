@@ -1,15 +1,15 @@
 use ratatui::style::{Color, Style};
+use serde::Deserialize;
 
-#[derive(Debug, Clone, Copy)]
+pub mod color_serde;
+
+#[derive(Debug, Clone, Copy, Deserialize)]
 pub struct Theme {
+    #[serde(deserialize_with = "crate::theme::color_serde::de_color")]
     pub fg: Color,
+    #[serde(deserialize_with = "crate::theme::color_serde::de_color")]
     pub bg: Color,
-    pub shadow: Color,
-    pub holi_day: Color,
-    pub work_day: Color,
     pub focus_day: ItemStyle,
-    pub today: Color,
-    pub not_cur_month: Color,
 
     pub month_til: ItemStyle,
     pub month_head: ItemStyle,
@@ -26,9 +26,11 @@ impl Theme {
     }
 }
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, Deserialize)]
 pub struct ItemStyle {
+    #[serde(default, deserialize_with = "crate::theme::color_serde::de_opt_color")]
     pub bg: Option<Color>,
+    #[serde(default, deserialize_with = "crate::theme::color_serde::de_opt_color")]
     pub fg: Option<Color>,
     pub bold: Option<bool>,
     pub italic: Option<bool>,
@@ -38,12 +40,7 @@ pub struct ItemStyle {
 
 pub const BLUE: Theme = Theme {
     fg: Color::Rgb(16, 24, 48),
-    bg: Color::Rgb(48, 72, 144),
-    shadow: Color::Rgb(32, 48, 96),
-    holi_day: Color::Rgb(233, 101, 165),
-    work_day: Color::Rgb(177, 242, 167),
-    today: Color::Rgb(235, 222, 118),
-    not_cur_month: Color::Rgb(120, 120, 120),
+    bg: Color::Rgb(40, 36, 51),
 
     month_til: ItemStyle {
         bg: None,
