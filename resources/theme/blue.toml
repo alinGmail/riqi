@@ -1,0 +1,58 @@
+fg = "Rgb(16,24,48)"
+bg = "Rgb(40,36,51)"
+
+[month_til]
+fg = "Rgb(177,186,244)"
+bold = false
+italic = false
+under_line = false
+transparent_bg = false
+
+[month_head]
+fg = "Rgb(177,186,244)"
+bold = false
+italic = false
+under_line = false
+transparent_bg = false
+
+[workday_adjacent]
+fg = "Rgb(147,138,173)"
+bold = false
+italic = false
+under_line = false
+transparent_bg = false
+
+[holiday_adjacent]
+fg = "Rgb(126,53,88)"
+bold = false
+italic = false
+under_line = false
+transparent_bg = false
+
+[bottom_line]
+fg = "Rgb(177,186,244)"
+bold = false
+italic = false
+under_line = false
+transparent_bg = false
+
+[workday]
+fg = "Rgb(178,244,243)"
+bold = false
+italic = false
+under_line = false
+transparent_bg = false
+
+[holiday]
+fg = "Rgb(233,101,165)"
+bold = false
+italic = false
+under_line = false
+transparent_bg = false
+
+[focus_day]
+fg = "Rgb(177,242,167)"
+bold = true
+italic = false
+under_line = false
+transparent_bg = false

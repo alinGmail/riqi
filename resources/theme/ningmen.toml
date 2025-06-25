@@ -1,0 +1,60 @@
+
+
+fg = "Rgb(30,35,20)" # 主前景色：深橄榄绿，文字易读
+bg = "#222222"       # 主背景色：浅柠檬奶油黄，柔和明亮
+
+[month_til]
+fg = "Rgb(180,200,50)" # 柠檬黄绿色，清新明亮
+bold = false
+italic = false
+under_line = false
+transparent_bg = false
+
+[month_head]
+fg = "Rgb(150,190,40)" # 更深一点的柠檬绿
+bold = false
+italic = false
+under_line = false
+transparent_bg = false
+
+[workday_adjacent]
+fg = "Rgb(80, 84, 56)" # 柔和黄绿色，表示非当前月工作日
+bold = false
+italic = false
+under_line = false
+transparent_bg = false
+
+[holiday_adjacent]
+fg = "Rgb(102, 72, 24)" # 金黄偏橙，代表节假日邻近
+bold = false
+italic = false
+under_line = false
+transparent_bg = false
+
+[bottom_line]
+fg = "Rgb(180,200,50)" # 与 month_til 同色，统一风格
+bold = false
+italic = false
+under_line = false
+transparent_bg = false
+
+[workday]
+fg = "Rgb(200,210,140)" # 清新的草绿色
+bold = false
+italic = false
+under_line = false
+transparent_bg = false
+
+[holiday]
+fg = "Rgb(255,180,60)" # 鲜艳柠檬橙，突出节假日
+bold = false
+italic = false
+under_line = false
+transparent_bg = false
+
+[focus_day]
+fg = "Rgb(120,220,40)" # 明亮的柠檬青绿，醒目
+bold = true
+italic = false
+under_line = false
+transparent_bg = false
