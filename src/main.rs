@@ -22,7 +22,10 @@ use ratatui::{
     Terminal,
 };
 use state::RiqiState;
+use std::time::Duration as StdDuration;
 use std::{collections::HashMap, fs::File, io};
+use tokio::sync::mpsc;
+
 use types::{calendar::MonthCalendar, holiday::HolidayMap};
 use utils::add_months_safe;
 
@@ -42,6 +45,11 @@ mod lunar;
 mod translate;
 mod types;
 
+enum AppEvent {
+    Input(crossterm::event::Event),
+    RequestResult(String), // 假设请求返回一个 String
+}
+
 fn setup_logger() {
     // 创建或覆盖日志文件
     let log_file = File::create("debug.log").expect("Failed to create log file");
@@ -54,7 +62,8 @@ fn setup_logger() {
         .init();
 }
 
-fn main() -> Result<()> {
+#[tokio::main]
+async fn main() -> Result<()> {
     // 处理 JSON 文件
     // if let Err(e) = riqi::json_processor::process_holiday_json() {
     //    eprintln!("处理 JSON 文件时出错: {}", e);
@@ -94,7 +103,7 @@ fn main() -> Result<()> {
     let mut terminal = Terminal::new(backend)?;
 
     // 运行应用
-    let result = run(&mut terminal);
+    let result = run(&mut terminal).await;
     if let Err(e) = result {
         log::error!("Operation failed: {}", e); // 记录错误
         return Err(e.into());
@@ -106,7 +115,7 @@ fn main() -> Result<()> {
     result
 }
 
-fn run(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>) -> Result<()> {
+async fn run(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>) -> Result<()> {
     let file_config = load_file_config();
     log::debug!("file_config {:?}", file_config);
     let args = Args::parse();
@@ -141,6 +150,33 @@ fn run(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>) -> Result<()> {
         theme: &theme,
     };
 
+    let (tx, mut rx) = mpsc::channel::<AppEvent>(100); // 创建一个容量为100的通道
+
+    // 启动一个异步任务来监听键盘事件
+    let tx_clone = tx.clone();
+    tokio::spawn(async move {
+        loop {
+            if event::poll(StdDuration::from_millis(250)).unwrap() {
+                // 非阻塞地等待事件
+                if let Ok(event) = event::read() {
+                    tx_clone.send(AppEvent::Input(event)).await.unwrap();
+                }
+            }
+        }
+    });
+
+    // 示例：启动一个异步任务来模拟网络请求
+    let tx_clone_2 = tx.clone();
+    tokio::spawn(async move {
+        // 模拟一个耗时的网络请求
+        tokio::time::sleep(StdDuration::from_secs(5)).await;
+        let result = "Data from server!".to_string();
+        tx_clone_2
+            .send(AppEvent::RequestResult(result))
+            .await
+            .unwrap();
+    });
+
     loop {
         terminal.draw(|frame| {
             // 2. 创建一个填充背景色的 `Block`
@@ -171,61 +207,74 @@ fn run(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>) -> Result<()> {
             month_component.render(riqi_layout.month_calendar.area, frame.buffer_mut());
         })?;
 
-        if let Event::Key(key) = event::read()? {
-            if key.is_release() {
-                continue;
-            }
-            if key.code == KeyCode::Char('q') {
-                break;
-            }
-            if key.code == KeyCode::Char('j') || key.code == KeyCode::Down {
-                // go to next week
-                riqi_state.select_day += Duration::weeks(1);
-            }
-            if key.code == KeyCode::Char('k') || key.code == KeyCode::Up {
-                // go to pre week
-                riqi_state.select_day += Duration::weeks(-1);
-            }
-            if key.code == KeyCode::Char('h') || key.code == KeyCode::Left {
-                // go to pre day
-                riqi_state.select_day += Duration::days(-1);
-            }
-            if key.code == KeyCode::Char('l') || key.code == KeyCode::Right {
-                // go to pre day
-                riqi_state.select_day += Duration::days(1);
-            }
-            if key.code == KeyCode::Char('d') {
-                // go to next month
-                riqi_state.select_day = add_months_safe(riqi_state.select_day, 1);
-            }
+        // 从通道接收事件
+        if let Some(event) = rx.recv().await {
+            match event {
+                AppEvent::Input(event) => {
+                    if let Event::Key(key) = event {
+                        if key.is_release() {
+                            continue;
+                        }
+                        if key.code == KeyCode::Char('q') {
+                            break;
+                        }
+                        if key.code == KeyCode::Char('j') || key.code == KeyCode::Down {
+                            // go to next week
+                            riqi_state.select_day += Duration::weeks(1);
+                        }
+                        if key.code == KeyCode::Char('k') || key.code == KeyCode::Up {
+                            // go to pre week
+                            riqi_state.select_day += Duration::weeks(-1);
+                        }
+                        if key.code == KeyCode::Char('h') || key.code == KeyCode::Left {
+                            // go to pre day
+                            riqi_state.select_day += Duration::days(-1);
+                        }
+                        if key.code == KeyCode::Char('l') || key.code == KeyCode::Right {
+                            // go to pre day
+                            riqi_state.select_day += Duration::days(1);
+                        }
+                        if key.code == KeyCode::Char('d') {
+                            // go to next month
+                            riqi_state.select_day = add_months_safe(riqi_state.select_day, 1);
+                        }
 
-            if key.code == KeyCode::Char('u') {
-                // go to pre month
-                riqi_state.select_day = add_months_safe(riqi_state.select_day, -1);
-            }
+                        if key.code == KeyCode::Char('u') {
+                            // go to pre month
+                            riqi_state.select_day = add_months_safe(riqi_state.select_day, -1);
+                        }
 
-            if key.code == KeyCode::Char('y') {
-                // go to pre year
-                riqi_state.select_day = add_months_safe(riqi_state.select_day, -12);
-            }
+                        if key.code == KeyCode::Char('y') {
+                            // go to pre year
+                            riqi_state.select_day = add_months_safe(riqi_state.select_day, -12);
+                        }
 
-            if key.code == KeyCode::Char('x') {
-                // go to next year
-                riqi_state.select_day = add_months_safe(riqi_state.select_day, 12);
-            }
+                        if key.code == KeyCode::Char('x') {
+                            // go to next year
+                            riqi_state.select_day = add_months_safe(riqi_state.select_day, 12);
+                        }
 
-            if key.code == KeyCode::Char('t') {
-                // got back to today
-                riqi_state.select_day = now.date_naive();
-            }
+                        if key.code == KeyCode::Char('t') {
+                            // got back to today
+                            riqi_state.select_day = now.date_naive();
+                        }
 
-            if riqi_state.select_day.year() as u32 != calendar.year
-                || riqi_state.select_day.month() != calendar.month
-            {
-                calendar = MonthCalendar::new(
-                    riqi_state.select_day.year() as u32,
-                    riqi_state.select_day.month(),
-                );
+                        if riqi_state.select_day.year() as u32 != calendar.year
+                            || riqi_state.select_day.month() != calendar.month
+                        {
+                            calendar = MonthCalendar::new(
+                                riqi_state.select_day.year() as u32,
+                                riqi_state.select_day.month(),
+                            );
+                        }
+                    }
+                }
+                AppEvent::RequestResult(data) => {
+                    // 处理请求返回的数据
+                    log::info!("Received data from request: {}", data);
+                    // 这里可以更新 riqi_state，例如显示数据或触发 UI 刷新
+                    // riqi_state.some_new_field = data;
+                }
             }
         }
     }
