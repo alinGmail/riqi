@@ -9,6 +9,12 @@ pub struct Config {
     pub show_lunar: bool,
     pub day_cell: Option<DayCell>,
     pub hide_bg: bool,
+    pub HolidayConfig: HolidayConfig,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct HolidayConfig {
+    pub github_url: String,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]

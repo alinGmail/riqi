@@ -1,7 +1,7 @@
 use sys_locale::get_locale;
 
 use super::{
-    config_struct::{CalendarType, Config},
+    config_struct::{CalendarType, Config, HolidayConfig},
     file_config_struct::FileConfig,
 };
 use crate::cli::Args;
@@ -31,6 +31,7 @@ pub fn get_config(
         }
     }
 
+    static GITHUB_URL: &str = "https://github.com/alinGmail/riqi";
     Config {
         language,
         country,
@@ -38,6 +39,9 @@ pub fn get_config(
         show_lunar,
         day_cell,
         hide_bg,
+        HolidayConfig: HolidayConfig {
+            github_url: GITHUB_URL.to_string(),
+        },
     }
 }
 
