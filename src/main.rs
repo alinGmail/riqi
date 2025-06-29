@@ -1,7 +1,7 @@
 use chrono::{Datelike, Duration, Local};
 use clap::Parser;
 use cli::Args;
-use color_eyre::Result;
+use color_eyre::{owo_colors::OwoColorize, Result};
 use component::{bottom_line_component::BottomLineComponent, month_component::MonthComponent};
 use config::{
     config_init::{get_config, get_system_language_country},
@@ -21,9 +21,10 @@ use ratatui::{
     widgets::{Block, Widget},
     Terminal,
 };
+use riqi::update_logic::{update_meta, UpdateFlag};
 use state::RiqiState;
-use std::time::Duration as StdDuration;
-use std::{collections::HashMap, fs::File, io};
+use std::{collections::HashMap, fs::File, io, sync::Mutex};
+use std::{sync::Arc, time::Duration as StdDuration};
 use tokio::sync::mpsc;
 
 use types::{calendar::MonthCalendar, holiday::HolidayMap};
@@ -151,6 +152,7 @@ async fn run(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>) -> Result<()
     };
 
     let (tx, mut rx) = mpsc::channel::<AppEvent>(100); // 创建一个容量为100的通道
+    let update_flag: UpdateFlag = Arc::new(Mutex::new(false));
 
     // 启动一个异步任务来监听键盘事件
     let tx_clone = tx.clone();
@@ -169,6 +171,7 @@ async fn run(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>) -> Result<()
     let tx_clone_2 = tx.clone();
     tokio::spawn(async move {
         // 模拟一个耗时的网络请求
+        update_meta(update_flag).await;
         tokio::time::sleep(StdDuration::from_secs(5)).await;
         let result = "Data from server!".to_string();
         tx_clone_2

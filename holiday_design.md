@@ -43,3 +43,21 @@ meta.json 的格式如下：
 ```
 
 缓存的有效时间为1天.
+
+meta_cache 更新的逻辑如下：
+
+``` Mermaid
+flowchart TD
+    A[开始] --> B{判断 meta_cache.json 是否存在}
+    B -- 是 --> C{判断时间是否过期}
+    B -- 否 --> D[去下载 meta.josn 文件]
+
+    D --> E{是否下载成功}
+   E -- 是 --> H[保存meta_cache.json文件]
+   H --> I
+    E -- 否 --> G{meta_cache.json 是否存在}
+    C -- 是 --> D
+    C -- 否 --> I[更新日历数据]
+    G -- 是 --> I
+    G -- 否 --> F[结束]
+```
