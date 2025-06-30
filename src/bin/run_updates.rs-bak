@@ -12,7 +12,7 @@ async fn main() {
 
     // Spawn tasks to run concurrently
     let holiday_task_1 = tokio::spawn(update_holiday(Arc::clone(&update_flag)));
-    
+
     // Wait for the first holiday task to complete
     holiday_task_1.await.unwrap();
 
@@ -27,10 +27,10 @@ async fn main() {
     time::sleep(Duration::from_millis(100)).await;
 
     println!("\nAttempting to update holidays again after meta is complete.");
-    
+
     // Run the holiday update again
     let holiday_task_2 = tokio::spawn(update_holiday(Arc::clone(&update_flag)));
     holiday_task_2.await.unwrap();
-    
+
     println!("\nDemonstration finished.");
 }

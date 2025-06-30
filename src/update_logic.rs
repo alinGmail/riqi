@@ -1,19 +1,12 @@
-use chrono::{DateTime, TimeDelta, Utc};
+use chrono::Utc;
 use color_eyre::eyre::{eyre, Result};
 use reqwest::Client;
-use serde::{Deserialize, Serialize};
 use std::fs;
-use std::path::PathBuf;
 use std::sync::{Arc, Mutex};
 use std::time::Duration;
 
-use crate::types::holiday_meta::HolidayMeta;
-
-#[derive(Serialize, Deserialize, Debug)]
-struct MetaCache {
-    data: HolidayMeta,
-    cache_time: DateTime<Utc>,
-}
+use crate::holiday::{get_cached_meta, get_meta_cache_path};
+use crate::types::holiday_meta::MetaCache;
 
 pub type UpdateFlag = Arc<Mutex<bool>>;
 
@@ -53,32 +46,6 @@ async fn download_and_cache_meta() -> Result<()> {
     Ok(())
 }
 
-fn get_cached_meta() -> Result<Option<HolidayMeta>> {
-    let cache_path = get_meta_cache_path().ok_or_else(|| eyre!("Failed to get cache path"))?;
-    if !cache_path.exists() {
-        return Ok(None);
-    }
-
-    let json = fs::read_to_string(cache_path)?;
-    let cache: MetaCache = serde_json::from_str(&json)?;
-
-    if (Utc::now() - cache.cache_time) < TimeDelta::days(1) {
-        Ok(Some(cache.data))
-    } else {
-        Ok(None)
-    }
-}
-
-fn get_meta_cache_path() -> Option<PathBuf> {
-    dirs::cache_dir().and_then(|mut path| {
-        path.push("riqi");
-        path.push("holidays");
-        fs::create_dir_all(&path).ok()?;
-        path.push("meta_cache.json");
-        Some(path)
-    })
-}
-
 pub async fn update_holiday(flag: UpdateFlag) {
     {
         let meta_updated = flag.lock().unwrap();
@@ -92,4 +59,3 @@ pub async fn update_holiday(flag: UpdateFlag) {
     tokio::time::sleep(Duration::from_secs(1)).await;
     println!("Holiday update finished.");
 }
-

@@ -21,11 +21,11 @@ use ratatui::{
     widgets::{Block, Widget},
     Terminal,
 };
-use riqi::update_logic::{update_meta, UpdateFlag};
 use state::RiqiState;
 use std::{collections::HashMap, fs::File, io, sync::Mutex};
 use std::{sync::Arc, time::Duration as StdDuration};
 use tokio::sync::mpsc;
+use update_logic::{update_meta, UpdateFlag};
 
 use types::{calendar::MonthCalendar, holiday::HolidayMap};
 use utils::add_months_safe;
@@ -41,10 +41,12 @@ mod utils;
 mod cli;
 mod component;
 mod config;
+mod holiday_updater;
 mod layout;
 mod lunar;
 mod translate;
 mod types;
+mod update_logic;
 
 enum AppEvent {
     Input(crossterm::event::Event),

@@ -1,4 +1,10 @@
 use crate::types::holiday::{parse_holidays, HolidayMap};
+use crate::types::holiday_meta::{HolidayMeta, MetaCache};
+
+use chrono::{TimeDelta, Utc};
+use color_eyre::eyre::{eyre, Result};
+use std::fs;
+use std::path::PathBuf;
 
 pub fn load_holidays_file(holiday_code: &String) -> std::io::Result<String> {
     // 开发环境：从项目目录加载
@@ -98,4 +104,33 @@ pub fn load_holidays(
         holiday_response.holidays.len()
     );
     holiday_response.add_to_holiday_map(holiday_map, &code, &year);
+}
+
+pub fn get_cached_meta() -> Result<Option<HolidayMeta>> {
+    let cache = load_cached_meta_file().unwrap().unwrap();
+    if (Utc::now() - cache.cache_time) < TimeDelta::days(1) {
+        Ok(Some(cache.data))
+    } else {
+        Ok(None)
+    }
+}
+
+pub fn load_cached_meta_file() -> Result<Option<MetaCache>> {
+    let cache_path = get_meta_cache_path().ok_or_else(|| eyre!("Failed to get cache path"))?;
+    if !cache_path.exists() {
+        return Ok(None);
+    }
+    let json = fs::read_to_string(cache_path)?;
+    let cache: MetaCache = serde_json::from_str(&json)?;
+    Ok(Some(cache))
+}
+
+pub fn get_meta_cache_path() -> Option<PathBuf> {
+    dirs::cache_dir().and_then(|mut path| {
+        path.push("riqi");
+        path.push("holidays");
+        fs::create_dir_all(&path).ok()?;
+        path.push("meta_cache.json");
+        Some(path)
+    })
 }
