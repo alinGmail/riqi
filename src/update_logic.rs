@@ -18,7 +18,6 @@ pub async fn update_meta(flag: UpdateFlag) {
         return;
     }
 
-    println!("Starting meta update...");
     if let Err(e) = download_and_cache_meta().await {
         eprintln!("Failed to update meta: {}", e);
     }

@@ -136,9 +136,10 @@ async fn run(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>) -> Result<()
 
     log::debug!("init config {:?}", config);
 
-    let holiday_code_result = get_holiday_code(true, &config.country, &config.language);
     load_holidays(
-        holiday_code_result,
+        true,
+        &config.country,
+        &config.language,
         &mut holiday_map,
         &now.year().to_string(),
     );
