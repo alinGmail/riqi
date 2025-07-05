@@ -1,3 +1,4 @@
+use crate::holiday_utils::get_ylc_code;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
@@ -61,8 +62,14 @@ pub fn parse_holidays(json_str: &str) -> Result<HolidayResponse, serde_json::Err
 }
 
 impl HolidayResponse {
-    pub fn add_to_holiday_map(&self, holiday_map: &mut HolidayMap, holiday_code: &str, year: &str) {
-        let key = format!("{}_{}", year, holiday_code);
+    pub fn add_to_holiday_map(
+        &self,
+        holiday_map: &mut HolidayMap,
+        year: &str,
+        languange: &str,
+        country: &str,
+    ) {
+        let key = get_ylc_code(year, languange, country);
         let mut date_map: HashMap<String, Vec<Holiday>> = HashMap::new();
 
         // 按日期对节假日进行分组

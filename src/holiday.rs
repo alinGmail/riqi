@@ -1,8 +1,9 @@
+use crate::holiday_utils::{get_lc_code, get_ylc_code};
 use crate::types::holiday::{parse_holidays, HolidayMap};
 use crate::types::holiday_meta::{HolidayMeta, MetaCache};
 
 use chrono::{TimeDelta, Utc};
-use color_eyre::eyre::{eyre, Result};
+use color_eyre::eyre::{eyre, OptionExt, Result};
 use std::fs;
 use std::path::PathBuf;
 
@@ -19,52 +20,12 @@ use std::path::PathBuf;
 /// # Returns
 ///
 /// * `std::io::Result<String>` - 成功时返回文件内容的 `Result`，失败时返回 `std::io::Error`。
-pub fn load_holidays_file(holiday_code: &String) -> std::io::Result<String> {
+pub fn load_holidays_file(year: &str, language: &str, country: &str) -> Result<String> {
     // 开发环境：从项目目录加载
-    #[cfg(debug_assertions)]
-    {
-        let path = format!("resources/holidays/2025/{}.json", holiday_code);
-        log::debug!("load path {}", path);
-        std::fs::read_to_string(path)
-    }
-
-    // 生产环境：从嵌入资源加载
-    #[cfg(not(debug_assertions))]
-    {
-        // 从 holiday_code 解析 lang 和 country
-        let parts: Vec<&str> = holiday_code.split('_').collect();
-        let lang = parts.get(0).cloned().unwrap_or("");
-        let country = parts.get(1).cloned().unwrap_or("");
-
-        // The path is relative to this source file.
-        match (lang, country) {
-            ("zh", "cn") => {
-                Ok(include_str!("../../resources/holidays/2025/zh_cn.json").to_string())
-            }
-            ("de", "de") => {
-                Ok(include_str!("../../resources/holidays/2025/de_de.json").to_string())
-            }
-            ("en", "jp") => {
-                Ok(include_str!("../../resources/holidays/2025/en_jp.json").to_string())
-            }
-            ("fr", "fr") => {
-                Ok(include_str!("../../resources/holidays/2025/fr_fr.json").to_string())
-            }
-            ("ja", "jp") => {
-                Ok(include_str!("../../resources/holidays/2025/ja_jp.json").to_string())
-            }
-            ("ko", "kr") => {
-                Ok(include_str!("../../resources/holidays/2025/ko_kr.json").to_string())
-            }
-            _ => Err(std::io::Error::new(
-                std::io::ErrorKind::NotFound,
-                format!(
-                    "Holiday file for '{}' not found for release build",
-                    holiday_code
-                ),
-            )),
-        }
-    }
+    let path = get_holiday_cache_file_path(year, language, country)
+        .ok_or_eyre("get holiday cache file failed")?;
+    let content = std::fs::read_to_string(path.as_path())?;
+    Ok(content)
 }
 
 /// 根据用户配置和系统语言确定要使用的假期代码。
@@ -77,35 +38,35 @@ pub fn load_holidays_file(holiday_code: &String) -> std::io::Result<String> {
 ///
 /// # Returns
 ///
-/// * `Result<Option<String>, String>` - 成功时返回 `Ok(Some(String))`（如果找到有效的代码）或 `Ok(None)`（如果未找到），失败时返回 `Err(String)`。
+/// 返回 (language, country)
 pub fn get_holiday_code(
     meta_cache: MetaCache,
     user_defined_country: bool,
     country_opt: &Option<String>,
     language: &str,
     year: &str,
-) -> Result<Option<String>, String> {
+) -> Result<(String, String)> {
     let country = match country_opt {
         Some(c) => c.to_lowercase(),
-        None => return Ok(None),
+        None => return Err(eyre!("country is empty")),
     };
     let language = language.to_lowercase();
-    let language_country_str = format!("{}_{}_{}", year, language, country);
-    let en_country_str = format!("{}_en_{}", year, country);
+    let language_country_str = get_ylc_code(year, &language, &country);
+    let en_country_str = get_ylc_code(year, "en", &country);
     let available_holiday_region = meta_cache.data.get_available_year_holiday_keys();
 
     if user_defined_country {
         if available_holiday_region.contains(&language_country_str) {
-            Ok(Some(language_country_str))
+            Ok((language, country))
         } else {
-            Err(format!("cannot find holidays of {}", language_country_str))
+            return Err(eyre!("cannot find holidays of {}", language_country_str));
         }
     } else if available_holiday_region.contains(&language_country_str) {
-        Ok(Some(language_country_str))
+        Ok((language, country))
     } else if available_holiday_region.contains(&en_country_str) {
-        Ok(Some(en_country_str))
+        Ok((String::from("en"), country))
     } else {
-        Ok(None)
+        return Err(eyre!("no available holiday data found"));
     }
 }
 
@@ -123,13 +84,17 @@ pub fn load_holidays(
     holiday_map: &mut HolidayMap,
     year: &String,
 ) {
+    let country = match country_opt {
+        Some(cou) => cou,
+        None => return,
+    };
     let meta_cache_res = load_cached_meta_file();
     let meta_cache = match meta_cache_res {
         Ok(Some(cache)) => cache,
         _ => return, // 出错或空就直接返回
     };
 
-    let holiday_code_result: Result<Option<String>, String> = get_holiday_code(
+    let holiday_code_result = get_holiday_code(
         meta_cache,
         user_defined_country,
         country_opt,
@@ -137,22 +102,22 @@ pub fn load_holidays(
         year,
     );
     // 1. 获取 code
-    let code = match holiday_code_result {
-        Ok(Some(code)) => code,
-        Ok(None) => {
-            log::warn!("未找到假期区域代码");
-            return;
-        }
+    let (languange, country) = match holiday_code_result {
+        Ok((language, country)) => (language, country),
         Err(err_str) => {
             log::error!("获取假期区域代码失败: {}", err_str);
             return;
         }
     };
     // 2. 加载假期文件
-    let file_str = match load_holidays_file(&code) {
+    let file_str = match load_holidays_file(year, language, &country) {
         Ok(content) => content,
         Err(e) => {
-            log::error!("加载假期文件 '{}' 失败: {}", &code, e);
+            log::error!(
+                "加载假期文件 {} 失败: {}",
+                get_ylc_code(year, language, &country),
+                e
+            );
             return;
         }
     };
@@ -170,7 +135,7 @@ pub fn load_holidays(
         "成功解析假期数据，共 {} 个假期",
         holiday_response.holidays.len()
     );
-    holiday_response.add_to_holiday_map(holiday_map, &code, &year);
+    holiday_response.add_to_holiday_map(holiday_map, year, &languange, &country);
 }
 
 /// 从缓存中获取假期元数据。
@@ -227,5 +192,19 @@ pub fn get_meta_cache_path() -> Option<PathBuf> {
         fs::create_dir_all(&path).ok()?;
         path.push("meta_cache.json");
         Some(path)
+    })
+}
+
+/// 获取 holiday 文件的位置
+///
+/// holiday_ylc_str: 代表 年_语言_国家 的字符串，例如 2025_zh_cn
+///
+pub fn get_holiday_cache_file_path(year: &str, language: &str, country: &str) -> Option<PathBuf> {
+    dirs::cache_dir().map(|mut path| {
+        path.push("riqi");
+        path.push("holidays");
+        path.push(year);
+        path.push(format!("{}.json", get_lc_code(language, country)));
+        path
     })
 }

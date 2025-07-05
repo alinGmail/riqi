@@ -1,3 +1,19 @@
+mod cli;
+mod component;
+mod config;
+mod holiday;
+mod holiday_updater;
+mod holiday_utils;
+mod layout;
+mod lunar;
+mod state;
+mod theme;
+mod translate;
+mod types;
+mod update_logic;
+mod utils;
+
+use crate::config::theme_loader::load_theme_from_file;
 use chrono::{Datelike, Duration, Local};
 use clap::Parser;
 use cli::Args;
@@ -13,6 +29,7 @@ use crossterm::{
     ExecutableCommand,
 };
 use env_logger::{Builder, Target};
+use holiday::{get_holiday_code, load_holidays};
 use layout::get_layout;
 use log::LevelFilter;
 use ratatui::{
@@ -25,28 +42,9 @@ use state::RiqiState;
 use std::{collections::HashMap, fs::File, io, sync::Mutex};
 use std::{sync::Arc, time::Duration as StdDuration};
 use tokio::sync::mpsc;
-use update_logic::{update_meta, UpdateFlag};
-
 use types::{calendar::MonthCalendar, holiday::HolidayMap};
+use update_logic::{update_meta, UpdateFlag};
 use utils::add_months_safe;
-
-mod holiday;
-mod theme;
-use crate::config::theme_loader::load_theme_from_file;
-use holiday::{get_holiday_code, load_holidays};
-
-mod state;
-mod utils;
-
-mod cli;
-mod component;
-mod config;
-mod holiday_updater;
-mod layout;
-mod lunar;
-mod translate;
-mod types;
-mod update_logic;
 
 enum AppEvent {
     Input(crossterm::event::Event),
