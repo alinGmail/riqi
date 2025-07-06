@@ -17,7 +17,7 @@ use crate::config::theme_loader::load_theme_from_file;
 use chrono::{Datelike, Duration, Local};
 use clap::Parser;
 use cli::Args;
-use color_eyre::{owo_colors::OwoColorize, Result};
+use color_eyre::Result;
 use component::{bottom_line_component::BottomLineComponent, month_component::MonthComponent};
 use config::{
     config_init::{get_config, get_system_language_country},
@@ -29,7 +29,7 @@ use crossterm::{
     ExecutableCommand,
 };
 use env_logger::{Builder, Target};
-use holiday::{get_holiday_code, load_holidays};
+use holiday::load_holidays;
 use layout::get_layout;
 use log::LevelFilter;
 use ratatui::{
