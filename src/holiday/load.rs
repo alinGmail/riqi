@@ -1,5 +1,7 @@
+use crate::holiday::utils::{load_cached_meta_file, parse_holidays};
+
 use super::{
-    types::MetaCache,
+    types::{HolidayMap, MetaCache},
     utils::{get_holiday_cache_file_path, get_ylc_code},
 };
 use color_eyre::eyre::{eyre, OptionExt, Result};
@@ -41,4 +43,65 @@ pub fn get_holiday_code(
     } else {
         return Err(eyre!("no available holiday data found"));
     }
+}
+
+pub fn load_holidays(
+    user_defined_country: bool,
+    country_opt: &Option<String>,
+    language: &str,
+    holiday_map: &mut HolidayMap,
+    year: &String,
+) {
+    let country = match country_opt {
+        Some(cou) => cou,
+        None => return,
+    };
+    let meta_cache_res = load_cached_meta_file();
+    let meta_cache = match meta_cache_res {
+        Ok(Some(cache)) => cache,
+        _ => return, // 出错或空就直接返回
+    };
+
+    let holiday_code_result = get_holiday_code(
+        meta_cache,
+        user_defined_country,
+        country_opt,
+        language,
+        year,
+    );
+    // 1. 获取 code
+    let (languange, country) = match holiday_code_result {
+        Ok((language, country)) => (language, country),
+        Err(err_str) => {
+            log::error!("获取假期区域代码失败: {}", err_str);
+            return;
+        }
+    };
+    // 2. 加载假期文件
+    let file_str = match load_holidays_file(year, language, &country) {
+        Ok(content) => content,
+        Err(e) => {
+            log::error!(
+                "加载假期文件 {} 失败: {}",
+                get_ylc_code(year, language, &country),
+                e
+            );
+            return;
+        }
+    };
+    // 3. 解析假期
+    let holiday_response = match parse_holidays(&file_str) {
+        Ok(data) => data,
+        Err(e) => {
+            log::error!("解析假期数据失败: {}", e);
+            return;
+        }
+    };
+
+    // 4. 正常处理假期数据
+    log::debug!(
+        "成功解析假期数据，共 {} 个假期",
+        holiday_response.holidays.len()
+    );
+    holiday_response.add_to_holiday_map(holiday_map, year, &languange, &country);
 }

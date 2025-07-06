@@ -8,10 +8,13 @@ use ratatui::{
 };
 
 use crate::{
-    lunar::{number_to_lunar_day, number_to_lunar_month},
-    types::{calendar::CalendarDay, holiday::PrimaryType},
+    holiday::types::{Holiday, PrimaryType},
+    state::RiqiState,
 };
-use crate::{state::RiqiState, types::holiday::Holiday};
+use crate::{
+    lunar::{number_to_lunar_day, number_to_lunar_month},
+    types::calendar::CalendarDay,
+};
 
 use super::utils::get_style_from_config;
 

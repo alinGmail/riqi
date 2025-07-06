@@ -1,3 +1,4 @@
+use super::types::HolidayResponse;
 use super::types::MetaCache;
 use color_eyre::eyre::eyre;
 use color_eyre::eyre::Result;
@@ -55,4 +56,8 @@ pub fn load_cached_meta_file() -> Result<Option<MetaCache>> {
     let json = fs::read_to_string(cache_path)?;
     let cache: MetaCache = serde_json::from_str(&json)?;
     Ok(Some(cache))
+}
+
+pub fn parse_holidays(json_str: &str) -> Result<HolidayResponse, serde_json::Error> {
+    serde_json::from_str(json_str)
 }

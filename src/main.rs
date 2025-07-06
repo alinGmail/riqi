@@ -2,15 +2,12 @@ mod cli;
 mod component;
 mod config;
 mod holiday;
-mod holiday_updater;
-mod holiday_utils;
 mod layout;
 mod lunar;
 mod state;
 mod theme;
 mod translate;
 mod types;
-mod update_logic;
 mod utils;
 
 use crate::config::theme_loader::load_theme_from_file;
@@ -29,7 +26,11 @@ use crossterm::{
     ExecutableCommand,
 };
 use env_logger::{Builder, Target};
-use holiday::load_holidays;
+use holiday::{
+    load::load_holidays,
+    types::HolidayMap,
+    update::{update_meta, UpdateFlag},
+};
 use layout::get_layout;
 use log::LevelFilter;
 use ratatui::{
@@ -42,8 +43,7 @@ use state::RiqiState;
 use std::{collections::HashMap, fs::File, io, sync::Mutex};
 use std::{sync::Arc, time::Duration as StdDuration};
 use tokio::sync::mpsc;
-use types::{calendar::MonthCalendar, holiday::HolidayMap};
-use update_logic::{update_meta, UpdateFlag};
+use types::calendar::MonthCalendar;
 use utils::add_months_safe;
 
 enum AppEvent {

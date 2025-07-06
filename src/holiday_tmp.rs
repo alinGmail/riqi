@@ -7,6 +7,69 @@ use color_eyre::eyre::{eyre, OptionExt, Result};
 use std::fs;
 use std::path::PathBuf;
 
+/// 根据假期代码加载对应的假期文件。
+///
+/// 该函数在开发环境和生产环境下有不同的行为：
+/// - **开发环境 (`debug_assertions`)**: 从项目目录 `resources/holidays/2025/` 加载文件。
+/// - **生产环境**: 从编译时嵌入的资源中加载。
+///
+/// # Arguments
+///
+/// * `holiday_code` - 假期代码字符串 (例如, "zh_cn")。
+///
+/// # Returns
+///
+/// * `std::io::Result<String>` - 成功时返回文件内容的 `Result`，失败时返回 `std::io::Error`。
+pub fn load_holidays_file(year: &str, language: &str, country: &str) -> Result<String> {
+    // 开发环境：从项目目录加载
+    let path = get_holiday_cache_file_path(year, language, country)
+        .ok_or_eyre("get holiday cache file failed")?;
+    let content = std::fs::read_to_string(path.as_path())?;
+    Ok(content)
+}
+
+/// 根据用户配置和系统语言确定要使用的假期代码。
+///
+/// # Arguments
+///
+/// * `user_defined_country` - 一个布尔值，指示国家/地区是否由用户明确定义。
+/// * `country_opt` - `Option<String>`，包含用户定义的国家/地区代码。
+/// * `language` - 当前的语言代码。
+///
+/// # Returns
+///
+/// 返回 (language, country)
+pub fn get_holiday_code(
+    meta_cache: MetaCache,
+    user_defined_country: bool,
+    country_opt: &Option<String>,
+    language: &str,
+    year: &str,
+) -> Result<(String, String)> {
+    let country = match country_opt {
+        Some(c) => c.to_lowercase(),
+        None => return Err(eyre!("country is empty")),
+    };
+    let language = language.to_lowercase();
+    let language_country_str = get_ylc_code(year, &language, &country);
+    let en_country_str = get_ylc_code(year, "en", &country);
+    let available_holiday_region = meta_cache.data.get_available_year_holiday_keys();
+
+    if user_defined_country {
+        if available_holiday_region.contains(&language_country_str) {
+            Ok((language, country))
+        } else {
+            return Err(eyre!("cannot find holidays of {}", language_country_str));
+        }
+    } else if available_holiday_region.contains(&language_country_str) {
+        Ok((language, country))
+    } else if available_holiday_region.contains(&en_country_str) {
+        Ok((String::from("en"), country))
+    } else {
+        return Err(eyre!("no available holiday data found"));
+    }
+}
+
 /// 加载、解析假期数据并将其填充到 `HolidayMap` 中。
 ///
 /// # Arguments

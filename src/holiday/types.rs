@@ -1,4 +1,4 @@
-use crate::holiday_utils::get_ylc_code;
+use crate::holiday::utils::get_ylc_code;
 use chrono::Utc;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
@@ -85,10 +85,6 @@ pub struct DateTime {
 #[derive(Debug, Serialize, Deserialize)]
 pub struct HolidayResponse {
     pub holidays: Vec<Holiday>,
-}
-
-pub fn parse_holidays(json_str: &str) -> Result<HolidayResponse, serde_json::Error> {
-    serde_json::from_str(json_str)
 }
 
 impl HolidayResponse {
