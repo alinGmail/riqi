@@ -1,12 +1,18 @@
 use super::types::HolidayMeta;
-use super::utils::load_cached_meta_file;
+use super::utils::{get_ylc_code, load_cached_meta_file};
 use crate::holiday::{types::MetaCache, utils::get_meta_cache_path};
 use chrono::{TimeDelta, Utc};
 use color_eyre::eyre::{eyre, Result};
+use lazy_static::lazy_static;
 use reqwest::Client;
+use std::collections::HashSet;
 use std::fs;
 use std::sync::{Arc, Mutex};
 use std::time::Duration;
+
+lazy_static! {
+    static ref DOWNLOADING_FILES: Mutex<HashSet<String>> = Mutex::new(HashSet::new());
+}
 
 pub async fn download_meta_file(client: &Client, url: &str) -> Result<HolidayMeta> {
     let response = client.get(url).send().await?;
@@ -36,19 +42,19 @@ pub fn get_cached_meta() -> Result<Option<HolidayMeta>> {
 
 pub async fn update_meta(flag: UpdateFlag) {
     if let Ok(Some(_)) = get_cached_meta() {
-        println!("Meta cache is still valid.");
+        log::debug!("Meta cache is still valid.");
         let mut meta_updated = flag.lock().unwrap();
         *meta_updated = true;
         return;
     }
 
     if let Err(e) = download_and_cache_meta().await {
-        eprintln!("Failed to update meta: {}", e);
+        log::error!("Failed to update meta: {}", e);
     }
 
     let mut meta_updated = flag.lock().unwrap();
     *meta_updated = true;
-    println!("Meta update finished.");
+    log::debug!("Meta update finished.");
 }
 
 async fn download_and_cache_meta() -> Result<()> {
@@ -69,16 +75,24 @@ async fn download_and_cache_meta() -> Result<()> {
     Ok(())
 }
 
-pub async fn update_holiday(flag: UpdateFlag) {
+pub async fn update_holiday(year: &str, language: &str, country: &str) {
+    let ylc_code = get_ylc_code(year, language, country);
     {
-        let meta_updated = flag.lock().unwrap();
-        if !*meta_updated {
-            println!("Holiday update cannot start: meta update is not complete. Exiting.");
+        let mut downloading = DOWNLOADING_FILES.lock().unwrap();
+        if downloading.contains(&ylc_code) {
+            log::debug!("Already downloading {}", ylc_code);
             return;
         }
+        downloading.insert(ylc_code.clone());
     }
 
-    println!("Starting holiday update...");
-    tokio::time::sleep(Duration::from_secs(1)).await;
-    println!("Holiday update finished.");
+    // Simulate download
+    log::debug!("Downloading {}", ylc_code);
+    tokio::time::sleep(Duration::from_secs(2)).await;
+    log::debug!("Downloaded {}", ylc_code);
+
+    {
+        let mut downloading = DOWNLOADING_FILES.lock().unwrap();
+        downloading.remove(&ylc_code);
+    }
 }

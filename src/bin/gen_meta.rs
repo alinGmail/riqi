@@ -1,5 +1,5 @@
-use chrono::{DateTime, TimeZone, Utc};
-use serde_json::json;
+use chrono::Utc;
+use serde_json::{json, Value};
 use std::collections::BTreeMap;
 use std::fs::{self, File};
 use std::io::Write;
@@ -37,15 +37,6 @@ fn get_json_files(year_dir: &Path) -> Vec<(String, PathBuf)> {
         .unwrap_or_default()
 }
 
-fn get_last_modified(path: &Path) -> String {
-    fs::metadata(path)
-        .and_then(|meta| meta.modified())
-        .ok()
-        .and_then(|mtime| mtime.duration_since(std::time::UNIX_EPOCH).ok())
-        .map(|d| chrono::Utc.timestamp(d.as_secs() as i64, 0).to_rfc3339())
-        .unwrap_or_else(|| Utc::now().to_rfc3339())
-}
-
 fn main() -> std::io::Result<()> {
     let holidays_dir = Path::new("resources/holidays");
     let meta_path = holidays_dir.join("meta.json");
@@ -53,8 +44,10 @@ fn main() -> std::io::Result<()> {
 
     for year_dir in get_year_dirs(holidays_dir) {
         for (key, file_path) in get_json_files(&year_dir) {
-            let last_modified = get_last_modified(&file_path);
-            files_map.insert(key, json!({ "last_modified": last_modified }));
+            let content = fs::read_to_string(&file_path)?;
+            let json_value: Value = serde_json::from_str(&content).unwrap_or(json!({}));
+            let version = json_value.get("version").and_then(|v| v.as_i64()).unwrap_or(0);
+            files_map.insert(key, json!({ "version": version }));
         }
     }
 

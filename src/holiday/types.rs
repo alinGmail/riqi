@@ -23,7 +23,7 @@ impl HolidayMeta {
 
 #[derive(Deserialize, Debug, Serialize)]
 pub struct HolidayFileInfo {
-    pub last_modified: String,
+    pub version: i32,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -84,6 +84,7 @@ pub struct DateTime {
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct HolidayResponse {
+    pub version: i32,
     pub holidays: Vec<Holiday>,
 }
 
