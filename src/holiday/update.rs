@@ -1,5 +1,6 @@
 use super::types::HolidayMeta;
 use super::utils::{get_ylc_code, load_cached_meta_file};
+use crate::holiday::utils::get_holiday_cache_file_path;
 use crate::holiday::{types::MetaCache, utils::get_meta_cache_path};
 use chrono::{TimeDelta, Utc};
 use color_eyre::eyre::{eyre, Result};
@@ -7,8 +8,8 @@ use lazy_static::lazy_static;
 use reqwest::Client;
 use std::collections::HashSet;
 use std::fs;
+use std::path::PathBuf;
 use std::sync::{Arc, Mutex};
-use std::time::Duration;
 
 lazy_static! {
     static ref DOWNLOADING_FILES: Mutex<HashSet<String>> = Mutex::new(HashSet::new());
@@ -18,6 +19,35 @@ pub async fn download_meta_file(client: &Client, url: &str) -> Result<HolidayMet
     let response = client.get(url).send().await?;
     let meta = response.json::<HolidayMeta>().await?;
     Ok(meta)
+}
+
+pub async fn download_holiday_data_file(url: &str, file_path: PathBuf) -> Result<()> {
+    let client = reqwest::Client::new();
+    let response = client.get(url).send().await?;
+
+    if !response.status().is_success() {
+        return Err(eyre!(
+            "Failed to download file from {}: {}",
+            url,
+            response.status()
+        ));
+    }
+
+    let bytes = response.bytes().await?;
+
+    if let Some(parent) = file_path.as_path().parent() {
+        if !parent.exists() {
+            std::fs::create_dir_all(parent)?;
+        }
+    }
+
+    std::fs::write(file_path, &bytes)?;
+
+    Ok(())
+}
+
+pub fn get_holiday_data_file_url(year: &str, language: &str, country: &str) -> String {
+    format!("https://raw.githubusercontent.com/alinGmail/riqi/refs/heads/main/resources/holidays/{}/{}_{}.json",year,language,country)
 }
 
 pub type UpdateFlag = Arc<Mutex<bool>>;
@@ -86,10 +116,20 @@ pub async fn update_holiday(year: &str, language: &str, country: &str) {
         downloading.insert(ylc_code.clone());
     }
 
-    // Simulate download
-    log::debug!("Downloading {}", ylc_code);
-    tokio::time::sleep(Duration::from_secs(2)).await;
-    log::debug!("Downloaded {}", ylc_code);
+    let result = async {
+        let path = get_holiday_cache_file_path(year, language, country)
+            .ok_or_else(|| eyre!("Failed to get holiday cache file path"))?;
+
+        let url = get_holiday_data_file_url(year, language, country);
+        download_holiday_data_file(&url, path).await
+    }
+    .await;
+
+    if let Err(e) = result {
+        log::error!("Failed to download holiday data for {}: {}", ylc_code, e);
+    } else {
+        log::debug!("Successfully downloaded holiday data for {}", ylc_code);
+    }
 
     {
         let mut downloading = DOWNLOADING_FILES.lock().unwrap();
