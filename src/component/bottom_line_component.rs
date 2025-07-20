@@ -11,7 +11,7 @@ use crate::{
 };
 
 pub struct BottomLineComponent<'a> {
-    pub riqi_state: &'a RiqiState<'a>,
+    pub riqi_state: &'a RiqiState,
 }
 
 impl<'a> Widget for BottomLineComponent<'a> {

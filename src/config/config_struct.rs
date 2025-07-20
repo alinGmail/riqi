@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 use std::str::FromStr;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Config {
     pub country: Option<String>,
     pub language: String,

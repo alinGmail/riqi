@@ -39,7 +39,7 @@ use ratatui::{
 };
 use state::RiqiState;
 use std::{collections::HashMap, fs::File, io};
-use std::{sync::Arc, time::Duration as StdDuration};
+use std::{time::Duration as StdDuration};
 use types::calendar::MonthCalendar;
 use utils::add_months_safe;
 
@@ -119,7 +119,6 @@ async fn run(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>) -> Result<()
 
     // 获取当前日期
     let now = Local::now();
-    let mut holiday_map: HolidayMap = HashMap::new();
     let mut calendar = MonthCalendar::new(now.year() as u32, now.month());
 
     let config = get_config(&sys_language, &sys_country, &file_config, &args);
@@ -128,23 +127,22 @@ async fn run(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>) -> Result<()
 
     let message_bus = MessageBus::new();
 
-    load_holidays(
+    let holiday_map = load_holidays(
         true,
         &config.country,
         &config.language,
-        &mut holiday_map,
         &now.year().to_string(),
         &message_bus,
-    );
+    ).unwrap_or(HolidayMap::new());
 
     let theme = load_theme_from_file("resources/theme/ningmen.toml").expect("主题加载失败");
 
     let mut riqi_state = RiqiState {
         select_day: now.date_naive(),
-        holiday_map: &holiday_map,
+        holiday_map: holiday_map,
         today: now.date_naive(),
-        config: &config,
-        theme: &theme,
+        config: config.clone(),
+        theme: theme,
         message_bus: message_bus,
     };
 
@@ -162,7 +160,7 @@ async fn run(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>) -> Result<()
             }
 
             let size = frame.area();
-            let riqi_layout = get_layout(size, riqi_state.config);
+            let riqi_layout = get_layout(size, &riqi_state.config);
 
             let bottom_line = BottomLineComponent {
                 riqi_state: &riqi_state,
@@ -253,10 +251,14 @@ async fn run(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>) -> Result<()
                     }
                 }
                 AppEvent::RequestResult(data) => {
-                    // 处理请求返回的数据
-                    log::info!("Received data from request: {}", data);
-                    // 这里可以更新 riqi_state，例如显示数据或触发 UI 刷新
-                    // riqi_state.some_new_field = data;
+                    let holiday_map =  load_holidays(
+                        true,
+                        &config.country,
+                        &config.language,
+                        &now.year().to_string(),
+                        &riqi_state.message_bus,
+                    ).unwrap_or(HashMap::new());
+                    riqi_state.holiday_map = holiday_map;
                 }
             }
         }

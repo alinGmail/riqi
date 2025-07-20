@@ -5,11 +5,11 @@ use crate::{
 };
 
 #[derive(Debug)]
-pub struct RiqiState<'a> {
+pub struct RiqiState {
     pub select_day: NaiveDate,
-    pub holiday_map: &'a HolidayMap,
+    pub holiday_map: HolidayMap,
     pub today: NaiveDate,
-    pub config: &'a Config,
-    pub theme: &'a Theme,
+    pub config: Config,
+    pub theme: Theme,
     pub message_bus: MessageBus,
 }

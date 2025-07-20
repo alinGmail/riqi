@@ -5,15 +5,15 @@ use crate::{
         utils::{load_cached_meta_file, parse_holidays},
     },
 };
+use color_eyre::eyre::{eyre, OptionExt, Result};
+use std::collections::HashMap;
 
 use super::{
     types::{HolidayMap, MetaCache},
     utils::{get_holiday_cache_file_path, get_ylc_code},
 };
-use color_eyre::eyre::{eyre, OptionExt, Result};
 
 pub fn load_holidays_file(year: &str, language: &str, country: &str) -> Result<String> {
-    // 开发环境：从项目目录加载
     let path = get_holiday_cache_file_path(year, language, country)
         .ok_or_eyre("get holiday cache file failed")?;
     let content = std::fs::read_to_string(path.as_path())?;
@@ -55,21 +55,24 @@ pub fn load_holidays(
     user_defined_country: bool,
     country_opt: &Option<String>,
     language: &str,
-    holiday_map: &mut HolidayMap,
     year: &String,
     message_bus: &MessageBus,
-) {
+) -> Option<HolidayMap> {
+    let mut holiday_map: HolidayMap = HashMap::new();
     let country = match country_opt {
         Some(cou) => cou,
-        None => return,
+        None => return None,
     };
     let meta_cache_res = load_cached_meta_file();
     let meta_cache = match meta_cache_res {
         Ok(Some(cache)) => cache,
         _ => {
-            update_meta(message_bus);
-            return;
-        } // 出错或空就直接返回
+            let tx = message_bus.get_sender();
+            tokio::spawn(async move {
+                update_meta(tx).await;
+            });
+            return None;
+        }
     };
 
     let holiday_code_result = get_holiday_code(
@@ -79,41 +82,42 @@ pub fn load_holidays(
         language,
         year,
     );
-    // 1. 获取 code
-    let (languange, country) = match holiday_code_result {
+
+    let (language, country) = match holiday_code_result {
         Ok((language, country)) => (language, country),
         Err(err_str) => {
             log::error!("获取假期区域代码失败: {}", err_str);
-            return;
+            return None;
         }
     };
-    // 2. 加载假期文件
-    let file_str = match load_holidays_file(year, language, &country) {
+
+    let file_str = match load_holidays_file(year, &language, &country) {
         Ok(content) => content,
         Err(e) => {
             log::error!(
                 "加载假期文件 {} 失败: {}",
-                get_ylc_code(year, language, &country),
+                get_ylc_code(year, &language, &country),
                 e
             );
-            update_holiday_data(year, language, &country, message_bus);
-            // todo here
-            return;
+            let tx = message_bus.get_sender();
+            let year_clone = year.to_string();
+            let language_clone = language.to_string();
+            let country_clone = country.to_string();
+            tokio::spawn(async move {
+                update_holiday_data(&year_clone, &language_clone, &country_clone, tx).await;
+            });
+            return None;
         }
     };
-    // 3. 解析假期
+
     let holiday_response = match parse_holidays(&file_str) {
         Ok(data) => data,
         Err(e) => {
             log::error!("解析假期数据失败: {}", e);
-            return;
+            return None;
         }
     };
 
-    // 4. 正常处理假期数据
-    log::debug!(
-        "成功解析假期数据，共 {} 个假期",
-        holiday_response.holidays.len()
-    );
-    holiday_response.add_to_holiday_map(holiday_map, year, &languange, &country);
+    holiday_response.add_to_holiday_map(&mut holiday_map, year, &language, &country);
+    Some(holiday_map)
 }

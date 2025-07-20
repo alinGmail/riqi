@@ -26,7 +26,7 @@ pub fn render_day_item(buffer: &mut Buffer, day: &CalendarDay, rect: Rect, riqi_
 #[derive(Debug, Clone)]
 struct DayItem<'a> {
     day: &'a CalendarDay,
-    riqi_state: &'a RiqiState<'a>,
+    riqi_state: &'a RiqiState,
 }
 
 /// A button with a label that can be themed.

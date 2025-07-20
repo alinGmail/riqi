@@ -8,7 +8,7 @@ use ratatui::{buffer::Buffer, layout::Rect, text::Line, widgets::Widget};
 
 pub struct MonthComponent<'a> {
     pub data: &'a MonthCalendar,
-    pub riqi_state: &'a RiqiState<'a>,
+    pub riqi_state: &'a RiqiState,
     pub day_gap: u16,
     pub riqi_layout: &'a RiqiLayout,
 }
