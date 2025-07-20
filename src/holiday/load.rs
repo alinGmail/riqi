@@ -1,4 +1,10 @@
-use crate::holiday::utils::{load_cached_meta_file, parse_holidays};
+use crate::{
+    events::MessageBus,
+    holiday::{
+        update::{update_holiday_data, update_meta},
+        utils::{load_cached_meta_file, parse_holidays},
+    },
+};
 
 use super::{
     types::{HolidayMap, MetaCache},
@@ -51,6 +57,7 @@ pub fn load_holidays(
     language: &str,
     holiday_map: &mut HolidayMap,
     year: &String,
+    message_bus: &MessageBus,
 ) {
     let country = match country_opt {
         Some(cou) => cou,
@@ -59,7 +66,10 @@ pub fn load_holidays(
     let meta_cache_res = load_cached_meta_file();
     let meta_cache = match meta_cache_res {
         Ok(Some(cache)) => cache,
-        _ => return, // 出错或空就直接返回
+        _ => {
+            update_meta(message_bus);
+            return;
+        } // 出错或空就直接返回
     };
 
     let holiday_code_result = get_holiday_code(
@@ -86,6 +96,8 @@ pub fn load_holidays(
                 get_ylc_code(year, language, &country),
                 e
             );
+            update_holiday_data(year, language, &country, message_bus);
+            // todo here
             return;
         }
     };

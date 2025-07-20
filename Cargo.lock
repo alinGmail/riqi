@@ -1458,6 +1458,7 @@ dependencies = [
  "crossterm 0.29.0",
  "dirs",
  "env_logger",
+ "lazy_static",
  "log",
  "ratatui",
  "regex",

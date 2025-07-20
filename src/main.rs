@@ -1,6 +1,7 @@
 mod cli;
 mod component;
 mod config;
+mod events;
 mod holiday;
 mod layout;
 mod lunar;
@@ -26,11 +27,8 @@ use crossterm::{
     ExecutableCommand,
 };
 use env_logger::{Builder, Target};
-use holiday::{
-    load::load_holidays,
-    types::HolidayMap,
-    update::{update_meta, UpdateFlag},
-};
+use events::{AppEvent, MessageBus};
+use holiday::{load::load_holidays, types::HolidayMap};
 use layout::get_layout;
 use log::LevelFilter;
 use ratatui::{
@@ -40,16 +38,10 @@ use ratatui::{
     Terminal,
 };
 use state::RiqiState;
-use std::{collections::HashMap, fs::File, io, sync::Mutex};
+use std::{collections::HashMap, fs::File, io};
 use std::{sync::Arc, time::Duration as StdDuration};
-use tokio::sync::mpsc;
 use types::calendar::MonthCalendar;
 use utils::add_months_safe;
-
-enum AppEvent {
-    Input(crossterm::event::Event),
-    RequestResult(String), // 假设请求返回一个 String
-}
 
 fn setup_logger() {
     // 创建或覆盖日志文件
@@ -134,12 +126,15 @@ async fn run(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>) -> Result<()
 
     log::debug!("init config {:?}", config);
 
+    let message_bus = MessageBus::new();
+
     load_holidays(
         true,
         &config.country,
         &config.language,
         &mut holiday_map,
         &now.year().to_string(),
+        &message_bus,
     );
 
     let theme = load_theme_from_file("resources/theme/ningmen.toml").expect("主题加载失败");
@@ -150,36 +145,8 @@ async fn run(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>) -> Result<()
         today: now.date_naive(),
         config: &config,
         theme: &theme,
+        message_bus: message_bus,
     };
-
-    let (tx, mut rx) = mpsc::channel::<AppEvent>(100); // 创建一个容量为100的通道
-    let update_flag: UpdateFlag = Arc::new(Mutex::new(false));
-
-    // 启动一个异步任务来监听键盘事件
-    let tx_clone = tx.clone();
-    tokio::spawn(async move {
-        loop {
-            if event::poll(StdDuration::from_millis(250)).unwrap() {
-                // 非阻塞地等待事件
-                if let Ok(event) = event::read() {
-                    tx_clone.send(AppEvent::Input(event)).await.unwrap();
-                }
-            }
-        }
-    });
-
-    // 示例：启动一个异步任务来模拟网络请求
-    let tx_clone_2 = tx.clone();
-    tokio::spawn(async move {
-        // 模拟一个耗时的网络请求
-        update_meta(update_flag).await;
-        tokio::time::sleep(StdDuration::from_secs(5)).await;
-        let result = "Data from server!".to_string();
-        tx_clone_2
-            .send(AppEvent::RequestResult(result))
-            .await
-            .unwrap();
-    });
 
     loop {
         terminal.draw(|frame| {
@@ -211,8 +178,20 @@ async fn run(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>) -> Result<()
             month_component.render(riqi_layout.month_calendar.area, frame.buffer_mut());
         })?;
 
+        // 启动一个异步任务来监听键盘事件
+        let tx_clone = riqi_state.message_bus.get_sender();
+        tokio::spawn(async move {
+            loop {
+                if event::poll(StdDuration::from_millis(250)).unwrap() {
+                    // 非阻塞地等待事件
+                    if let Ok(event) = event::read() {
+                        tx_clone.send(AppEvent::Input(event)).await.unwrap();
+                    }
+                }
+            }
+        });
         // 从通道接收事件
-        if let Some(event) = rx.recv().await {
+        if let Some(event) = riqi_state.message_bus.receive().await {
             match event {
                 AppEvent::Input(event) => {
                     if let Event::Key(key) = event {
