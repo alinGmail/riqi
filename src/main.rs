@@ -11,4 +11,9 @@ fn main() {
     
     // 如果你只需要日期
     println!("当前日期: {}", now.format("%Y-%m-%d"));
+
+    let (language,country_option) = config::locale::get_system_language_country();
+
+    let country = country_option.unwrap();
+    println!("当前的系统是：{}-{}", language,country);
 }
