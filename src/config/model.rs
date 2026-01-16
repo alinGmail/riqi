@@ -13,3 +13,4 @@ pub struct ConfigFile {
     pub show_lunar: Option<bool>,
     pub hide_bg: Option<bool>,
 }
+
