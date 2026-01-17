@@ -2,14 +2,17 @@ mod config;
 
 use chrono::Local;
 use clap::Parser;
+use config::config_main::get_app_config;
 use crate::config::cli::Args;
 
 fn main() {
     // 获取本地当前时间
     let now = Local::now();
-    
+
     let cli = Args::parse();
-    
+
+    let app_config = get_app_config(cli);
+
     // 格式化输出 (年-月-日 时:分:秒)
     println!("当前的系统时间是: {}", now.format("%Y-%m-%d %H:%M:%S"));
 
