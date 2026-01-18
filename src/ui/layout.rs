@@ -8,6 +8,7 @@ pub struct MonthCalendarLayout {
     pub content: Rect,
     pub day_item_row: u32,
     pub day_item_column: u32,
+    pub day_gap: u32,
 }
 
 #[derive(Debug)]
@@ -71,6 +72,7 @@ pub fn get_layout(frame_area: Rect, day_cell_width: Option<u32>, day_cell_height
         },
         day_item_column: (month_cal_center_area.width as u32 - 6) / 7,
         day_item_row: (month_cal_center_area.height as u32 - 4) / 6,
+        day_gap:1,
     };
     let riqi_layout = RiqiLayout {
         title: Rect {

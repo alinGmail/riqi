@@ -10,7 +10,7 @@ use crate::{data::calendar::CalendarDay, state::RiqiState};
 
 use super::utils::get_style_from_config;
 
-struct DayCell<'a> {
+pub struct DayCell<'a> {
     day_data: &'a CalendarDay,
     riqi_state: &'a RiqiState,
 }
