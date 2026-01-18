@@ -1,6 +1,7 @@
 mod config;
 mod ui;
 mod state;
+mod data;
 
 use crossterm::{
     event::{self, Event, KeyCode},

@@ -4,4 +4,5 @@ use chrono::NaiveDate;
 pub struct RiqiState {
     pub select_day: NaiveDate,
     pub today: NaiveDate,
+
 }

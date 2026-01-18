@@ -1,15 +1,17 @@
-use ratatui::{buffer::Buffer, layout::Rect, widgets::WidgetRef};
+use ratatui::{
+    buffer::Buffer,
+    layout::Rect,
+    widgets::{Widget, WidgetRef},
+};
 
-use super::day_cell::DayCellState;
+use crate::data::calendar::CalendarDay;
 
 pub struct WeekRow<'a> {
-    days_cell_state: &'a [DayCellState],
+    days_cell_state: &'a [CalendarDay],
 }
 
-impl WidgetRef for WeekRow<'_> {
-    #[doc = " Draws the current state of the widget in the given buffer. That is the only method required"]
-    #[doc = " to implement a custom widget."]
-    fn render_ref(&self, area: Rect, buf: &mut Buffer) {
+impl Widget for WeekRow<'_> {
+    fn render(self, area: Rect, buf: &mut Buffer) {
         todo!()
     }
 }
