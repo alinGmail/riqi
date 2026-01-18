@@ -11,6 +11,8 @@ pub struct CalendarDay {
     pub is_current_month: bool, // 是否属于当前月份
     pub lunar_month: i32,       // 农历月份
     pub lunar_day: i32,         // 农历日期
+    pub is_today: bool,
+    pub is_select_day: bool,
 }
 
 impl CalendarDay {
@@ -27,6 +29,8 @@ impl CalendarDay {
             is_current_month,
             lunar_month,
             lunar_day,
+            is_today: false,
+            is_select_day: false,
         }
     }
 }

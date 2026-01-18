@@ -2,6 +2,7 @@ mod config;
 mod ui;
 mod state;
 mod data;
+mod theme;
 
 use crossterm::{
     event::{self, Event, KeyCode},
