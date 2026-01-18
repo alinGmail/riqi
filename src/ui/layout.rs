@@ -1,6 +1,7 @@
 use ratatui::layout::{Constraint, Flex, Layout, Rect};
 
 pub fn get_layout(frame_area: Rect, day_cell_width: Option<u32>, day_cell_height: Option<u32>) {
+    // terminal 的最少行是 24 行，最少列是 41 列
     // 月历部分的默认高度
     let mut month_calendar_row_constraint: Constraint = Constraint::Min(34);
     // 月历部分的默认高度
@@ -31,7 +32,6 @@ pub fn get_layout(frame_area: Rect, day_cell_width: Option<u32>, day_cell_height
         .first()
         .unwrap();
 
-    
 
 }
 
