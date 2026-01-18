@@ -1,4 +1,10 @@
-use ratatui::{style::Style, widgets::Widget};
+use ratatui::{
+    buffer::Buffer,
+    layout::Rect,
+    style::Style,
+    text::Line,
+    widgets::{Block, BorderType, Borders, Widget},
+};
 
 use crate::{data::calendar::CalendarDay, state::RiqiState};
 
@@ -11,7 +17,10 @@ struct DayCell<'a> {
 
 impl<'a> DayCell<'a> {
     pub fn new(day_data: &'a CalendarDay, riqi_state: &'a RiqiState) -> Self {
-        DayCell { day_data, riqi_state }
+        DayCell {
+            day_data,
+            riqi_state,
+        }
     }
 
     pub fn get_day_item_style(&self, is_holiday: bool) -> Style {
@@ -42,10 +51,51 @@ impl<'a> DayCell<'a> {
 
         style
     }
+
+    fn render_out_border(&self, area: Rect, buf: &mut Buffer) -> Rect {
+        let (is_holiday, show_holiday_icon) = (false, false);
+        let block = Block::new()
+            .borders(Borders::ALL)
+            .border_type(BorderType::Rounded)
+            .border_style(Style::default().fg(self.get_day_item_style(is_holiday).fg.unwrap()));
+        let inner_area = block.inner(area);
+        block.render(area, buf);
+        inner_area
+    }
+    fn render_conternt(&self, inner_area: Rect, buf: &mut Buffer) {
+        let day_item_style = self.get_day_item_style(false);
+        let line = Line::from(self.day_data.day.to_string()).style(day_item_style);
+
+        line.render(
+            Rect {
+                x: inner_area.left() + 1,
+                y: inner_area.top(),
+                width: 2,
+                height: 1,
+            },
+            buf,
+        );
+
+        let mut icon_x = inner_area.left() + inner_area.width - 3;
+        if self.day_data.is_today {
+            let today_line = Line::from("今").style(day_item_style).centered();
+            today_line.render(
+                Rect {
+                    x: icon_x,
+                    y: inner_area.top(),
+                    width: 2,
+                    height: 1,
+                },
+                buf,
+            );
+        }
+    }
 }
 
 impl Widget for DayCell<'_> {
-    fn render(self, area: ratatui::prelude::Rect, buf: &mut ratatui::prelude::Buffer) {
-        todo!()
+    fn render(self, area: Rect, buf: &mut ratatui::prelude::Buffer) {
+        let inner_area = self.render_out_border(area, buf);
+        self.render_conternt(inner_area, buf);
+        todo!();
     }
 }
