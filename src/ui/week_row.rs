@@ -14,6 +14,21 @@ pub struct WeekRow<'a> {
     pub riqi_layout: &'a RiqiLayout,
 }
 
+impl<'a> WeekRow<'a> {
+    pub fn new(
+     days_cell_state: &'a [CalendarDay],
+     riqi_state: &'a RiqiState,
+     riqi_layout: &'a RiqiLayout,
+    ) -> Self {
+       WeekRow{
+            days_cell_state,
+            riqi_state,
+            riqi_layout
+        }
+    }
+}
+
+
 impl Widget for WeekRow<'_> {
     fn render(self, area: Rect, buf: &mut Buffer) {
         let day_item_width = self.riqi_layout.month_calendar.day_item_column as u16;
