@@ -1,9 +1,12 @@
 mod config;
-mod ui;
-mod state;
 mod data;
+mod state;
 mod theme;
+mod ui;
 
+use chrono::Local;
+use clap::Parser;
+use config::{cli::Args, config_main::get_app_config};
 use crossterm::{
     event::{self, Event, KeyCode},
     terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
@@ -11,7 +14,15 @@ use crossterm::{
 };
 use ratatui::{prelude::*, widgets::*};
 use serde::Deserialize;
-use std::{io::{self, stdout}, sync::mpsc, thread, time::Duration};
+use state::RiqiState;
+use std::{
+    io::{self, stdout},
+    sync::mpsc,
+    thread,
+    time::Duration,
+};
+use theme::theme_loader::load_theme_from_file;
+use ui::{layout::get_layout, month_component::{self, MonthComponent}};
 
 #[derive(Deserialize, Debug, Clone)]
 struct Todo {
@@ -40,18 +51,16 @@ async fn main() -> io::Result<()> {
 
     // 事件源 A: 终端输入监听线程 (将 crossterm 事件转发到 mpsc)
     let tx_input = tx.clone();
-    thread::spawn(move || {
-        loop {
-            if event::poll(Duration::from_millis(500)).unwrap() {
-                if let Ok(ev) = event::read() {
-                    if let Event::Key(key) = ev {
-                        if key.code == KeyCode::Char('q') {
-                            let _ = tx_input.send(AppEvent::Quit);
-                            break;
-                        }
+    thread::spawn(move || loop {
+        if event::poll(Duration::from_millis(500)).unwrap() {
+            if let Ok(ev) = event::read() {
+                if let Event::Key(key) = ev {
+                    if key.code == KeyCode::Char('q') {
+                        let _ = tx_input.send(AppEvent::Quit);
+                        break;
                     }
-                    let _ = tx_input.send(AppEvent::TerminalEvent(ev));
                 }
+                let _ = tx_input.send(AppEvent::TerminalEvent(ev));
             }
         }
     });
@@ -62,7 +71,7 @@ async fn main() -> io::Result<()> {
         // 模拟网络延迟
         tokio::time::sleep(Duration::from_secs(2)).await;
         let url = "https://jsonplaceholder.typicode.com/todos/1";
-        
+
         match reqwest::get(url).await {
             Ok(resp) => {
                 if let Ok(todo) = resp.json::<Todo>().await {
@@ -79,31 +88,42 @@ async fn main() -> io::Result<()> {
     let mut todo_data: Option<Todo> = None;
     let mut error_msg: Option<String> = None;
 
+    let now = Local::now();
+    let args = Args::parse();
+    let appConfig = get_app_config(args);
+
+    let theme = load_theme_from_file("resources/theme/ningmen.toml").expect("主题加载失败");
+    let mut riqi_state = RiqiState {
+        select_day: now.date_naive(),
+        today: now.date_naive(),
+        theme,
+    };
+
     // 初始手动触发一次渲染（显示“加载中”）
-    draw_ui(&mut terminal, &todo_data, &error_msg)?;
+    draw_ui(&mut terminal)?;
 
     loop {
         // 【关键】阻塞式接收：没有事件时，程序会停留在此处，不消耗 CPU
         match rx.recv().unwrap() {
             AppEvent::Quit => break,
-            
+
             AppEvent::DataLoaded(todo) => {
                 todo_data = Some(todo);
                 // 收到数据，触发重绘
-                draw_ui(&mut terminal, &todo_data, &error_msg)?;
+                draw_ui(&mut terminal)?;
             }
-            
+
             AppEvent::LoadError(e) => {
                 error_msg = Some(e);
                 // 发生错误，触发重绘
-                draw_ui(&mut terminal, &todo_data, &error_msg)?;
+                draw_ui(&mut terminal)?;
             }
 
             AppEvent::TerminalEvent(Event::Resize(_, _)) => {
                 // 窗口大小改变，触发重绘
-                draw_ui(&mut terminal, &todo_data, &error_msg)?;
+                draw_ui(&mut terminal)?;
             }
-            
+
             _ => {} // 其他按键暂不触发重绘
         }
     }
@@ -115,33 +135,13 @@ async fn main() -> io::Result<()> {
 }
 
 // 将渲染逻辑抽离
-fn draw_ui(
-    terminal: &mut Terminal<CrosstermBackend<io::Stdout>>,
-    todo: &Option<Todo>,
-    err: &Option<String>
-) -> io::Result<()> {
+fn draw_ui(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>) -> io::Result<()> {
     terminal.draw(|f| {
-        let area = f.size();
-        
-        let content = if let Some(e) = err {
-            format!("错误: {}", e)
-        } else if let Some(t) = todo {
-            format!("ID: {}\n标题: {}\n状态: {}", t.id, t.title, if t.completed { "完成" } else { "未完成" })
-        } else {
-            "正在异步加载数据 (JSONPlaceholder)...".to_string()
-        };
-
-        let block = Block::default()
-            .title(" 事件驱动渲染示例 (按 'q' 退出) ")
-            .borders(Borders::ALL)
-            .border_style(Style::default().fg(if todo.is_some() { Color::Green } else { Color::Yellow }));
-
-        let paragraph = Paragraph::new(content)
-            .block(block)
-            .alignment(Alignment::Center)
-            .wrap(Wrap { trim: true });
-
-        f.render_widget(paragraph, area);
+        let frame_area = f.area();
+        let layout = get_layout(frame_area, None, None);
+        // let data = 
+        // let month_item = MonthComponent::new(data, riqi_layout, riqi_state);
+        todo!()
     })?;
     Ok(())
 }
