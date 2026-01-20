@@ -45,6 +45,5 @@ impl Widget for WeekRow<'_> {
             );
             day_cell_item.render(day_cell_area, buf);
         }
-        todo!()
     }
 }

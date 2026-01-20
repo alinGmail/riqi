@@ -4,7 +4,7 @@ mod state;
 mod theme;
 mod ui;
 
-use chrono::Local;
+use chrono::{Datelike, Local};
 use clap::Parser;
 use config::{cli::Args, config_main::get_app_config};
 use crossterm::{
@@ -12,6 +12,7 @@ use crossterm::{
     terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
     ExecutableCommand,
 };
+use data::calendar::MonthCalendar;
 use ratatui::{prelude::*, widgets::*};
 use serde::Deserialize;
 use state::RiqiState;
@@ -99,8 +100,11 @@ async fn main() -> io::Result<()> {
         theme,
     };
 
+    let now = Local::now();
+    let mut calendar = MonthCalendar::new(now.year() as u32, now.month());
+
     // 初始手动触发一次渲染（显示“加载中”）
-    draw_ui(&mut terminal)?;
+    draw_ui(&mut terminal,&calendar,&riqi_state)?;
 
     loop {
         // 【关键】阻塞式接收：没有事件时，程序会停留在此处，不消耗 CPU
@@ -110,18 +114,18 @@ async fn main() -> io::Result<()> {
             AppEvent::DataLoaded(todo) => {
                 todo_data = Some(todo);
                 // 收到数据，触发重绘
-                draw_ui(&mut terminal)?;
+                draw_ui(&mut terminal,&calendar,&riqi_state)?;
             }
 
             AppEvent::LoadError(e) => {
                 error_msg = Some(e);
                 // 发生错误，触发重绘
-                draw_ui(&mut terminal)?;
+                draw_ui(&mut terminal,&calendar,&riqi_state)?;
             }
 
             AppEvent::TerminalEvent(Event::Resize(_, _)) => {
                 // 窗口大小改变，触发重绘
-                draw_ui(&mut terminal)?;
+                draw_ui(&mut terminal,&calendar,&riqi_state)?;
             }
 
             _ => {} // 其他按键暂不触发重绘
@@ -135,13 +139,16 @@ async fn main() -> io::Result<()> {
 }
 
 // 将渲染逻辑抽离
-fn draw_ui(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>) -> io::Result<()> {
+fn draw_ui(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>,
+        calendar: &MonthCalendar,
+        riqi_state: &RiqiState,
+) -> io::Result<()> {
     terminal.draw(|f| {
         let frame_area = f.area();
         let layout = get_layout(frame_area, None, None);
         // let data = 
-        // let month_item = MonthComponent::new(data, riqi_layout, riqi_state);
-        todo!()
+        let month_item = MonthComponent::new(calendar, &layout, &riqi_state);
+        month_item.render(frame_area, f.buffer_mut());
     })?;
     Ok(())
 }

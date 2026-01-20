@@ -96,6 +96,5 @@ impl Widget for DayCell<'_> {
     fn render(self, area: Rect, buf: &mut ratatui::prelude::Buffer) {
         let inner_area = self.render_out_border(area, buf);
         self.render_conternt(inner_area, buf);
-        todo!();
     }
 }
