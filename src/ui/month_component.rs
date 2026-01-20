@@ -1,5 +1,5 @@
 use chrono::{Datelike, NaiveDate};
-use ratatui::widgets::Widget;
+use ratatui::{layout::Rect, widgets::Widget};
 
 use crate::{data::calendar::MonthCalendar, state::RiqiState};
 
@@ -29,9 +29,11 @@ impl<'a> MonthComponent<'a> {
 impl<'a> Widget for MonthComponent<'a> {
     fn render(self, area: ratatui::prelude::Rect, buf: &mut ratatui::prelude::Buffer) {
         let day_height = self.riqi_layout.month_calendar.day_item_row as u16;
+        let day_width = self.riqi_layout.month_calendar.day_item_column as u16;
         for (week_idx, week) in self.data.day_data.iter().enumerate() {
+            let week_row_area = Rect::new(area.left(), area.top() + 4 + day_height * week_idx as u16, area.width, day_height);
             let week_row_item = week_row::WeekRow::new(week, self.riqi_state, self.riqi_layout);
-            week_row_item.render(area, buf);
+            week_row_item.render(week_row_area, buf);
         }
     }
 }

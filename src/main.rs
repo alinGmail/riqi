@@ -148,7 +148,7 @@ fn draw_ui(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>,
         let layout = get_layout(frame_area, None, None);
         // let data = 
         let month_item = MonthComponent::new(calendar, &layout, &riqi_state);
-        month_item.render(frame_area, f.buffer_mut());
+        month_item.render(layout.month_calendar.area, f.buffer_mut());
     })?;
     Ok(())
 }
