@@ -24,10 +24,14 @@ impl CalendarDay {
         day_of_week: u32,
         is_today: bool,
         is_current_month: bool,
+        select_day: NaiveDate,
     ) -> Self {
         let solar = SolarDay::from_ymd(year as isize, month as usize, day as usize);
         let lunar_month = solar.get_lunar_day().get_month() as i32;
         let lunar_day = solar.get_lunar_day().get_day() as i32;
+        let is_select_day = year == select_day.year() as u32
+            && month == select_day.month()
+            && day == select_day.day();
 
         CalendarDay {
             year,
@@ -38,7 +42,7 @@ impl CalendarDay {
             lunar_month,
             lunar_day,
             is_today,
-            is_select_day: day == 4,
+            is_select_day,
         }
     }
 }
@@ -102,6 +106,7 @@ impl MonthCalendar {
                 first_weekday as u32 - 1 - i as u32,
                 is_now_in_prev_month && day == now.day(),
                 false,
+                select_day,
             ));
         }
 
@@ -115,6 +120,7 @@ impl MonthCalendar {
                 day_of_week,
                 is_now_in_cur_month && day == now.day(),
                 true,
+                select_day,
             ));
 
             // 如果当前星期已满7天或这是最后一天，则开始新的一周
@@ -139,6 +145,7 @@ impl MonthCalendar {
                     day_of_week,
                     is_now_in_next_month && next_day == now.day(),
                     false,
+                    select_day,
                 ));
                 next_day += 1;
             }
@@ -157,7 +164,7 @@ mod tests {
 
     #[test]
     fn test_calendar_day_creation() {
-        let day = CalendarDay::new(2024, 3, 15, 5, false, true);
+        let day = CalendarDay::new(2024, 3, 15, 5, false, true, Local::now().date_naive());
         assert_eq!(day.year, 2024);
         assert_eq!(day.month, 3);
         assert_eq!(day.day, 15);
@@ -167,7 +174,7 @@ mod tests {
 
     #[test]
     fn test_month_calendar_creation() {
-        let calendar = MonthCalendar::new(2024, 3);
+        let calendar = MonthCalendar::new(2024, 3, NaiveDate::from_ymd_opt(2024, 3, 1).unwrap());
         assert_eq!(calendar.year, 2024);
         assert_eq!(calendar.month, 3);
         assert!(!calendar.day_data.is_empty());
@@ -175,7 +182,7 @@ mod tests {
 
     #[test]
     fn test_month_calendar_weeks() {
-        let calendar = MonthCalendar::new(2024, 3);
+        let calendar = MonthCalendar::new(2024, 3, NaiveDate::from_ymd_opt(2024, 3, 1).unwrap());
         // 2024年3月有6周
         assert_eq!(calendar.day_data.len(), 6);
 
@@ -190,7 +197,7 @@ mod tests {
 
     #[test]
     fn test_month_calendar_days() {
-        let calendar = MonthCalendar::new(2024, 3);
+        let calendar = MonthCalendar::new(2024, 3, NaiveDate::from_ymd_opt(2024, 3, 1).unwrap());
 
         // 检查3月1日
         let first_week = &calendar.day_data[0];
@@ -215,7 +222,7 @@ mod tests {
 
     #[test]
     fn test_month_calendar_weekdays() {
-        let calendar = MonthCalendar::new(2024, 3);
+        let calendar = MonthCalendar::new(2024, 3, NaiveDate::from_ymd_opt(2024, 3, 1).unwrap());
 
         // 检查所有当前月份的日期
         for week in &calendar.day_data {
@@ -237,7 +244,7 @@ mod tests {
 
     #[test]
     fn test_month_calendar_adjacent_months() {
-        let calendar = MonthCalendar::new(2024, 3);
+        let calendar = MonthCalendar::new(2024, 3, NaiveDate::from_ymd_opt(2024, 3, 1).unwrap());
 
         // 检查2月的最后几天
         let first_week = &calendar.day_data[0];
@@ -259,7 +266,7 @@ mod tests {
     #[test]
     fn test_april_30_in_may_calendar() {
         // 测试2025年5月份日历中的4月30日
-        let calendar = MonthCalendar::new(2025, 5);
+        let calendar = MonthCalendar::new(2025, 5, NaiveDate::from_ymd_opt(2025, 5, 1).unwrap());
 
         print!("{:?}", calendar);
         // 找到4月30日
@@ -299,7 +306,11 @@ mod tests {
         ];
 
         for (year, month) in test_cases {
-            let calendar = MonthCalendar::new(year, month);
+            let calendar = MonthCalendar::new(
+                year,
+                month,
+                NaiveDate::from_ymd_opt(year as i32, month, 1).unwrap(),
+            );
             assert_eq!(
                 calendar.day_data.len(),
                 6,
@@ -313,7 +324,7 @@ mod tests {
 
     #[test]
     fn test_calendar_week_structure() {
-        let calendar = MonthCalendar::new(2024, 3);
+        let calendar = MonthCalendar::new(2024, 3, NaiveDate::from_ymd_opt(2024, 3, 1).unwrap());
 
         // 验证每周都有7天
         for (week_index, week) in calendar.day_data.iter().enumerate() {
@@ -339,7 +350,7 @@ mod tests {
 
     #[test]
     fn test_calendar_month_transition() {
-        let calendar = MonthCalendar::new(2024, 3);
+        let calendar = MonthCalendar::new(2024, 3, NaiveDate::from_ymd_opt(2024, 3, 1).unwrap());
 
         // 验证月份过渡的正确性
         let mut found_current_month = false;
