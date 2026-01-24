@@ -1,5 +1,5 @@
-use std::ops::Add;
 use chrono::{Datelike, Duration, Local, NaiveDate};
+use std::ops::Add;
 use tyme4rs::tyme::solar::SolarDay;
 
 // 表示日历中的一天
@@ -51,8 +51,8 @@ pub struct MonthCalendar {
 }
 
 impl MonthCalendar {
-    pub fn new(year: u32, month: u32) -> Self {
-        let day_data = Self::generate_calendar_data(year, month);
+    pub fn new(year: u32, month: u32, select_day: NaiveDate) -> Self {
+        let day_data = Self::generate_calendar_data(year, month, select_day);
         MonthCalendar {
             year,
             month,
@@ -60,7 +60,11 @@ impl MonthCalendar {
         }
     }
 
-    fn generate_calendar_data(year: u32, month: u32) -> Vec<Vec<CalendarDay>> {
+    fn generate_calendar_data(
+        year: u32,
+        month: u32,
+        select_day: NaiveDate,
+    ) -> Vec<Vec<CalendarDay>> {
         let now = Local::now().date_naive();
         let is_now_in_cur_month = now.year() as u32 == year && now.month() == month;
         let first_day = NaiveDate::from_ymd_opt(year as i32, month, 1).unwrap();
@@ -81,7 +85,8 @@ impl MonthCalendar {
 
         // 获取上个月的最后一天
         let prev_month_last_day = first_day.pred_opt().unwrap();
-        let is_now_in_prev_month = prev_month_last_day.year() == now.year() && prev_month_last_day.month() == now.month();
+        let is_now_in_prev_month =
+            prev_month_last_day.year() == now.year() && prev_month_last_day.month() == now.month();
 
         // 初始化日历数据
         let mut weeks = Vec::new();
@@ -120,7 +125,8 @@ impl MonthCalendar {
         }
 
         let next_month_first_day = last_day.succ_opt().unwrap();
-        let is_now_in_next_month = now.year() == next_month_first_day.year() && now.month() == next_month_first_day.month();
+        let is_now_in_next_month = now.year() == next_month_first_day.year()
+            && now.month() == next_month_first_day.month();
         let mut next_day = 1;
         // 添加下个月的日期
         while weeks.len() < 6 {
@@ -151,7 +157,7 @@ mod tests {
 
     #[test]
     fn test_calendar_day_creation() {
-        let day = CalendarDay::new(2024, 3, 15, 5, false,true);
+        let day = CalendarDay::new(2024, 3, 15, 5, false, true);
         assert_eq!(day.year, 2024);
         assert_eq!(day.month, 3);
         assert_eq!(day.day, 15);

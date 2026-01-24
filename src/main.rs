@@ -105,7 +105,7 @@ async fn main() -> Result<()> {
     };
 
     let now = Local::now();
-    let mut calendar = MonthCalendar::new(now.year() as u32, now.month());
+    let mut calendar = MonthCalendar::new(now.year() as u32, now.month(),now.date_naive());
 
     // 初始手动触发一次渲染（显示“加载中”）
     draw_ui(&mut terminal,&calendar,&riqi_state)?;
