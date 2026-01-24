@@ -1,4 +1,5 @@
-use chrono::{Datelike, NaiveDate};
+use std::ops::Add;
+use chrono::{Datelike, Duration, Local, NaiveDate};
 use tyme4rs::tyme::solar::SolarDay;
 
 // 表示日历中的一天
@@ -16,7 +17,14 @@ pub struct CalendarDay {
 }
 
 impl CalendarDay {
-    pub fn new(year: u32, month: u32, day: u32, day_of_week: u32, is_current_month: bool) -> Self {
+    pub fn new(
+        year: u32,
+        month: u32,
+        day: u32,
+        day_of_week: u32,
+        is_today: bool,
+        is_current_month: bool,
+    ) -> Self {
         let solar = SolarDay::from_ymd(year as isize, month as usize, day as usize);
         let lunar_month = solar.get_lunar_day().get_month() as i32;
         let lunar_day = solar.get_lunar_day().get_day() as i32;
@@ -29,8 +37,8 @@ impl CalendarDay {
             is_current_month,
             lunar_month,
             lunar_day,
-            is_today: false,
-            is_select_day: false,
+            is_today,
+            is_select_day: day == 4,
         }
     }
 }
@@ -53,6 +61,8 @@ impl MonthCalendar {
     }
 
     fn generate_calendar_data(year: u32, month: u32) -> Vec<Vec<CalendarDay>> {
+        let now = Local::now().date_naive();
+        let is_now_in_cur_month = now.year() as u32 == year && now.month() == month;
         let first_day = NaiveDate::from_ymd_opt(year as i32, month, 1).unwrap();
         let last_day = if month == 12 {
             NaiveDate::from_ymd_opt(year as i32 + 1, 1, 1)
@@ -71,6 +81,7 @@ impl MonthCalendar {
 
         // 获取上个月的最后一天
         let prev_month_last_day = first_day.pred_opt().unwrap();
+        let is_now_in_prev_month = prev_month_last_day.year() == now.year() && prev_month_last_day.month() == now.month();
 
         // 初始化日历数据
         let mut weeks = Vec::new();
@@ -84,6 +95,7 @@ impl MonthCalendar {
                 prev_month_last_day.month(),
                 day,
                 first_weekday as u32 - 1 - i as u32,
+                is_now_in_prev_month && day == now.day(),
                 false,
             ));
         }
@@ -91,7 +103,14 @@ impl MonthCalendar {
         // 添加当前月的日期
         for day in 1..=last_day.day() {
             let day_of_week = (first_weekday as u32 + day - 1) % 7;
-            current_week.push(CalendarDay::new(year, month, day, day_of_week, true));
+            current_week.push(CalendarDay::new(
+                year,
+                month,
+                day,
+                day_of_week,
+                is_now_in_cur_month && day == now.day(),
+                true,
+            ));
 
             // 如果当前星期已满7天或这是最后一天，则开始新的一周
             if current_week.len() == 7 {
@@ -101,6 +120,7 @@ impl MonthCalendar {
         }
 
         let next_month_first_day = last_day.succ_opt().unwrap();
+        let is_now_in_next_month = now.year() == next_month_first_day.year() && now.month() == next_month_first_day.month();
         let mut next_day = 1;
         // 添加下个月的日期
         while weeks.len() < 6 {
@@ -111,6 +131,7 @@ impl MonthCalendar {
                     next_month_first_day.month(),
                     next_day,
                     day_of_week,
+                    is_now_in_next_month && next_day == now.day(),
                     false,
                 ));
                 next_day += 1;
@@ -130,7 +151,7 @@ mod tests {
 
     #[test]
     fn test_calendar_day_creation() {
-        let day = CalendarDay::new(2024, 3, 15, 5, true);
+        let day = CalendarDay::new(2024, 3, 15, 5, false,true);
         assert_eq!(day.year, 2024);
         assert_eq!(day.month, 3);
         assert_eq!(day.day, 15);
@@ -334,4 +355,3 @@ mod tests {
         assert!(found_next_month, "应该包含下个月的日期");
     }
 }
-
