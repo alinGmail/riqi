@@ -1,8 +1,9 @@
 mod config;
 mod data;
 mod state;
-mod theme;
 mod ui;
+mod theme;
+mod holiday;
 
 use chrono::{Datelike, Local};
 use clap::Parser;
@@ -22,6 +23,7 @@ use std::{
     thread,
     time::Duration,
 };
+use color_eyre::Result;
 use theme::theme_loader::load_theme_from_file;
 use ui::{layout::get_layout, month_component::{self, MonthComponent}};
 
@@ -41,7 +43,9 @@ enum AppEvent {
 }
 
 #[tokio::main]
-async fn main() -> io::Result<()> {
+async fn main() -> Result<()> {
+    
+    color_eyre::install()?;
     // --- 1. 初始化终端 ---
     enable_raw_mode()?;
     stdout().execute(EnterAlternateScreen)?;
