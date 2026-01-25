@@ -5,7 +5,7 @@ mod state;
 mod theme;
 mod ui;
 
-use chrono::{Datelike, Local, NaiveDate,Duration};
+use chrono::{Datelike, Duration, Local, NaiveDate};
 use clap::Parser;
 use color_eyre::Result;
 use config::{cli::Args, config_main::get_app_config};
@@ -15,7 +15,7 @@ use crossterm::{
     ExecutableCommand,
 };
 use data::calendar::MonthCalendar;
-use ratatui::{prelude::*};
+use ratatui::prelude::*;
 use serde::Deserialize;
 use state::RiqiState;
 use std::{
@@ -99,14 +99,40 @@ async fn main() -> Result<()> {
                 draw_ui(&mut terminal, &calendar, &riqi_state)?;
             }
             AppEvent::TerminalEvent(Event::Key(key)) => {
+                if key.is_release() {
+                    continue;
+                }
                 if key.code == KeyCode::Char('j') || key.code == KeyCode::Down {
                     riqi_state.select_day += Duration::weeks(1);
-
-                    calendar = MonthCalendar::new(now.year() as u32, now.month(), riqi_state.select_day);
+                    calendar = MonthCalendar::new(
+                        riqi_state.select_day.year() as u32,
+                        riqi_state.select_day.month(),
+                        riqi_state.select_day,
+                    );
                 }
                 if key.code == KeyCode::Char('k') || key.code == KeyCode::Up {
                     riqi_state.select_day += Duration::weeks(-1);
-                    calendar = MonthCalendar::new(now.year() as u32, now.month(), riqi_state.select_day);
+                    calendar = MonthCalendar::new(
+                        riqi_state.select_day.year() as u32,
+                        riqi_state.select_day.month(),
+                        riqi_state.select_day,
+                    );
+                }
+                if key.code == KeyCode::Char('h') || key.code == KeyCode::Left {
+                    riqi_state.select_day += Duration::days(-1);
+                    calendar = MonthCalendar::new(
+                        riqi_state.select_day.year() as u32,
+                        riqi_state.select_day.month(),
+                        riqi_state.select_day,
+                    );
+                }
+                if key.code == KeyCode::Char('l') || key.code == KeyCode::Right {
+                    riqi_state.select_day += Duration::days(1);
+                    calendar = MonthCalendar::new(
+                        riqi_state.select_day.year() as u32,
+                        riqi_state.select_day.month(),
+                        riqi_state.select_day,
+                    );
                 }
                 draw_ui(&mut terminal, &calendar, &riqi_state)?;
             }
