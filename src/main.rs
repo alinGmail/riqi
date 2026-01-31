@@ -5,6 +5,7 @@ mod state;
 mod theme;
 mod ui;
 
+use crate::holiday::manager::HolidayManager;
 use chrono::{Datelike, Duration, Local, NaiveDate};
 use clap::Parser;
 use color_eyre::Result;
@@ -15,13 +16,14 @@ use crossterm::{
     ExecutableCommand,
 };
 use data::calendar::MonthCalendar;
+use env_logger::{Builder, Target};
+use holiday::manager;
+use log::LevelFilter;
 use ratatui::prelude::*;
 use serde::Deserialize;
 use state::RiqiState;
 use std::{
-    io::{self, stdout},
-    sync::mpsc,
-    thread,
+    fs::File, io::{self, stdout}, sync::mpsc, thread
 };
 use theme::theme_loader::load_theme_from_file;
 use ui::{
@@ -42,14 +44,25 @@ enum AppEvent {
     TerminalEvent(Event),
 }
 
+fn setup_logger() {
+    // 创建或覆盖日志文件
+    let log_file = File::create("debug.log").expect("Failed to create log file");
+
+    Builder::new()
+        .target(Target::Pipe(Box::new(log_file))) // 输出到文件
+        .filter_level(LevelFilter::Debug) // 设置日志级别
+        .format_timestamp(None) // 可选：禁用时间戳
+        .is_test(true) // 禁用颜色（避免乱码）
+        .init();
+}
 #[tokio::main]
 async fn main() -> Result<()> {
+    setup_logger();
     color_eyre::install()?;
     // --- 1. 初始化终端 ---
     enable_raw_mode()?;
     stdout().execute(EnterAlternateScreen)?;
-    let mut terminal = Terminal::new(CrosstermBackend::new(stdout()))?;
-
+    let mut terminal = Terminal::new(CrosstermBackend::new(stdout()))?; 
     // --- 2. 创建核心事件通道 ---
     let (tx, rx) = mpsc::channel();
 
@@ -86,6 +99,13 @@ async fn main() -> Result<()> {
             }
         }
     });
+    let mut holiday_manager = HolidayManager::new();
+
+    holiday_manager.load_ylc_holiday(
+        &riqi_state.select_day.year().to_string(),
+        &appConfig.language,
+        &appConfig.country,
+    ).await;
 
     // 初始手动触发一次渲染（显示“加载中”）
     draw_ui(&mut terminal, &calendar, &riqi_state)?;
