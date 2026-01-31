@@ -1,0 +1,197 @@
+{
+  "version": 1,
+  "holidays": [
+    {
+      "date": { "datetime": { "day": 1, "month": 1, "year": 2026 }, "iso": "2026-01-01" },
+      "name": "元旦",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 2, "month": 1, "year": 2026 }, "iso": "2026-01-02" },
+      "name": "元旦假",
+      "primary_type": "Substitute holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 3, "month": 1, "year": 2026 }, "iso": "2026-01-03" },
+      "name": "元旦假",
+      "primary_type": "Substitute holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 4, "month": 1, "year": 2026 }, "iso": "2026-01-04" },
+      "name": "调休",
+      "primary_type": "Working Day on a Weekend",
+      "type": ["Weekend"]
+    },
+    {
+      "date": { "datetime": { "day": 4, "month": 2, "year": 2026 }, "iso": "2026-02-04" },
+      "name": "立春",
+      "primary_type": "Season",
+      "type": ["Season"]
+    },
+    {
+      "date": { "datetime": { "day": 14, "month": 2, "year": 2026 }, "iso": "2026-02-14" },
+      "name": "调休",
+      "primary_type": "Working Day on a Weekend",
+      "type": ["Weekend"]
+    },
+    {
+      "date": { "datetime": { "day": 15, "month": 2, "year": 2026 }, "iso": "2026-02-15" },
+      "name": "除夕",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 16, "month": 2, "year": 2026 }, "iso": "2026-02-16" },
+      "name": "春节",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 17, "month": 2, "year": 2026 }, "iso": "2026-02-17" },
+      "name": "春节",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 18, "month": 2, "year": 2026 }, "iso": "2026-02-18" },
+      "name": "春节假",
+      "primary_type": "Substitute holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 19, "month": 2, "year": 2026 }, "iso": "2026-02-19" },
+      "name": "春节假",
+      "primary_type": "Substitute holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 20, "month": 2, "year": 2026 }, "iso": "2026-02-20" },
+      "name": "春节假",
+      "primary_type": "Substitute holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 21, "month": 2, "year": 2026 }, "iso": "2026-02-21" },
+      "name": "春节假",
+      "primary_type": "Substitute holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 22, "month": 2, "year": 2026 }, "iso": "2026-02-22" },
+      "name": "春节假",
+      "primary_type": "Substitute holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 23, "month": 2, "year": 2026 }, "iso": "2026-02-23" },
+      "name": "春节假",
+      "primary_type": "Substitute holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 28, "month": 2, "year": 2026 }, "iso": "2026-02-28" },
+      "name": "调休",
+      "primary_type": "Working Day on a Weekend",
+      "type": ["Weekend"]
+    },
+    {
+      "date": { "datetime": { "day": 20, "month": 3, "year": 2026 }, "iso": "2026-03-20" },
+      "name": "春分",
+      "primary_type": "Season",
+      "type": ["Season"]
+    },
+    {
+      "date": { "datetime": { "day": 4, "month": 4, "year": 2026 }, "iso": "2026-04-04" },
+      "name": "清明节",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 1, "month": 5, "year": 2026 }, "iso": "2026-05-01" },
+      "name": "劳动节",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 9, "month": 5, "year": 2026 }, "iso": "2026-05-09" },
+      "name": "调休",
+      "primary_type": "Working Day on a Weekend",
+      "type": ["Weekend"]
+    },
+    {
+      "date": { "datetime": { "day": 19, "month": 6, "year": 2026 }, "iso": "2026-06-19" },
+      "name": "端午节",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 21, "month": 6, "year": 2026 }, "iso": "2026-06-21" },
+      "name": "夏至",
+      "primary_type": "Season",
+      "type": ["Season"]
+    },
+    {
+      "date": { "datetime": { "day": 20, "month": 9, "year": 2026 }, "iso": "2026-09-20" },
+      "name": "调休",
+      "primary_type": "Working Day on a Weekend",
+      "type": ["Weekend"]
+    },
+    {
+      "date": { "datetime": { "day": 25, "month": 9, "year": 2026 }, "iso": "2026-09-25" },
+      "name": "中秋节",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 1, "month": 10, "year": 2026 }, "iso": "2026-10-01" },
+      "name": "国庆节",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 2, "month": 10, "year": 2026 }, "iso": "2026-10-02" },
+      "name": "国庆节",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 3, "month": 10, "year": 2026 }, "iso": "2026-10-03" },
+      "name": "国庆节",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 4, "month": 10, "year": 2026 }, "iso": "2026-10-04" },
+      "name": "国庆节假",
+      "primary_type": "Substitute holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 5, "month": 10, "year": 2026 }, "iso": "2026-10-05" },
+      "name": "国庆节假",
+      "primary_type": "Substitute holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 6, "month": 10, "year": 2026 }, "iso": "2026-10-06" },
+      "name": "国庆节假",
+      "primary_type": "Substitute holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 7, "month": 10, "year": 2026 }, "iso": "2026-10-07" },
+      "name": "国庆节假",
+      "primary_type": "Substitute holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 10, "month": 10, "year": 2026 }, "iso": "2026-10-10" },
+      "name": "调休",
+      "primary_type": "Working Day on a Weekend",
+      "type": ["Weekend"]
+    }
+  ]
+}
