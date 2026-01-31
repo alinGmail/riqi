@@ -1,10 +1,11 @@
+use crate::events::AppEvent;
 use crate::holiday::modal::{parse_holidays_of_year, HolidayOfYearList};
 use crate::holiday::utils::{get_holiday_cache_file_path, get_ylc_code};
-use chrono::{NaiveDate, Utc, DateTime, NaiveDateTime, Duration};
+use chrono::{DateTime, Duration, NaiveDate, NaiveDateTime, Utc};
 use color_eyre::eyre::{bail, OptionExt};
 use color_eyre::Result;
-use log::{debug, error, info};
-use std::ffi::c_void;
+use log::{error, info};
+use std::sync::mpsc::Sender;
 use std::{collections::HashMap, fs, sync::Arc};
 use tokio::sync::Mutex;
 
@@ -27,6 +28,7 @@ pub struct YlcHolidayUpdateState {
 
 pub struct HolidayManager {
     property: Arc<Mutex<HolidayManagerProperty>>,
+    tx: Sender<AppEvent>,
 }
 
 pub fn get_holiday_data_file_url(year: &str, language: &str, country: &str) -> String {
@@ -38,14 +40,14 @@ pub fn get_holiday_data_file_url(year: &str, language: &str, country: &str) -> S
     )
 }
 
-pub fn is_need_update(modify_time: NaiveDateTime) -> bool{
+pub fn is_need_update(modify_time: NaiveDateTime) -> bool {
     // 1. 获取当前的 UTC NaiveDateTime
     let now = Utc::now().naive_utc();
     let last_need_update_time = now - Duration::days(10);
     modify_time < last_need_update_time
 }
 
-pub async fn download_file(url: &str) -> Result<(String)> {
+pub async fn download_file(url: &str) -> Result<String> {
     let response = reqwest::get(url).await?;
     if !response.status().is_success() {
         error!("Fail to download file: HTTP status {}", response.status());
@@ -54,7 +56,7 @@ pub async fn download_file(url: &str) -> Result<(String)> {
     let content = response.bytes().await?;
     Ok(String::from_utf8(content.into()).expect("Found invalid utf-8"))
 }
-pub fn parse_holidays(json_str: &str) -> Result<HolidayOfYearList,serde_json::Error> {
+pub fn parse_holidays(json_str: &str) -> Result<HolidayOfYearList, serde_json::Error> {
     serde_json::from_str(json_str)
 }
 
@@ -66,11 +68,12 @@ pub fn load_holidays_file(year: &str, language: &str, country: &str) -> Result<S
 }
 
 impl HolidayManager {
-    pub fn new() -> Self {
+    pub fn new(tx: Sender<AppEvent>) -> Self {
         Self {
             property: Arc::new(Mutex::new(HolidayManagerProperty {
                 ylc_holiday_update_state: HashMap::new(),
             })),
+            tx,
         }
     }
 
@@ -92,7 +95,7 @@ impl HolidayManager {
             let datetime: DateTime<Utc> = modify_time.into();
             // 2. 再提取 NaiveDateTime (不含时区信息)
             let modify_naive_time: NaiveDateTime = datetime.naive_utc();
-            
+
             let holiday_content_str = std::fs::read_to_string(cache_path.as_path());
             // parse 文件
             let holiday_year_list = parse_holidays_of_year(&holiday_content_str?);
@@ -103,22 +106,30 @@ impl HolidayManager {
             info!("load local cache file not exist");
             bail!("local cache file not exist")
         }
-        
     }
 
-    pub fn load_remote_file(
+    pub async fn load_remote_file(
         ylc_update_state: &mut YlcHolidayUpdateState,
         year: &str,
         language: &str,
         country: &str,
+        tx: Sender<AppEvent>,
     ) -> Result<()> {
         if !matches!(ylc_update_state.load_remote_state, LoadRemoteState::None) {
             return Ok(());
         }
+        info!("start to load remote file");
         ylc_update_state.load_remote_state = LoadRemoteState::Loading;
         let url = get_holiday_data_file_url(year, language, country);
-        let content = download_file(&url);
-
+        info!("remote url is {}", &url);
+        let content = download_file(&url).await;
+        if let Ok(content_str) = content {
+            let year_of_year_res = parse_holidays(&content_str);
+            tx.send(AppEvent::UpdateHoliday(
+                get_ylc_code(year, language, country),
+                year_of_year_res?,
+            ))?;
+        }
         return Ok(());
     }
 
@@ -133,28 +144,42 @@ impl HolidayManager {
                     local_cache_time: None,
                     load_remote_state: LoadRemoteState::None,
                 });
-            
+
             let load_cache_res =
                 HolidayManager::load_local_cache(ylc_update_property, year, language, country);
             match load_cache_res {
                 Ok(modify_time) => {
                     info!("load local cache success");
                     if let Some(modify_time) = modify_time {
-                       if !is_need_update(modify_time) {
-                           return;
-                       } 
+                        if !is_need_update(modify_time) {
+                            return;
+                        }
                     } else {
                         return;
                     }
                 }
                 Err(_) => {
                     info!("load local cache fail");
-                    return;
                 }
             }
-            let load_remove_res = HolidayManager::load_remote_file(ylc_update_property, year, language, country);
+            let load_remote_res = HolidayManager::load_remote_file(
+                ylc_update_property,
+                year,
+                language,
+                country,
+                self.tx.clone(),
+            )
+            .await;
             
-            
+            match load_remote_res {
+                Ok(_) => {
+                    info!("load remote file success");
+                }
+                Err(error) => {
+                    info!("load remote file fail");
+                    info!("error is {}", error);
+                }
+            }
         }
     }
 }

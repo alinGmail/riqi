@@ -8,7 +8,7 @@ pub enum HolidayLoadStatus {
 }
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub enum PrimaryType {
-    #[serde(rename = "SuRiqiStatebstitute holiday")]
+    #[serde(rename = "Substitute holiday")]
     SubstituteHoliday,
     #[serde(rename = "National holiday")]
     NationalHoliday,

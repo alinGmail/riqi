@@ -1,11 +1,14 @@
 mod config;
 mod data;
+mod events;
 mod holiday;
 mod state;
 mod theme;
 mod ui;
 
+use crate::events::AppEvent;
 use crate::holiday::manager::HolidayManager;
+use crate::holiday::modal::HolidayOfYearList;
 use chrono::{Datelike, Duration, Local, NaiveDate};
 use clap::Parser;
 use color_eyre::Result;
@@ -17,13 +20,16 @@ use crossterm::{
 };
 use data::calendar::MonthCalendar;
 use env_logger::{Builder, Target};
-use holiday::manager;
-use log::LevelFilter;
+use log::{debug, LevelFilter};
 use ratatui::prelude::*;
 use serde::Deserialize;
 use state::RiqiState;
+use std::collections::HashMap;
 use std::{
-    fs::File, io::{self, stdout}, sync::mpsc, thread
+    fs::File,
+    io::{self, stdout},
+    sync::mpsc,
+    thread,
 };
 use theme::theme_loader::load_theme_from_file;
 use ui::{
@@ -36,12 +42,6 @@ struct Todo {
     id: u32,
     title: String,
     completed: bool,
-}
-
-// 统一的事件枚举：合并了 UI 事件和业务数据事件
-enum AppEvent {
-    Quit,
-    TerminalEvent(Event),
 }
 
 fn setup_logger() {
@@ -62,7 +62,7 @@ async fn main() -> Result<()> {
     // --- 1. 初始化终端 ---
     enable_raw_mode()?;
     stdout().execute(EnterAlternateScreen)?;
-    let mut terminal = Terminal::new(CrosstermBackend::new(stdout()))?; 
+    let mut terminal = Terminal::new(CrosstermBackend::new(stdout()))?;
     // --- 2. 创建核心事件通道 ---
     let (tx, rx) = mpsc::channel();
 
@@ -83,6 +83,7 @@ async fn main() -> Result<()> {
 
     let now = Local::now();
     let mut calendar = MonthCalendar::new(now.year() as u32, now.month(), now.date_naive());
+    let mut holiday_map: HashMap<String, HolidayOfYearList> = HashMap::new();
 
     // 事件源 A: 终端输入监听线程 (将 crossterm 事件转发到 mpsc)
     let tx_input = tx.clone();
@@ -99,13 +100,15 @@ async fn main() -> Result<()> {
             }
         }
     });
-    let mut holiday_manager = HolidayManager::new();
+    let mut holiday_manager = HolidayManager::new(tx.clone());
 
-    holiday_manager.load_ylc_holiday(
-        &riqi_state.select_day.year().to_string(),
-        &appConfig.language,
-        &appConfig.country,
-    ).await;
+    holiday_manager
+        .load_ylc_holiday(
+            &riqi_state.select_day.year().to_string(),
+            &appConfig.language,
+            &appConfig.country,
+        )
+        .await;
 
     // 初始手动触发一次渲染（显示“加载中”）
     draw_ui(&mut terminal, &calendar, &riqi_state)?;
@@ -155,6 +158,16 @@ async fn main() -> Result<()> {
                     );
                 }
                 draw_ui(&mut terminal, &calendar, &riqi_state)?;
+            }
+            AppEvent::UpdateHoliday(ylc_key, holiday_of_year) => {
+                debug!("receive update holiday event, ylc: {}", &ylc_key);
+                let old = holiday_map.get(&ylc_key);
+                if let Some(old_holidays) = old {
+                    if old_holidays.version >= holiday_of_year.version {
+                        continue;
+                    }
+                }
+                holiday_map.insert(ylc_key, holiday_of_year);
             }
             _ => {} // 其他按键暂不触发重绘
         }
