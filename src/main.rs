@@ -6,6 +6,7 @@ mod state;
 mod theme;
 mod ui;
 
+use crate::config::model::AppConfig;
 use crate::events::AppEvent;
 use crate::holiday::manager::HolidayManager;
 use crate::holiday::modal::HolidayOfYearList;
@@ -111,7 +112,7 @@ async fn main() -> Result<()> {
         .await;
 
     // 初始手动触发一次渲染（显示“加载中”）
-    draw_ui(&mut terminal, &calendar, &riqi_state)?;
+    draw_ui(&mut terminal, &calendar, &riqi_state, &app_config)?;
 
     loop {
         // 【关键】阻塞式接收：没有事件时，程序会停留在此处，不消耗 CPU
@@ -119,7 +120,7 @@ async fn main() -> Result<()> {
             AppEvent::Quit => break,
             AppEvent::TerminalEvent(Event::Resize(_, _)) => {
                 // 窗口大小改变，触发重绘
-                draw_ui(&mut terminal, &calendar, &riqi_state)?;
+                draw_ui(&mut terminal, &calendar, &riqi_state, &app_config)?;
             }
             AppEvent::TerminalEvent(Event::Key(key)) => {
                 if key.is_release() {
@@ -196,7 +197,7 @@ async fn main() -> Result<()> {
                             .map(|holiday_list| holiday_list.to_holiday_map()),
                     );
                 }
-                draw_ui(&mut terminal, &calendar, &riqi_state)?;
+                draw_ui(&mut terminal, &calendar, &riqi_state,&app_config)?;
             }
             AppEvent::UpdateHoliday(ylc_key, holiday_of_year) => {
                 debug!("receive update holiday event, ylc: {}", &ylc_key);
@@ -207,6 +208,21 @@ async fn main() -> Result<()> {
                     }
                 }
                 holiday_map.insert(ylc_key, holiday_of_year);
+                let selected_day = riqi_state.select_day;
+                let ylc_key = get_ylc_code(
+                    &selected_day.year().to_string(),
+                    &app_config.language,
+                    &app_config.country,
+                );
+                calendar = MonthCalendar::new(
+                    riqi_state.select_day.year() as u32,
+                    riqi_state.select_day.month(),
+                    riqi_state.select_day,
+                    holiday_map
+                        .get(&ylc_key)
+                        .map(|holiday_list| holiday_list.to_holiday_map()),
+                );
+                draw_ui(&mut terminal, &calendar, &riqi_state, &app_config)?;
             }
             _ => {} // 其他按键暂不触发重绘
         }
@@ -223,12 +239,13 @@ fn draw_ui(
     terminal: &mut Terminal<CrosstermBackend<io::Stdout>>,
     calendar: &MonthCalendar,
     riqi_state: &RiqiState,
+    app_config: &AppConfig,
 ) -> io::Result<()> {
     terminal.draw(|f| {
         let frame_area = f.area();
         let layout = get_layout(frame_area, None, None);
         // let data =
-        let month_item = MonthComponent::new(calendar, &layout, &riqi_state);
+        let month_item = MonthComponent::new(calendar, &layout, &riqi_state, app_config);
         month_item.render(layout.month_calendar.area, f.buffer_mut());
     })?;
     Ok(())
