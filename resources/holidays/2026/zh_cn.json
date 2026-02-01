@@ -26,6 +26,18 @@
       "type": ["Weekend"]
     },
     {
+      "date": { "datetime": { "day": 18, "month": 1, "year": 2026 }, "iso": "2026-01-18" },
+      "name": "腊八",
+      "primary_type": "Observance",
+      "type": ["Observance"]
+    },
+    {
+      "date": { "datetime": { "day": 20, "month": 1, "year": 2026 }, "iso": "2026-01-20" },
+      "name": "大寒",
+      "primary_type": "Season",
+      "type": ["Season"]
+    },
+    {
       "date": { "datetime": { "day": 4, "month": 2, "year": 2026 }, "iso": "2026-02-04" },
       "name": "立春",
       "primary_type": "Season",
@@ -39,13 +51,13 @@
     },
     {
       "date": { "datetime": { "day": 15, "month": 2, "year": 2026 }, "iso": "2026-02-15" },
-      "name": "除夕",
+      "name": "春节假",
       "primary_type": "National holiday",
       "type": ["National holiday"]
     },
     {
       "date": { "datetime": { "day": 16, "month": 2, "year": 2026 }, "iso": "2026-02-16" },
-      "name": "春节",
+      "name": "除夕",
       "primary_type": "National holiday",
       "type": ["National holiday"]
     },
@@ -57,38 +69,44 @@
     },
     {
       "date": { "datetime": { "day": 18, "month": 2, "year": 2026 }, "iso": "2026-02-18" },
-      "name": "春节假",
-      "primary_type": "Substitute holiday",
+      "name": "春节",
+      "primary_type": "National holiday",
       "type": ["National holiday"]
     },
     {
       "date": { "datetime": { "day": 19, "month": 2, "year": 2026 }, "iso": "2026-02-19" },
+      "name": "雨水",
+      "primary_type": "Season",
+      "type": ["Season"]
+    },
+    {
+      "date": { "datetime": { "day": 19, "month": 2, "year": 2026 }, "iso": "2026-02-19" },
       "name": "春节假",
-      "primary_type": "Substitute holiday",
+      "primary_type": "National holiday",
       "type": ["National holiday"]
     },
     {
       "date": { "datetime": { "day": 20, "month": 2, "year": 2026 }, "iso": "2026-02-20" },
       "name": "春节假",
-      "primary_type": "Substitute holiday",
+      "primary_type": "National holiday",
       "type": ["National holiday"]
     },
     {
       "date": { "datetime": { "day": 21, "month": 2, "year": 2026 }, "iso": "2026-02-21" },
       "name": "春节假",
-      "primary_type": "Substitute holiday",
+      "primary_type": "National holiday",
       "type": ["National holiday"]
     },
     {
       "date": { "datetime": { "day": 22, "month": 2, "year": 2026 }, "iso": "2026-02-22" },
       "name": "春节假",
-      "primary_type": "Substitute holiday",
+      "primary_type": "National holiday",
       "type": ["National holiday"]
     },
     {
       "date": { "datetime": { "day": 23, "month": 2, "year": 2026 }, "iso": "2026-02-23" },
       "name": "春节假",
-      "primary_type": "Substitute holiday",
+      "primary_type": "National holiday",
       "type": ["National holiday"]
     },
     {
@@ -98,8 +116,38 @@
       "type": ["Weekend"]
     },
     {
+      "date": { "datetime": { "day": 5, "month": 3, "year": 2026 }, "iso": "2026-03-05" },
+      "name": "元宵",
+      "primary_type": "Observance",
+      "type": ["Observance"]
+    },
+    {
+      "date": { "datetime": { "day": 5, "month": 3, "year": 2026 }, "iso": "2026-03-05" },
+      "name": "惊蛰",
+      "primary_type": "Season",
+      "type": ["Season"]
+    },
+    {
+      "date": { "datetime": { "day": 8, "month": 3, "year": 2026 }, "iso": "2026-03-08" },
+      "name": "妇女节",
+      "primary_type": "Half day holiday",
+      "type": ["Half-day holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 12, "month": 3, "year": 2026 }, "iso": "2026-03-12" },
+      "name": "植树节",
+      "primary_type": "Observance",
+      "type": ["Observance"]
+    },
+    {
       "date": { "datetime": { "day": 20, "month": 3, "year": 2026 }, "iso": "2026-03-20" },
       "name": "春分",
+      "primary_type": "Season",
+      "type": ["Season"]
+    },
+    {
+      "date": { "datetime": { "day": 4, "month": 4, "year": 2026 }, "iso": "2026-04-04" },
+      "name": "清明",
       "primary_type": "Season",
       "type": ["Season"]
     },
@@ -110,8 +158,62 @@
       "type": ["National holiday"]
     },
     {
+      "date": { "datetime": { "day": 5, "month": 4, "year": 2026 }, "iso": "2026-04-05" },
+      "name": "清明假",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 6, "month": 4, "year": 2026 }, "iso": "2026-04-06" },
+      "name": "清明假",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 20, "month": 4, "year": 2026 }, "iso": "2026-04-20" },
+      "name": "谷雨",
+      "primary_type": "Season",
+      "type": ["Season"]
+    },
+    {
       "date": { "datetime": { "day": 1, "month": 5, "year": 2026 }, "iso": "2026-05-01" },
       "name": "劳动节",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 2, "month": 5, "year": 2026 }, "iso": "2026-05-02" },
+      "name": "劳动假",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 3, "month": 5, "year": 2026 }, "iso": "2026-05-03" },
+      "name": "劳动假",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 4, "month": 5, "year": 2026 }, "iso": "2026-05-04" },
+      "name": "青年节",
+      "primary_type": "Half day holiday",
+      "type": ["Half-day holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 4, "month": 5, "year": 2026 }, "iso": "2026-05-04" },
+      "name": "劳动假",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 5, "month": 5, "year": 2026 }, "iso": "2026-05-05" },
+      "name": "立夏",
+      "primary_type": "Season",
+      "type": ["Season"]
+    },
+    {
+      "date": { "datetime": { "day": 5, "month": 5, "year": 2026 }, "iso": "2026-05-05" },
+      "name": "劳动假",
       "primary_type": "National holiday",
       "type": ["National holiday"]
     },
@@ -122,8 +224,32 @@
       "type": ["Weekend"]
     },
     {
+      "date": { "datetime": { "day": 21, "month": 5, "year": 2026 }, "iso": "2026-05-21" },
+      "name": "小满",
+      "primary_type": "Season",
+      "type": ["Season"]
+    },
+    {
+      "date": { "datetime": { "day": 1, "month": 6, "year": 2026 }, "iso": "2026-06-01" },
+      "name": "儿童节",
+      "primary_type": "Observance",
+      "type": ["Observance"]
+    },
+    {
+      "date": { "datetime": { "day": 5, "month": 6, "year": 2026 }, "iso": "2026-06-05" },
+      "name": "芒种",
+      "primary_type": "Season",
+      "type": ["Season"]
+    },
+    {
       "date": { "datetime": { "day": 19, "month": 6, "year": 2026 }, "iso": "2026-06-19" },
       "name": "端午节",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 20, "month": 6, "year": 2026 }, "iso": "2026-06-20" },
+      "name": "端午假",
       "primary_type": "National holiday",
       "type": ["National holiday"]
     },
@@ -134,14 +260,104 @@
       "type": ["Season"]
     },
     {
+      "date": { "datetime": { "day": 21, "month": 6, "year": 2026 }, "iso": "2026-06-21" },
+      "name": "端午假",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 1, "month": 7, "year": 2026 }, "iso": "2026-07-01" },
+      "name": "建党节",
+      "primary_type": "Observance",
+      "type": ["Observance"]
+    },
+    {
+      "date": { "datetime": { "day": 7, "month": 7, "year": 2026 }, "iso": "2026-07-07" },
+      "name": "小暑",
+      "primary_type": "Season",
+      "type": ["Season"]
+    },
+    {
+      "date": { "datetime": { "day": 11, "month": 7, "year": 2026 }, "iso": "2026-07-11" },
+      "name": "航海日",
+      "primary_type": "Observance",
+      "type": ["Observance"]
+    },
+    {
+      "date": { "datetime": { "day": 22, "month": 7, "year": 2026 }, "iso": "2026-07-22" },
+      "name": "大暑",
+      "primary_type": "Season",
+      "type": ["Season"]
+    },
+    {
+      "date": { "datetime": { "day": 1, "month": 8, "year": 2026 }, "iso": "2026-08-01" },
+      "name": "建军节",
+      "primary_type": "Observance",
+      "type": ["Observance"]
+    },
+    {
+      "date": { "datetime": { "day": 7, "month": 8, "year": 2026 }, "iso": "2026-08-07" },
+      "name": "立秋",
+      "primary_type": "Season",
+      "type": ["Season"]
+    },
+    {
+      "date": { "datetime": { "day": 17, "month": 8, "year": 2026 }, "iso": "2026-08-17" },
+      "name": "七夕",
+      "primary_type": "Observance",
+      "type": ["Observance"]
+    },
+    {
+      "date": { "datetime": { "day": 23, "month": 8, "year": 2026 }, "iso": "2026-08-23" },
+      "name": "处暑",
+      "primary_type": "Season",
+      "type": ["Season"]
+    },
+    {
+      "date": { "datetime": { "day": 25, "month": 8, "year": 2026 }, "iso": "2026-08-25" },
+      "name": "中元节",
+      "primary_type": "Observance",
+      "type": ["Observance"]
+    },
+    {
+      "date": { "datetime": { "day": 7, "month": 9, "year": 2026 }, "iso": "2026-09-07" },
+      "name": "白露",
+      "primary_type": "Season",
+      "type": ["Season"]
+    },
+    {
+      "date": { "datetime": { "day": 10, "month": 9, "year": 2026 }, "iso": "2026-09-10" },
+      "name": "教师节",
+      "primary_type": "Observance",
+      "type": ["Observance"]
+    },
+    {
       "date": { "datetime": { "day": 20, "month": 9, "year": 2026 }, "iso": "2026-09-20" },
       "name": "调休",
       "primary_type": "Working Day on a Weekend",
       "type": ["Weekend"]
     },
     {
+      "date": { "datetime": { "day": 23, "month": 9, "year": 2026 }, "iso": "2026-09-23" },
+      "name": "秋分",
+      "primary_type": "Season",
+      "type": ["Season"]
+    },
+    {
       "date": { "datetime": { "day": 25, "month": 9, "year": 2026 }, "iso": "2026-09-25" },
       "name": "中秋节",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 26, "month": 9, "year": 2026 }, "iso": "2026-09-26" },
+      "name": "中秋假",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 27, "month": 9, "year": 2026 }, "iso": "2026-09-27" },
+      "name": "中秋假",
       "primary_type": "National holiday",
       "type": ["National holiday"]
     },
@@ -153,45 +369,111 @@
     },
     {
       "date": { "datetime": { "day": 2, "month": 10, "year": 2026 }, "iso": "2026-10-02" },
-      "name": "国庆节",
+      "name": "国庆假",
       "primary_type": "National holiday",
       "type": ["National holiday"]
     },
     {
       "date": { "datetime": { "day": 3, "month": 10, "year": 2026 }, "iso": "2026-10-03" },
-      "name": "国庆节",
+      "name": "国庆假",
       "primary_type": "National holiday",
       "type": ["National holiday"]
     },
     {
       "date": { "datetime": { "day": 4, "month": 10, "year": 2026 }, "iso": "2026-10-04" },
-      "name": "国庆节假",
-      "primary_type": "Substitute holiday",
+      "name": "国庆假",
+      "primary_type": "National holiday",
       "type": ["National holiday"]
     },
     {
       "date": { "datetime": { "day": 5, "month": 10, "year": 2026 }, "iso": "2026-10-05" },
-      "name": "国庆节假",
-      "primary_type": "Substitute holiday",
+      "name": "国庆假",
+      "primary_type": "National holiday",
       "type": ["National holiday"]
     },
     {
       "date": { "datetime": { "day": 6, "month": 10, "year": 2026 }, "iso": "2026-10-06" },
-      "name": "国庆节假",
-      "primary_type": "Substitute holiday",
+      "name": "国庆假",
+      "primary_type": "National holiday",
       "type": ["National holiday"]
     },
     {
       "date": { "datetime": { "day": 7, "month": 10, "year": 2026 }, "iso": "2026-10-07" },
-      "name": "国庆节假",
-      "primary_type": "Substitute holiday",
+      "name": "国庆假",
+      "primary_type": "National holiday",
       "type": ["National holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 8, "month": 10, "year": 2026 }, "iso": "2026-10-08" },
+      "name": "寒露",
+      "primary_type": "Season",
+      "type": ["Season"]
     },
     {
       "date": { "datetime": { "day": 10, "month": 10, "year": 2026 }, "iso": "2026-10-10" },
       "name": "调休",
       "primary_type": "Working Day on a Weekend",
       "type": ["Weekend"]
+    },
+    {
+      "date": { "datetime": { "day": 17, "month": 10, "year": 2026 }, "iso": "2026-10-17" },
+      "name": "重阳",
+      "primary_type": "Observance",
+      "type": ["Observance"]
+    },
+    {
+      "date": { "datetime": { "day": 23, "month": 10, "year": 2026 }, "iso": "2026-10-23" },
+      "name": "霜降",
+      "primary_type": "Season",
+      "type": ["Season"]
+    },
+    {
+      "date": { "datetime": { "day": 7, "month": 11, "year": 2026 }, "iso": "2026-11-07" },
+      "name": "立冬",
+      "primary_type": "Season",
+      "type": ["Season"]
+    },
+    {
+      "date": { "datetime": { "day": 8, "month": 11, "year": 2026 }, "iso": "2026-11-08" },
+      "name": "记者节",
+      "primary_type": "Observance",
+      "type": ["Observance"]
+    },
+    {
+      "date": { "datetime": { "day": 22, "month": 11, "year": 2026 }, "iso": "2026-11-22" },
+      "name": "小雪",
+      "primary_type": "Season",
+      "type": ["Season"]
+    },
+    {
+      "date": { "datetime": { "day": 7, "month": 12, "year": 2026 }, "iso": "2026-12-07" },
+      "name": "大雪",
+      "primary_type": "Season",
+      "type": ["Season"]
+    },
+    {
+      "date": { "datetime": { "day": 21, "month": 12, "year": 2026 }, "iso": "2026-12-21" },
+      "name": "冬至",
+      "primary_type": "Season",
+      "type": ["Season"]
+    },
+    {
+      "date": { "datetime": { "day": 25, "month": 12, "year": 2026 }, "iso": "2026-12-25" },
+      "name": "圣诞",
+      "primary_type": "Observance",
+      "type": ["Observance"]
+    },
+    {
+      "date": { "datetime": { "day": 5, "month": 1, "year": 2027 }, "iso": "2027-01-05" },
+      "name": "小寒",
+      "primary_type": "Season",
+      "type": ["Season"]
+    },
+    {
+      "date": { "datetime": { "day": 20, "month": 1, "year": 2027 }, "iso": "2027-01-20" },
+      "name": "大寒",
+      "primary_type": "Season",
+      "type": ["Season"]
     }
   ]
 }
