@@ -19,7 +19,7 @@ pub struct CalendarDay {
     pub lunar_day: i32,         // 农历日期
     pub is_today: bool,
     pub is_select_day: bool,
-    pub holiday: Option<Holiday>,
+    pub holidays: Option<Vec<Holiday>>,
 }
 
 impl CalendarDay {
@@ -31,7 +31,7 @@ impl CalendarDay {
         is_today: bool,
         is_current_month: bool,
         select_day: NaiveDate,
-        holiday: Option<&Holiday>,
+        holidays: Option<&Vec<Holiday>>,
     ) -> Self {
         let solar = SolarDay::from_ymd(year as isize, month as usize, day as usize);
         let lunar_month = solar.get_lunar_day().get_month() as i32;
@@ -40,8 +40,6 @@ impl CalendarDay {
             && month == select_day.month()
             && day == select_day.day();
 
-        let mut holiday_clone: Option<Holiday> =
-            holiday.map(|holiday_unwrap| holiday_unwrap.clone());
         CalendarDay {
             year,
             month,
@@ -52,7 +50,7 @@ impl CalendarDay {
             lunar_day,
             is_today,
             is_select_day,
-            holiday: holiday_clone,
+            holidays: holidays.map(|holidays_ref| holidays_ref.clone()),
         }
     }
 }
@@ -120,7 +118,7 @@ impl MonthCalendar {
         // 添加上个月的日期
         for i in (0..first_weekday).rev() {
             let day = prev_month_last_day.day() - i as u32;
-            let holiday = holiday_map.as_ref().and_then(|m| {
+            let holidays = holiday_map.as_ref().and_then(|m| {
                 m.get(&get_iso_data_str(
                     prev_month_last_day.year() as u32,
                     prev_month_last_day.month(),
@@ -135,20 +133,16 @@ impl MonthCalendar {
                 is_now_in_prev_month && day == now.day(),
                 false,
                 select_day,
-                holiday.and_then(|holidays| holidays.first()),
+                holidays,
             ));
         }
 
         // 添加当前月的日期
         for day in 1..=last_day.day() {
             let day_of_week = (first_weekday as u32 + day - 1) % 7;
-            let holiday = holiday_map.as_ref().and_then(|m| {
-                m.get(&get_iso_data_str(
-                    year,
-                    month,
-                    day,
-                ))
-            });
+            let holidays = holiday_map
+                .as_ref()
+                .and_then(|m| m.get(&get_iso_data_str(year, month, day)));
             current_week.push(CalendarDay::new(
                 year,
                 month,
@@ -157,7 +151,7 @@ impl MonthCalendar {
                 is_now_in_cur_month && day == now.day(),
                 true,
                 select_day,
-                holiday.and_then(|holidays| holidays.first()),
+                holidays,
             ));
 
             // 如果当前星期已满7天或这是最后一天，则开始新的一周
@@ -174,7 +168,7 @@ impl MonthCalendar {
         // 添加下个月的日期
         while weeks.len() < 6 {
             while current_week.len() < 7 {
-                let holiday = holiday_map.as_ref().and_then(|m| {
+                let holidays = holiday_map.as_ref().and_then(|m| {
                     m.get(&get_iso_data_str(
                         next_month_first_day.year() as u32,
                         next_month_first_day.month(),
@@ -190,7 +184,7 @@ impl MonthCalendar {
                     is_now_in_next_month && next_day == now.day(),
                     false,
                     select_day,
-                    holiday.and_then(|holidays| holidays.first()),
+                    holidays
                 ));
                 next_day += 1;
             }

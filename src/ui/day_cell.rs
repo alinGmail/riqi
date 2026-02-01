@@ -1,3 +1,5 @@
+use super::utils::get_style_from_config;
+use crate::holiday::utils::get_holiday_state;
 use crate::{data::calendar::CalendarDay, state::RiqiState};
 use ratatui::widgets::{Paragraph, Wrap};
 use ratatui::{
@@ -7,8 +9,6 @@ use ratatui::{
     text::Line,
     widgets::{Block, BorderType, Borders, Widget},
 };
-
-use super::utils::get_style_from_config;
 
 pub struct DayCell<'a> {
     day_data: &'a CalendarDay,
@@ -52,20 +52,18 @@ impl<'a> DayCell<'a> {
         style
     }
 
-    fn render_out_border(&self, area: Rect, buf: &mut Buffer) -> Rect {
-        let (is_holiday, show_holiday_icon) = (false, false);
+    fn render_out_border(&self, is_rest_day: bool, area: Rect, buf: &mut Buffer) -> Rect {
         let block = Block::new()
             .borders(Borders::ALL)
             .border_type(BorderType::Rounded)
-            .border_style(Style::default().fg(self.get_day_item_style(is_holiday).fg.unwrap()));
+            .border_style(Style::default().fg(self.get_day_item_style(is_rest_day).fg.unwrap()));
         let inner_area = block.inner(area);
         block.render(area, buf);
         inner_area
     }
-    fn render_content(&self, inner_area: Rect, buf: &mut Buffer) {
-        let day_item_style = self.get_day_item_style(false);
+    fn render_content(&self, is_rest_day: bool, inner_area: Rect, buf: &mut Buffer) {
+        let day_item_style = self.get_day_item_style(is_rest_day);
         let line = Line::from(self.day_data.day.to_string()).style(day_item_style);
-
         line.render(
             Rect {
                 x: inner_area.left() + 1,
@@ -91,10 +89,11 @@ impl<'a> DayCell<'a> {
         }
 
         let mut content_lines: Vec<Line> = vec![];
-        let holiday = self.day_data.holiday.as_ref();
-        if let Some(holiday) = holiday {
-            let holiday_name = holiday.name.clone();
-            content_lines.push(Line::from(holiday_name).style(day_item_style))
+        if let Some(holidays) = &self.day_data.holidays {
+            for holiday in holidays {
+                let holiday_name = holiday.name.clone();
+                content_lines.push(Line::from(holiday_name).style(day_item_style))
+            }
         }
 
         let paragraph = Paragraph::new(content_lines).wrap(Wrap { trim: false });
@@ -112,7 +111,9 @@ impl<'a> DayCell<'a> {
 
 impl Widget for DayCell<'_> {
     fn render(self, area: Rect, buf: &mut ratatui::prelude::Buffer) {
-        let inner_area = self.render_out_border(area, buf);
-        self.render_content(inner_area, buf);
+        let (is_rest_day, show_holiday_icon) =
+            get_holiday_state(&self.day_data.holidays, self.day_data.day_of_week as u16);
+        let inner_area = self.render_out_border(is_rest_day, area, buf);
+        self.render_content(is_rest_day, inner_area, buf);
     }
 }

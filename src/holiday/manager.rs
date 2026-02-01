@@ -92,12 +92,6 @@ pub fn parse_holidays(json_str: &str) -> Result<HolidayOfYearList, serde_json::E
     serde_json::from_str(json_str)
 }
 
-pub fn load_holidays_file(year: &str, language: &str, country: &str) -> Result<String> {
-    let path = get_holiday_cache_file_path(year, language, country)
-        .ok_or_eyre("get holiday cache file path failed")?;
-    let content = std::fs::read_to_string(path.as_path())?;
-    Ok(content)
-}
 
 impl HolidayManager {
     pub fn new(tx: Sender<AppEvent>) -> Self {
