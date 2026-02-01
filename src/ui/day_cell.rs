@@ -1,3 +1,5 @@
+use crate::{data::calendar::CalendarDay, state::RiqiState};
+use ratatui::widgets::{Paragraph, Wrap};
 use ratatui::{
     buffer::Buffer,
     layout::Rect,
@@ -5,8 +7,6 @@ use ratatui::{
     text::Line,
     widgets::{Block, BorderType, Borders, Widget},
 };
-
-use crate::{data::calendar::CalendarDay, state::RiqiState};
 
 use super::utils::get_style_from_config;
 
@@ -62,7 +62,7 @@ impl<'a> DayCell<'a> {
         block.render(area, buf);
         inner_area
     }
-    fn render_conternt(&self, inner_area: Rect, buf: &mut Buffer) {
+    fn render_content(&self, inner_area: Rect, buf: &mut Buffer) {
         let day_item_style = self.get_day_item_style(false);
         let line = Line::from(self.day_data.day.to_string()).style(day_item_style);
 
@@ -76,7 +76,7 @@ impl<'a> DayCell<'a> {
             buf,
         );
 
-        let mut icon_x = inner_area.left() + inner_area.width - 3;
+        let icon_x = inner_area.left() + inner_area.width - 3;
         if self.day_data.is_today {
             let today_line = Line::from("今").style(day_item_style).centered();
             today_line.render(
@@ -89,12 +89,30 @@ impl<'a> DayCell<'a> {
                 buf,
             );
         }
+
+        let mut content_lines: Vec<Line> = vec![];
+        let holiday = self.day_data.holiday.as_ref();
+        if let Some(holiday) = holiday {
+            let holiday_name = holiday.name.clone();
+            content_lines.push(Line::from(holiday_name).style(day_item_style))
+        }
+
+        let paragraph = Paragraph::new(content_lines).wrap(Wrap { trim: false });
+        paragraph.render(
+            Rect {
+                x: inner_area.left(),
+                y: inner_area.top() + 1,
+                width: inner_area.width,
+                height: inner_area.height - 1,
+            },
+            buf,
+        );
     }
 }
 
 impl Widget for DayCell<'_> {
     fn render(self, area: Rect, buf: &mut ratatui::prelude::Buffer) {
         let inner_area = self.render_out_border(area, buf);
-        self.render_conternt(inner_area, buf);
+        self.render_content(inner_area, buf);
     }
 }
