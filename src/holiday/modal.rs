@@ -1,5 +1,6 @@
-use chrono::Utc;
+use crate::holiday::utils::get_ylc_code;
 use serde::{Deserialize, Serialize};
+use std::collections::HashMap;
 
 pub enum HolidayLoadStatus {
     Loading,
@@ -26,7 +27,7 @@ pub enum PrimaryType {
     RegionalHoliday,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Holiday {
     pub name: String,
     pub date: Date,
@@ -35,13 +36,13 @@ pub struct Holiday {
     pub primary_type: PrimaryType,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Date {
     pub iso: String,
     pub datetime: DateTime,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct DateTime {
     pub year: i32,
     pub month: i32,
@@ -58,6 +59,19 @@ pub struct DateTime {
 pub struct HolidayOfYearList {
     pub version: i32,
     pub holidays: Vec<Holiday>,
+}
+
+impl HolidayOfYearList {
+    pub fn to_holiday_map(
+        &self,
+    ) -> HashMap<String, Vec<Holiday>> {
+        let mut date_map: HashMap<String, Vec<Holiday>> = HashMap::new();
+        for holiday in &self.holidays {
+            let date_key = holiday.date.iso.clone();
+            date_map.entry(date_key).or_default().push(holiday.clone());
+        }
+        return date_map;
+    }
 }
 
 pub fn parse_holidays_of_year(json_str: &str) -> Result<HolidayOfYearList, serde_json::Error> {

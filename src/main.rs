@@ -9,6 +9,7 @@ mod ui;
 use crate::events::AppEvent;
 use crate::holiday::manager::HolidayManager;
 use crate::holiday::modal::HolidayOfYearList;
+use crate::holiday::utils::get_ylc_code;
 use chrono::{Datelike, Duration, Local, NaiveDate};
 use clap::Parser;
 use color_eyre::Result;
@@ -72,7 +73,7 @@ async fn main() -> Result<()> {
 
     let now = Local::now();
     let args = Args::parse();
-    let appConfig = get_app_config(args);
+    let app_config = get_app_config(args);
 
     let theme = load_theme_from_file("resources/theme/ningmen.toml").expect("主题加载失败");
     let mut riqi_state = RiqiState {
@@ -82,9 +83,8 @@ async fn main() -> Result<()> {
     };
 
     let now = Local::now();
-    let mut calendar = MonthCalendar::new(now.year() as u32, now.month(), now.date_naive());
     let mut holiday_map: HashMap<String, HolidayOfYearList> = HashMap::new();
-
+    let mut calendar = MonthCalendar::new(now.year() as u32, now.month(), now.date_naive(), None);
     // 事件源 A: 终端输入监听线程 (将 crossterm 事件转发到 mpsc)
     let tx_input = tx.clone();
     thread::spawn(move || loop {
@@ -105,8 +105,8 @@ async fn main() -> Result<()> {
     holiday_manager
         .load_ylc_holiday(
             &riqi_state.select_day.year().to_string(),
-            &appConfig.language,
-            &appConfig.country,
+            &app_config.language,
+            &app_config.country,
         )
         .await;
 
@@ -127,34 +127,73 @@ async fn main() -> Result<()> {
                 }
                 if key.code == KeyCode::Char('j') || key.code == KeyCode::Down {
                     riqi_state.select_day += Duration::weeks(1);
+                    let selected_day = riqi_state.select_day;
+                    let ylc_key = get_ylc_code(
+                        &selected_day.year().to_string(),
+                        &app_config.language,
+                        &app_config.country,
+                    );
                     calendar = MonthCalendar::new(
                         riqi_state.select_day.year() as u32,
                         riqi_state.select_day.month(),
                         riqi_state.select_day,
+                        holiday_map
+                            .get(&ylc_key)
+                            .map(|holiday_list| holiday_list.to_holiday_map()),
                     );
                 }
                 if key.code == KeyCode::Char('k') || key.code == KeyCode::Up {
                     riqi_state.select_day += Duration::weeks(-1);
+
+                    let selected_day = riqi_state.select_day;
+                    let ylc_key = get_ylc_code(
+                        &selected_day.year().to_string(),
+                        &app_config.language,
+                        &app_config.country,
+                    );
+
                     calendar = MonthCalendar::new(
                         riqi_state.select_day.year() as u32,
                         riqi_state.select_day.month(),
                         riqi_state.select_day,
+                        holiday_map
+                            .get(&ylc_key)
+                            .map(|holiday_list| holiday_list.to_holiday_map()),
                     );
                 }
                 if key.code == KeyCode::Char('h') || key.code == KeyCode::Left {
                     riqi_state.select_day += Duration::days(-1);
+
+                    let selected_day = riqi_state.select_day;
+                    let ylc_key = get_ylc_code(
+                        &selected_day.year().to_string(),
+                        &app_config.language,
+                        &app_config.country,
+                    );
                     calendar = MonthCalendar::new(
                         riqi_state.select_day.year() as u32,
                         riqi_state.select_day.month(),
                         riqi_state.select_day,
+                        holiday_map
+                            .get(&ylc_key)
+                            .map(|holiday_list| holiday_list.to_holiday_map()),
                     );
                 }
                 if key.code == KeyCode::Char('l') || key.code == KeyCode::Right {
                     riqi_state.select_day += Duration::days(1);
+                    let selected_day = riqi_state.select_day;
+                    let ylc_key = get_ylc_code(
+                        &selected_day.year().to_string(),
+                        &app_config.language,
+                        &app_config.country,
+                    );
                     calendar = MonthCalendar::new(
                         riqi_state.select_day.year() as u32,
                         riqi_state.select_day.month(),
                         riqi_state.select_day,
+                        holiday_map
+                            .get(&ylc_key)
+                            .map(|holiday_list| holiday_list.to_holiday_map()),
                     );
                 }
                 draw_ui(&mut terminal, &calendar, &riqi_state)?;
