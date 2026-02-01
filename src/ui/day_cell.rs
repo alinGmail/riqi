@@ -61,7 +61,21 @@ impl<'a> DayCell<'a> {
         block.render(area, buf);
         inner_area
     }
-    fn render_content(&self, is_rest_day: bool, inner_area: Rect, buf: &mut Buffer) {
+
+    fn render_work_rest_icon(&self, is_rest_day: bool, area: Rect, buf: &mut Buffer, style: Style) {
+        let holiday_line = Line::from(if is_rest_day { "休" } else { "班" })
+            .style(style)
+            .centered();
+        holiday_line.render(area, buf);
+    }
+
+    fn render_content(
+        &self,
+        is_rest_day: bool,
+        show_holiday_icon: bool,
+        inner_area: Rect,
+        buf: &mut Buffer,
+    ) {
         let day_item_style = self.get_day_item_style(is_rest_day);
         let line = Line::from(self.day_data.day.to_string()).style(day_item_style);
         line.render(
@@ -74,7 +88,23 @@ impl<'a> DayCell<'a> {
             buf,
         );
 
-        let icon_x = inner_area.left() + inner_area.width - 3;
+        let mut icon_x = inner_area.left() + inner_area.width - 3;
+
+        if show_holiday_icon {
+            self.render_work_rest_icon(
+                is_rest_day,
+                Rect {
+                    x: icon_x,
+                    y: inner_area.top(),
+                    width: 2,
+                    height: 1,
+                },
+                buf,
+                day_item_style,
+            );
+            icon_x -= 2;
+        }
+
         if self.day_data.is_today {
             let today_line = Line::from("今").style(day_item_style).centered();
             today_line.render(
@@ -86,6 +116,7 @@ impl<'a> DayCell<'a> {
                 },
                 buf,
             );
+            icon_x -= 2;
         }
 
         let mut content_lines: Vec<Line> = vec![];
@@ -114,6 +145,6 @@ impl Widget for DayCell<'_> {
         let (is_rest_day, show_holiday_icon) =
             get_holiday_state(&self.day_data.holidays, self.day_data.day_of_week as u16);
         let inner_area = self.render_out_border(is_rest_day, area, buf);
-        self.render_content(is_rest_day, inner_area, buf);
+        self.render_content(is_rest_day, show_holiday_icon, inner_area, buf);
     }
 }
