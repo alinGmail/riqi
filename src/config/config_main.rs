@@ -23,6 +23,12 @@ pub fn get_app_config(args:Args) -> AppConfig {
         if let Some(country) = file_config.country {
             app_config.country = country;
         }
+        if let Some(file_column) = file_config.column {
+            app_config.column = Some(file_column);
+        }
+        if let Some(file_row) = file_config.row {
+            app_config.row = Some(file_row);
+        }
     }
     
     if let Some(arg_country) = args.country {

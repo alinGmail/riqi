@@ -14,5 +14,7 @@ pub struct ConfigFile {
     pub country: Option<String>,
     pub show_lunar: Option<bool>,
     pub hide_bg: Option<bool>,
+    pub column: Option<u32>,
+    pub row: Option<u32>,
 }
 
