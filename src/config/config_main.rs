@@ -8,6 +8,8 @@ pub fn get_app_config(args:Args) -> AppConfig {
     let mut app_config = AppConfig {
         language,
         country: String::from("cn"),
+        column: None,
+        row: None,
     };
     if let Some(country) = country_option {
         app_config.country = country
@@ -29,6 +31,14 @@ pub fn get_app_config(args:Args) -> AppConfig {
     
     if let Some(arg_language) = args.language {
         app_config.language = arg_language
+    }
+    
+    if let Some(arg_column) = args.column {
+        app_config.column = Some(arg_column);
+    }
+    
+    if let Some(arg_row) = args.row {
+       app_config.row = Some(arg_row); 
     }
     
 

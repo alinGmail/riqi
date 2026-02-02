@@ -4,6 +4,8 @@ use serde::{Deserialize, Serialize};
 pub struct AppConfig {
     pub country: String,
     pub language: String,
+    pub column: Option<u32>,
+    pub row: Option<u32>,
 }
 
 #[derive(Debug, Deserialize, Serialize)]

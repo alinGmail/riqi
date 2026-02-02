@@ -18,7 +18,14 @@ pub struct RiqiLayout {
     pub bottom_line: Rect,
 }
 
-pub fn get_layout(frame_area: Rect, day_cell_width: Option<u32>, day_cell_height: Option<u32>) -> RiqiLayout {
+pub fn get_layout(
+    frame_area: Rect,
+    day_cell_width: Option<u32>,
+    day_cell_height: Option<u32>,
+) -> RiqiLayout {
+    let month_til_height = 2;
+    let month_head_height = 2;
+    let day_item_gap = 1;
     // terminal 的最少行是 24 行，最少列是 41 列
     // 月历部分的默认高度
     let mut month_calendar_row_constraint: Constraint = Constraint::Min(34);
@@ -28,11 +35,12 @@ pub fn get_layout(frame_area: Rect, day_cell_width: Option<u32>, day_cell_height
         let day_cell_row = get_day_cell_row(row);
         let month_row = get_month_calender_row(day_cell_row);
         // 4 行是标题 和 星期的行
-        month_calendar_row_constraint = Constraint::Length(month_row as u16 + 4);
+        month_calendar_row_constraint =
+            Constraint::Length(month_row as u16 + month_til_height + month_head_height);
     }
     if let Some(column) = day_cell_width {
         let day_cell_column = get_day_cell_column(column);
-        let month_column = get_month_calender_column(day_cell_column);
+        let month_column = get_month_calender_column(day_cell_column, day_item_gap);
         month_content_column_constraint = Constraint::Length(month_column as u16);
     }
 
@@ -56,23 +64,26 @@ pub fn get_layout(frame_area: Rect, day_cell_width: Option<u32>, day_cell_height
             x: month_cal_center_area.x,
             y: month_cal_center_area.y,
             width: month_cal_center_area.width,
-            height: 2,
+            height: month_til_height,
         },
         head: Rect {
             x: month_cal_center_area.x,
-            y: month_cal_center_area.y + 2,
+            y: month_cal_center_area.y + month_til_height,
             width: month_cal_center_area.width,
-            height: 2,
+            height: month_head_height,
         },
         content: Rect {
             x: month_cal_center_area.x,
-            y: month_cal_center_area.y + 4,
+            y: month_cal_center_area.y + month_til_height + month_head_height,
             width: month_cal_center_area.width,
-            height: month_cal_center_area.height - 4,
+            height: month_cal_center_area.height - month_til_height - month_head_height,
         },
-        day_item_column: (month_cal_center_area.width as u32 - 6) / 7,
-        day_item_row: (month_cal_center_area.height as u32 - 4) / 6,
-        day_gap:1,
+        day_item_column: (month_cal_center_area.width as u32 - (6 * day_item_gap)) / 7,
+        day_item_row: (month_cal_center_area.height as u32
+            - month_til_height as u32
+            - month_head_height as u32)
+            / 6,
+        day_gap: day_item_gap,
     };
     let riqi_layout = RiqiLayout {
         title: Rect {
@@ -100,6 +111,6 @@ pub fn get_month_calender_row(day_cell_row: u32) -> u32 {
     day_cell_row * 6
 }
 
-pub fn get_month_calender_column(day_cell_column: u32) -> u32 {
-    day_cell_column * 7 + 6
+pub fn get_month_calender_column(day_cell_column: u32, day_item_gap: u32) -> u32 {
+    day_cell_column * 7 + (6 * day_item_gap)
 }

@@ -10,4 +10,10 @@ pub struct Args {
     /// language
     #[arg(short, long)]
     pub language: Option<String>,
+
+    #[arg( long)]
+    pub column: Option<u32>,
+    
+    #[arg( long)]
+    pub row: Option<u32>,
 }
