@@ -1,5 +1,7 @@
 use super::utils::get_style_from_config;
+use crate::config::model::AppConfig;
 use crate::holiday::utils::get_holiday_state;
+use crate::ui::lunar::{number_to_lunar_day, number_to_lunar_month};
 use crate::{data::calendar::CalendarDay, state::RiqiState};
 use ratatui::widgets::{Paragraph, Wrap};
 use ratatui::{
@@ -13,13 +15,19 @@ use ratatui::{
 pub struct DayCell<'a> {
     day_data: &'a CalendarDay,
     riqi_state: &'a RiqiState,
+    app_config: &'a AppConfig,
 }
 
 impl<'a> DayCell<'a> {
-    pub fn new(day_data: &'a CalendarDay, riqi_state: &'a RiqiState) -> Self {
+    pub fn new(
+        day_data: &'a CalendarDay,
+        riqi_state: &'a RiqiState,
+        app_config: &'a AppConfig,
+    ) -> Self {
         DayCell {
             day_data,
             riqi_state,
+            app_config,
         }
     }
 
@@ -120,6 +128,11 @@ impl<'a> DayCell<'a> {
         }
 
         let mut content_lines: Vec<Line> = vec![];
+
+        if let Some(true) = self.app_config.show_lunar {
+            content_lines.push(self.get_lunar_line(day_item_style));
+        }
+
         if let Some(holidays) = &self.day_data.holidays {
             for holiday in holidays {
                 let holiday_name = holiday.name.clone();
@@ -137,6 +150,19 @@ impl<'a> DayCell<'a> {
             },
             buf,
         );
+    }
+
+    pub fn get_lunar_line(&self, style: Style) -> Line {
+        // 显示农历日期
+        let lunar_day = if self.day_data.lunar_day == 1 {
+            // 如果是初一，显示月份
+            number_to_lunar_month(self.day_data.lunar_month)
+        } else {
+            // 其他日期显示日期
+            number_to_lunar_day(self.day_data.lunar_day)
+        };
+        let lunar_line = Line::from(lunar_day).style(style);
+        lunar_line
     }
 }
 

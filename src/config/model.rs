@@ -6,6 +6,7 @@ pub struct AppConfig {
     pub language: String,
     pub column: Option<u32>,
     pub row: Option<u32>,
+    pub show_lunar: Option<bool>,
 }
 
 #[derive(Debug, Deserialize, Serialize)]

@@ -3,7 +3,7 @@ use clap::Parser;
 #[derive(Debug, Parser)]
 #[command(version,about,long_about = None)]
 pub struct Args {
-    /// the country of holliday
+    /// the country of holiday
     #[arg(short, long)]
     pub country: Option<String>,
 
@@ -13,7 +13,10 @@ pub struct Args {
 
     #[arg( long)]
     pub column: Option<u32>,
-    
+
     #[arg( long)]
     pub row: Option<u32>,
+
+    #[arg( long)]
+    pub show_lunar: Option<bool>,
 }
