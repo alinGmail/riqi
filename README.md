@@ -28,6 +28,25 @@ The binary will be available at `target/release/riqi`.
 cargo run
 ```
 
+### Command-line Arguments
+
+| Argument | Short | Long | Default | Description |
+|----------|-------|------|---------|-------------|
+| Country | `-c` | `--country` | System locale or `cn` | Country code for holiday data |
+| Language | `-l` | `--language` | System locale | Language code for display |
+
+**Example:**
+
+```bash
+riqi --country us --language en
+```
+
+**Configuration Priority (highest to lowest):**
+1. Command-line arguments
+2. Configuration file
+3. System locale
+4. Default values
+
 ### Keyboard Controls
 
 - **hjkl** / **Arrow Keys**: Navigate between days
