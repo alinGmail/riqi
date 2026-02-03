@@ -8,6 +8,9 @@ pub fn get_app_config(args:Args) -> AppConfig {
     let mut app_config = AppConfig {
         language,
         country: String::from("cn"),
+        column: None,
+        row: None,
+        show_lunar: None,
     };
     if let Some(country) = country_option {
         app_config.country = country
@@ -21,6 +24,15 @@ pub fn get_app_config(args:Args) -> AppConfig {
         if let Some(country) = file_config.country {
             app_config.country = country;
         }
+        if let Some(file_column) = file_config.column {
+            app_config.column = Some(file_column);
+        }
+        if let Some(file_row) = file_config.row {
+            app_config.row = Some(file_row);
+        }
+        if let Some(show_lunar) = file_config.show_lunar {
+            app_config.show_lunar = Some(show_lunar);
+        }
     }
     
     if let Some(arg_country) = args.country {
@@ -29,6 +41,18 @@ pub fn get_app_config(args:Args) -> AppConfig {
     
     if let Some(arg_language) = args.language {
         app_config.language = arg_language
+    }
+    
+    if let Some(arg_column) = args.column {
+        app_config.column = Some(arg_column);
+    }
+    
+    if let Some(arg_row) = args.row {
+       app_config.row = Some(arg_row); 
+    }
+    
+    if let Some(arg_show_lunar) = args.show_lunar {
+        app_config.show_lunar = Some(arg_show_lunar);
     }
     
 

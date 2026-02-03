@@ -197,7 +197,7 @@ async fn main() -> Result<()> {
                             .map(|holiday_list| holiday_list.to_holiday_map()),
                     );
                 }
-                draw_ui(&mut terminal, &calendar, &riqi_state,&app_config)?;
+                draw_ui(&mut terminal, &calendar, &riqi_state, &app_config)?;
             }
             AppEvent::UpdateHoliday(ylc_key, holiday_of_year) => {
                 debug!("receive update holiday event, ylc: {}", &ylc_key);
@@ -243,7 +243,7 @@ fn draw_ui(
 ) -> io::Result<()> {
     terminal.draw(|f| {
         let frame_area = f.area();
-        let layout = get_layout(frame_area, None, None);
+        let layout = get_layout(frame_area, app_config.column, app_config.row);
         // let data =
         let month_item = MonthComponent::new(calendar, &layout, &riqi_state, app_config);
         month_item.render(layout.month_calendar.area, f.buffer_mut());

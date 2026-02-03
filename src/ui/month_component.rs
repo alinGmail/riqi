@@ -85,7 +85,8 @@ impl<'a> Widget for MonthComponent<'a> {
                 area.width,
                 day_height,
             );
-            let week_row_item = week_row::WeekRow::new(week, self.riqi_state, self.riqi_layout);
+            let week_row_item =
+                week_row::WeekRow::new(week, self.riqi_state, self.riqi_layout, self.app_config);
             week_row_item.render(week_row_area, buf);
         }
     }
