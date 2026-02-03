@@ -116,7 +116,7 @@
       "type": ["Weekend"]
     },
     {
-      "date": { "datetime": { "day": 5, "month": 3, "year": 2026 }, "iso": "2026-03-05" },
+      "date": { "datetime": { "day": 3, "month": 3, "year": 2026 }, "iso": "2026-03-03" },
       "name": "元宵",
       "primary_type": "Observance",
       "type": ["Observance"]
