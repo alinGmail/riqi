@@ -11,12 +11,12 @@ pub struct Args {
     #[arg(short, long)]
     pub language: Option<String>,
 
-    #[arg( long)]
+    #[arg(long)]
     pub column: Option<u32>,
 
-    #[arg( long)]
+    #[arg(long)]
     pub row: Option<u32>,
 
-    #[arg( long)]
+    #[arg( long, num_args(0..=1),default_missing_value = "true")]
     pub show_lunar: Option<bool>,
 }
