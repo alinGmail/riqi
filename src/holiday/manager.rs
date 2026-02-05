@@ -5,9 +5,10 @@ use chrono::{DateTime, Duration, NaiveDate, NaiveDateTime, Utc};
 use color_eyre::eyre::{bail, OptionExt};
 use color_eyre::Result;
 use log::{error, info};
-use std::sync::mpsc::Sender;
-use std::{collections::HashMap, sync::Arc};
 use std::io::Bytes;
+use std::sync::mpsc::Sender;
+use std::thread::sleep;
+use std::{collections::HashMap, sync::Arc};
 use tokio::fs;
 use tokio::io::AsyncWriteExt;
 use tokio::sync::Mutex;
@@ -33,8 +34,6 @@ pub struct HolidayManager {
     property: Arc<Mutex<HolidayManagerProperty>>,
     tx: Sender<AppEvent>,
 }
-
-
 
 pub fn get_holiday_data_file_url(year: &str, language: &str, country: &str) -> String {
     format!(
@@ -92,7 +91,6 @@ pub fn parse_holidays(json_str: &str) -> Result<HolidayOfYearList, serde_json::E
     serde_json::from_str(json_str)
 }
 
-
 impl HolidayManager {
     pub fn new(tx: Sender<AppEvent>) -> Self {
         Self {
@@ -144,18 +142,26 @@ impl HolidayManager {
     }
 
     pub async fn load_remote_file(
-        ylc_update_state: &mut YlcHolidayUpdateState,
+        property: Arc<Mutex<HolidayManagerProperty>>,
         year: &str,
         language: &str,
         country: &str,
         tx: Sender<AppEvent>,
         old_version: Option<i32>,
     ) -> Result<()> {
-        if !matches!(ylc_update_state.load_remote_state, LoadRemoteState::None) {
-            return Ok(());
+        {
+            let mut property = property.lock().await;
+            let ylc_update_state = property
+                .ylc_holiday_update_state
+                .get_mut(&get_ylc_code(year, language, country))
+                .unwrap();
+            if !matches!(ylc_update_state.load_remote_state, LoadRemoteState::None) {
+                return Ok(());
+            }
+            info!("start to load remote file");
+            ylc_update_state.load_remote_state = LoadRemoteState::Loading;
         }
-        info!("start to load remote file");
-        ylc_update_state.load_remote_state = LoadRemoteState::Loading;
+
         let url = get_holiday_data_file_url(year, language, country);
         info!("remote url is {}", &url);
         let content = download_file(&url).await;
@@ -165,17 +171,26 @@ impl HolidayManager {
             if let Some(old_version) = old_version {
                 if (old_version < holiday_of_ylc.version) {
                     // save file
-                    let save_res = save_holidays_file(year, language, country, content_str.as_bytes()).await;
+                    let save_res =
+                        save_holidays_file(year, language, country, content_str.as_bytes()).await;
                 }
             } else {
-                let save_res = save_holidays_file(year, language, country, content_str.as_bytes()).await;
+                let save_res =
+                    save_holidays_file(year, language, country, content_str.as_bytes()).await;
             }
 
             tx.send(AppEvent::UpdateHoliday(
                 get_ylc_code(year, language, country),
                 holiday_of_ylc,
             ))?;
-            ylc_update_state.load_remote_state = LoadRemoteState::Finish;
+            {
+                let mut property = property.lock().await;
+                let ylc_update_state = property
+                    .ylc_holiday_update_state
+                    .get_mut(&get_ylc_code(year, language, country))
+                    .unwrap();
+                ylc_update_state.load_remote_state = LoadRemoteState::Finish;
+            }
         }
         return Ok(());
     }
@@ -217,25 +232,24 @@ impl HolidayManager {
                     info!("load local cache fail");
                 }
             }
-            let load_remote_res = HolidayManager::load_remote_file(
-                ylc_update_property,
-                year,
-                language,
-                country,
-                self.tx.clone(),
-                old_version,
-            )
-            .await;
+            let property_clone = self.property.clone();
+            let tx_clone = self.tx.clone();
 
-            match load_remote_res {
-                Ok(_) => {
-                    info!("load remote file success");
-                }
-                Err(error) => {
-                    info!("load remote file fail");
-                    info!("error is {}", error);
-                }
-            }
+            let year_owned = year.to_string();
+            let language_owned = language.to_string();
+            let country_owned = country.to_string();
+
+            tokio::spawn(async move {
+                let load_remote_res = HolidayManager::load_remote_file(
+                    property_clone,
+                    &year_owned,
+                    &language_owned,
+                    &country_owned,
+                    tx_clone,
+                    old_version,
+                )
+                .await;
+            });
         }
     }
 }
