@@ -51,7 +51,7 @@ riqi --country us --language en
 
 - **hjkl** / **Arrow Keys**: Navigate between days
 - **d/u**: Next/previous month
-- **y/x**: Next/previous year
+- **f/b**: Next/previous year
 - **t**: Jump to today
 - **q**: Quit
 
