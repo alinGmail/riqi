@@ -134,6 +134,13 @@ async fn main() -> Result<()> {
                         &app_config.language,
                         &app_config.country,
                     );
+                    holiday_manager
+                        .load_ylc_holiday(
+                            &riqi_state.select_day.year().to_string(),
+                            &app_config.language,
+                            &app_config.country,
+                        )
+                        .await;
                     calendar = MonthCalendar::new(
                         riqi_state.select_day.year() as u32,
                         riqi_state.select_day.month(),
@@ -153,6 +160,14 @@ async fn main() -> Result<()> {
                         &app_config.country,
                     );
 
+                    holiday_manager
+                        .load_ylc_holiday(
+                            &riqi_state.select_day.year().to_string(),
+                            &app_config.language,
+                            &app_config.country,
+                        )
+                        .await;
+
                     calendar = MonthCalendar::new(
                         riqi_state.select_day.year() as u32,
                         riqi_state.select_day.month(),
@@ -171,6 +186,14 @@ async fn main() -> Result<()> {
                         &app_config.language,
                         &app_config.country,
                     );
+
+                    holiday_manager
+                        .load_ylc_holiday(
+                            &riqi_state.select_day.year().to_string(),
+                            &app_config.language,
+                            &app_config.country,
+                        )
+                        .await;
                     calendar = MonthCalendar::new(
                         riqi_state.select_day.year() as u32,
                         riqi_state.select_day.month(),
@@ -188,6 +211,13 @@ async fn main() -> Result<()> {
                         &app_config.language,
                         &app_config.country,
                     );
+                    holiday_manager
+                        .load_ylc_holiday(
+                            &riqi_state.select_day.year().to_string(),
+                            &app_config.language,
+                            &app_config.country,
+                        )
+                        .await;
                     calendar = MonthCalendar::new(
                         riqi_state.select_day.year() as u32,
                         riqi_state.select_day.month(),
