@@ -30,15 +30,27 @@ cargo run
 
 ### Command-line Arguments
 
-| Argument | Short | Long | Default | Description |
-|----------|-------|------|---------|-------------|
-| Country | `-c` | `--country` | System locale or `cn` | Country code for holiday data |
-| Language | `-l` | `--language` | System locale | Language code for display |
+| Argument | Short | Long | Type | Default | Description |
+|----------|-------|------|------|---------|-------------|
+| Country | `-c` | `--country` | `String` | System locale or `cn` | Country code for holiday data |
+| Language | `-l` | `--language` | `String` | System locale | Language code for display |
+| Column | | `--column` | `u32` | Theme default | Number of columns in the calendar grid |
+| Row | | `--row` | `u32` | Theme default | Number of rows in the calendar grid |
+| Show Lunar | | `--show-lunar` | `bool` | Config default | Show/hide lunar calendar dates |
 
-**Example:**
+**Examples:**
 
 ```bash
+# Set country and language
 riqi --country us --language en
+
+# Customize grid layout
+riqi --column 7 --row 6
+
+# Enable lunar calendar display
+riqi --show-lunar
+# or disable it
+riqi --show-lunar=false
 ```
 
 **Configuration Priority (highest to lowest):**
@@ -49,11 +61,27 @@ riqi --country us --language en
 
 ### Keyboard Controls
 
-- **hjkl** / **Arrow Keys**: Navigate between days
-- **d/u**: Next/previous month
-- **f/b**: Next/previous year
-- **t**: Jump to today
-- **q**: Quit
+#### Navigation
+| Key | Alternative | Action |
+|-----|-------------|--------|
+| `h` | `←` | Move left (previous day) |
+| `j` | `↓` | Move down (next week) |
+| `k` | `↑` | Move up (previous week) |
+| `l` | `→` | Move right (next day) |
+
+#### Time Jumping
+| Key | Action |
+|-----|--------|
+| `d` | Next month |
+| `u` | Previous month |
+| `f` | Next year |
+| `b` | Previous year |
+| `t` | Jump to today |
+
+#### Application
+| Key | Action |
+|-----|--------|
+| `q` | Quit application |
 
 ## Configuration
 

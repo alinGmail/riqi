@@ -114,6 +114,35 @@ impl MonthCalendar {
         // 初始化日历数据
         let mut weeks = Vec::new();
         let mut current_week = Vec::new();
+        
+        // 如果是周日或者周一，上周添加一个星期
+        if first_weekday == 0 || first_weekday == 1{
+            for i in (0..7){
+                // 如果是周日或者周一，添加一周在前面
+                let day = prev_month_last_day.day() + 1 - first_weekday as u32 - 7  + i;
+                let holidays = holiday_map.as_ref().and_then(|m| {
+                    m.get(&get_iso_data_str(
+                        prev_month_last_day.year() as u32,
+                        prev_month_last_day.month(),
+                        day,
+                    ))
+                });
+                current_week.push(CalendarDay::new(
+                    prev_month_last_day.year() as u32,
+                    prev_month_last_day.month(),
+                    day,
+                    i as u32,
+                    is_now_in_prev_month && day == now.day(),
+                    false,
+                    select_day,
+                    holidays,
+                ));
+            }
+            weeks.push(current_week);
+            current_week = Vec::new();
+        }
+        
+      
 
         // 添加上个月的日期
         for i in (0..first_weekday).rev() {
