@@ -78,7 +78,7 @@ async fn main() -> Result<()> {
     let args = Args::parse();
     let app_config = get_app_config(args);
 
-    let theme = load_theme_from_file("resources/theme/ningmen.toml").expect("主题加载失败");
+    let theme = load_theme_from_file("ningmen").expect("主题加载失败");
     let mut riqi_state = RiqiState {
         select_day: now.date_naive(),
         today: now.date_naive(),
