@@ -85,13 +85,107 @@ riqi --show-lunar=false
 
 ## Configuration
 
-Riqi uses XDG-compliant directories for configuration:
+### Configuration File Locations
 
-- **Config Files**: `$XDG_CONFIG_HOME/riqi/` (Unix-like systems)
-- **Cache**: `$XDG_CACHE_HOME/riqi/` (for holiday data)
-- **Themes**: Located in `resources/theme/` directory
+Riqi follows platform-specific conventions for configuration files:
 
-The application automatically detects your system locale for language and country settings.
+| Platform | Configuration Directory | Configuration File |
+|----------|------------------------|-------------------|
+| **Linux** | `$XDG_CONFIG_HOME/riqi/` or `~/.config/riqi/` | `~/.config/riqi/config.toml` |
+| **macOS** | `~/Library/Application Support/riqi/` | `~/Library/Application Support/riqi/config.toml` |
+| **Windows** | `%APPDATA%\riqi\` | `C:\Users\<YourName>\AppData\Roaming\riqi\config.toml` |
+
+### Cache and Data Directories
+
+| Platform | Cache Directory | Purpose |
+|----------|----------------|---------|
+| **Linux** | `$XDG_CACHE_HOME/riqi/` or `~/.cache/riqi/` | Holiday data cache |
+| **macOS** | `~/Library/Caches/riqi/` | Holiday data cache |
+| **Windows** | `%LOCALAPPDATA%\riqi\` or `C:\Users\<YourName>\AppData\Local\riqi\` | Holiday data cache |
+
+### Configuration File Format
+
+The configuration file uses TOML format. All fields are optional; if not specified, the application will use system defaults or command-line arguments.
+
+**Available Configuration Options:**
+
+| Option | Type | Description | Default |
+|--------|------|-------------|---------|
+| `language` | `string` | Language code (e.g., `en`, `zh`) | System locale |
+| `country` | `string` | Country code for holiday data (e.g., `us`, `cn`) | System locale or `cn` |
+| `show_lunar` | `boolean` | Display lunar calendar dates | `true` |
+| `hide_bg` | `boolean` | Hide background colors | `false` |
+| `column` | `integer` | Number of columns in calendar grid | Theme default (7) |
+| `row` | `integer` | Number of rows in calendar grid | Theme default (6) |
+
+### Example Configuration File
+
+**Complete example (`config.toml`):**
+
+```toml
+language = "zh"
+country = "cn"
+show_lunar = true
+hide_bg = false
+column = 7
+row = 6
+```
+
+**Minimal example (Chinese/China with lunar calendar):**
+
+```toml
+language = "zh"
+country = "cn"
+show_lunar = true
+```
+
+**Minimal example (English/US without lunar calendar):**
+
+```toml
+language = "en"
+country = "us"
+show_lunar = false
+```
+
+**Custom grid layout:**
+
+```toml
+column = 7
+row = 6
+hide_bg = true
+```
+
+### Creating Your Configuration File
+
+The configuration directory will be created automatically when you first run Riqi. To create your own configuration:
+
+**On Linux/macOS:**
+```bash
+mkdir -p ~/.config/riqi  # Linux
+mkdir -p ~/Library/Application\ Support/riqi  # macOS
+nano ~/.config/riqi/config.toml  # Edit with your preferred editor
+```
+
+**On Windows (PowerShell):**
+```powershell
+New-Item -ItemType Directory -Force -Path "$env:APPDATA\riqi"
+notepad "$env:APPDATA\riqi\config.toml"
+```
+
+### Configuration Priority
+
+Configuration values are resolved in the following order (highest priority first):
+
+1. **Command-line arguments** (e.g., `--country us`)
+2. **Configuration file** (`config.toml`)
+3. **System locale** (auto-detected)
+4. **Default values** (hardcoded fallbacks)
+
+### Theme Configuration
+
+- **Theme Files**: Located in `resources/theme/` directory
+- Themes are defined in TOML format
+- Customize colors for calendar elements, highlights, and borders
 
 ## Development
 
