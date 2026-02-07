@@ -30,4 +30,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: binary-${{ matrix.target }}
-          path: target/${{ matrix.target }}/release/riqi
+          path: |
+            target/${{ matrix.target }}/release/riqi
+            target/${{ matrix.target }}/release/riqi.exe
+          if-no-files-found: error
