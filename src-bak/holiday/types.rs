@@ -36,7 +36,7 @@ pub type HolidayMap = HashMap<String, HashMap<String, Vec<Holiday>>>;
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub enum PrimaryType {
-    #[serde(rename = "Substitute holiday")]
+    #[serde(rename = "SuRiqiStatebstitute holiday")]
     SubstituteHoliday,
     #[serde(rename = "National holiday")]
     NationalHoliday,

@@ -1,8 +1,7 @@
-pub mod config_struct;
-
-pub mod config_init;
-pub mod file_config_loader;
-pub mod file_config_struct;
+pub mod config_file_loader;
+pub mod config_main;
 pub mod locale;
-pub mod theme_loader;
+pub mod model;
 pub mod xdg;
+pub mod cli;
+

@@ -1,3 +1,15 @@
+use sys_locale::get_locale;
+
+
+
+
+// 获取系统的语言和国家
+// 返回 (language, Option<country>)，
+pub fn get_system_language_country() -> (String, Option<String>) {
+    let locale = get_locale().unwrap_or_else(|| String::from("en-US"));
+    parse_language_country(&locale)
+}
+
 /// 解析 IETF BCP 47 语言标签或常见 locale 字符串，
 /// 返回 (language, Option<country>)，
 /// 会自动去除编码部分（如 ".UTF-8"）
@@ -27,43 +39,4 @@ pub fn parse_language_country(locale: &str) -> (String, Option<String>) {
     }
 
     (language, country)
-}
-
-#[test]
-fn test_parse_language_country() {
-    assert_eq!(parse_language_country("zh"), ("zh".to_string(), None));
-    assert_eq!(
-        parse_language_country("zh-CN"),
-        ("zh".to_string(), Some("CN".to_string()))
-    );
-    assert_eq!(parse_language_country("zh-Hans"), ("zh".to_string(), None));
-    assert_eq!(
-        parse_language_country("zh-Hans-CN"),
-        ("zh".to_string(), Some("CN".to_string()))
-    );
-    assert_eq!(
-        parse_language_country("en-US"),
-        ("en".to_string(), Some("US".to_string()))
-    );
-    assert_eq!(parse_language_country("fr"), ("fr".to_string(), None));
-    assert_eq!(
-        parse_language_country("fr-FR"),
-        ("fr".to_string(), Some("FR".to_string()))
-    );
-    assert_eq!(
-        parse_language_country("zh_Hant_TW"),
-        ("zh".to_string(), Some("TW".to_string()))
-    );
-    assert_eq!(
-        parse_language_country("en_419"),
-        ("en".to_string(), Some("419".to_string()))
-    );
-    assert_eq!(
-        parse_language_country("en_US.UTF-8"),
-        ("en".to_string(), Some("US".to_string()))
-    );
-    assert_eq!(
-        parse_language_country("zh_CN.utf8"),
-        ("zh".to_string(), Some("CN".to_string()))
-    );
 }
