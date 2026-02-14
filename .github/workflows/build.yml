@@ -17,15 +17,36 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      
+     # --- 仅 macOS 需要的步骤：导入证书 ---
+      - name: Import Certificates (macOS only)
+        if: runner.os == 'macOS'
+        uses: apple-actions/import-codesign-certs@v3
+        with:
+          p12-file-base64: ${{ secrets.P12_CERTIFICATE_BASE64 }}
+          p12-password: ${{ secrets.P12_PASSWORD }}
       - name: Install Rust
         uses: dtolnay/rust-toolchain@stable
         with:
           targets: ${{ matrix.target }}
-
       - name: Build
         run: cargo build --release --target ${{ matrix.target }}
-
+       # --- 仅 macOS 需要的步骤：签名 ---
+      - name: Code Sign Binary (macOS only)
+        if: runner.os == 'macOS'
+        run: |
+          codesign --force --options runtime --deep \
+            --sign "${{ secrets.APPLE_CERT_NAME }}" \
+            target/${{ matrix.target }}/release/riqi
+      # --- 仅 macOS 需要的步骤：公证 ---
+      - name: Notarize (macOS only)
+        if: runner.os == 'macOS'
+        run: |
+          zip -j ${{ matrix.artifact_name }}.zip target/${{ matrix.target }}/release/riqi
+          xcrun notarytool submit ${{ matrix.artifact_name }}.zip \
+            --apple-id "${{ secrets.APPLE_ID }}" \
+            --password "${{ secrets.APPLE_PASSWORD }}" \
+            --team-id "${{ secrets.TEAM_ID }}" \
+            --wait
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
