@@ -1,0 +1,479 @@
+{
+  "version": 1,
+  "holidays": [
+    {
+      "date": { "datetime": { "day": 1, "month": 1, "year": 2026 }, "iso": "2026-01-01" },
+      "name": "New Year's Day",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 2, "month": 1, "year": 2026 }, "iso": "2026-01-02" },
+      "name": "New Year's Day Holiday",
+      "primary_type": "Substitute holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 3, "month": 1, "year": 2026 }, "iso": "2026-01-03" },
+      "name": "New Year's Day Holiday",
+      "primary_type": "Substitute holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 4, "month": 1, "year": 2026 }, "iso": "2026-01-04" },
+      "name": "Make-up Workday",
+      "primary_type": "Working Day on a Weekend",
+      "type": ["Weekend"]
+    },
+    {
+      "date": { "datetime": { "day": 18, "month": 1, "year": 2026 }, "iso": "2026-01-18" },
+      "name": "Laba Festival",
+      "primary_type": "Observance",
+      "type": ["Observance"]
+    },
+    {
+      "date": { "datetime": { "day": 20, "month": 1, "year": 2026 }, "iso": "2026-01-20" },
+      "name": "Major Cold",
+      "primary_type": "Season",
+      "type": ["Season"]
+    },
+    {
+      "date": { "datetime": { "day": 4, "month": 2, "year": 2026 }, "iso": "2026-02-04" },
+      "name": "Beginning of Spring",
+      "primary_type": "Season",
+      "type": ["Season"]
+    },
+    {
+      "date": { "datetime": { "day": 14, "month": 2, "year": 2026 }, "iso": "2026-02-14" },
+      "name": "Make-up Workday",
+      "primary_type": "Working Day on a Weekend",
+      "type": ["Weekend"]
+    },
+    {
+      "date": { "datetime": { "day": 15, "month": 2, "year": 2026 }, "iso": "2026-02-15" },
+      "name": "Spring Festival Holiday",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 16, "month": 2, "year": 2026 }, "iso": "2026-02-16" },
+      "name": "Chinese New Year's Eve",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 17, "month": 2, "year": 2026 }, "iso": "2026-02-17" },
+      "name": "Spring Festival",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 18, "month": 2, "year": 2026 }, "iso": "2026-02-18" },
+      "name": "Spring Festival",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 19, "month": 2, "year": 2026 }, "iso": "2026-02-19" },
+      "name": "Rain Water",
+      "primary_type": "Season",
+      "type": ["Season"]
+    },
+    {
+      "date": { "datetime": { "day": 19, "month": 2, "year": 2026 }, "iso": "2026-02-19" },
+      "name": "Spring Festival Holiday",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 20, "month": 2, "year": 2026 }, "iso": "2026-02-20" },
+      "name": "Spring Festival Holiday",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 21, "month": 2, "year": 2026 }, "iso": "2026-02-21" },
+      "name": "Spring Festival Holiday",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 22, "month": 2, "year": 2026 }, "iso": "2026-02-22" },
+      "name": "Spring Festival Holiday",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 23, "month": 2, "year": 2026 }, "iso": "2026-02-23" },
+      "name": "Spring Festival Holiday",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 28, "month": 2, "year": 2026 }, "iso": "2026-02-28" },
+      "name": "Make-up Workday",
+      "primary_type": "Working Day on a Weekend",
+      "type": ["Weekend"]
+    },
+    {
+      "date": { "datetime": { "day": 3, "month": 3, "year": 2026 }, "iso": "2026-03-03" },
+      "name": "Lantern Festival",
+      "primary_type": "Observance",
+      "type": ["Observance"]
+    },
+    {
+      "date": { "datetime": { "day": 5, "month": 3, "year": 2026 }, "iso": "2026-03-05" },
+      "name": "Awakening of Insects",
+      "primary_type": "Season",
+      "type": ["Season"]
+    },
+    {
+      "date": { "datetime": { "day": 8, "month": 3, "year": 2026 }, "iso": "2026-03-08" },
+      "name": "International Women's Day",
+      "primary_type": "Half day holiday",
+      "type": ["Half-day holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 12, "month": 3, "year": 2026 }, "iso": "2026-03-12" },
+      "name": "Arbor Day",
+      "primary_type": "Observance",
+      "type": ["Observance"]
+    },
+    {
+      "date": { "datetime": { "day": 20, "month": 3, "year": 2026 }, "iso": "2026-03-20" },
+      "name": "Spring Equinox",
+      "primary_type": "Season",
+      "type": ["Season"]
+    },
+    {
+      "date": { "datetime": { "day": 4, "month": 4, "year": 2026 }, "iso": "2026-04-04" },
+      "name": "Pure Brightness",
+      "primary_type": "Season",
+      "type": ["Season"]
+    },
+    {
+      "date": { "datetime": { "day": 4, "month": 4, "year": 2026 }, "iso": "2026-04-04" },
+      "name": "Tomb Sweeping Day",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 5, "month": 4, "year": 2026 }, "iso": "2026-04-05" },
+      "name": "Tomb Sweeping Day Holiday",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 6, "month": 4, "year": 2026 }, "iso": "2026-04-06" },
+      "name": "Tomb Sweeping Day Holiday",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 20, "month": 4, "year": 2026 }, "iso": "2026-04-20" },
+      "name": "Grain Rain",
+      "primary_type": "Season",
+      "type": ["Season"]
+    },
+    {
+      "date": { "datetime": { "day": 1, "month": 5, "year": 2026 }, "iso": "2026-05-01" },
+      "name": "Labor Day",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 2, "month": 5, "year": 2026 }, "iso": "2026-05-02" },
+      "name": "Labor Day Holiday",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 3, "month": 5, "year": 2026 }, "iso": "2026-05-03" },
+      "name": "Labor Day Holiday",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 4, "month": 5, "year": 2026 }, "iso": "2026-05-04" },
+      "name": "Youth Day",
+      "primary_type": "Half day holiday",
+      "type": ["Half-day holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 4, "month": 5, "year": 2026 }, "iso": "2026-05-04" },
+      "name": "Labor Day Holiday",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 5, "month": 5, "year": 2026 }, "iso": "2026-05-05" },
+      "name": "Beginning of Summer",
+      "primary_type": "Season",
+      "type": ["Season"]
+    },
+    {
+      "date": { "datetime": { "day": 5, "month": 5, "year": 2026 }, "iso": "2026-05-05" },
+      "name": "Labor Day Holiday",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 9, "month": 5, "year": 2026 }, "iso": "2026-05-09" },
+      "name": "Make-up Workday",
+      "primary_type": "Working Day on a Weekend",
+      "type": ["Weekend"]
+    },
+    {
+      "date": { "datetime": { "day": 21, "month": 5, "year": 2026 }, "iso": "2026-05-21" },
+      "name": "Grain Buds",
+      "primary_type": "Season",
+      "type": ["Season"]
+    },
+    {
+      "date": { "datetime": { "day": 1, "month": 6, "year": 2026 }, "iso": "2026-06-01" },
+      "name": "Children's Day",
+      "primary_type": "Observance",
+      "type": ["Observance"]
+    },
+    {
+      "date": { "datetime": { "day": 5, "month": 6, "year": 2026 }, "iso": "2026-06-05" },
+      "name": "Grain in Ear",
+      "primary_type": "Season",
+      "type": ["Season"]
+    },
+    {
+      "date": { "datetime": { "day": 19, "month": 6, "year": 2026 }, "iso": "2026-06-19" },
+      "name": "Dragon Boat Festival",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 20, "month": 6, "year": 2026 }, "iso": "2026-06-20" },
+      "name": "Dragon Boat Festival Holiday",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 21, "month": 6, "year": 2026 }, "iso": "2026-06-21" },
+      "name": "Summer Solstice",
+      "primary_type": "Season",
+      "type": ["Season"]
+    },
+    {
+      "date": { "datetime": { "day": 21, "month": 6, "year": 2026 }, "iso": "2026-06-21" },
+      "name": "Dragon Boat Festival Holiday",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 1, "month": 7, "year": 2026 }, "iso": "2026-07-01" },
+      "name": "CPC Founding Day",
+      "primary_type": "Observance",
+      "type": ["Observance"]
+    },
+    {
+      "date": { "datetime": { "day": 7, "month": 7, "year": 2026 }, "iso": "2026-07-07" },
+      "name": "Minor Heat",
+      "primary_type": "Season",
+      "type": ["Season"]
+    },
+    {
+      "date": { "datetime": { "day": 11, "month": 7, "year": 2026 }, "iso": "2026-07-11" },
+      "name": "Maritime Day",
+      "primary_type": "Observance",
+      "type": ["Observance"]
+    },
+    {
+      "date": { "datetime": { "day": 22, "month": 7, "year": 2026 }, "iso": "2026-07-22" },
+      "name": "Major Heat",
+      "primary_type": "Season",
+      "type": ["Season"]
+    },
+    {
+      "date": { "datetime": { "day": 1, "month": 8, "year": 2026 }, "iso": "2026-08-01" },
+      "name": "Army Day",
+      "primary_type": "Observance",
+      "type": ["Observance"]
+    },
+    {
+      "date": { "datetime": { "day": 7, "month": 8, "year": 2026 }, "iso": "2026-08-07" },
+      "name": "Beginning of Autumn",
+      "primary_type": "Season",
+      "type": ["Season"]
+    },
+    {
+      "date": { "datetime": { "day": 17, "month": 8, "year": 2026 }, "iso": "2026-08-17" },
+      "name": "Qixi Festival",
+      "primary_type": "Observance",
+      "type": ["Observance"]
+    },
+    {
+      "date": { "datetime": { "day": 23, "month": 8, "year": 2026 }, "iso": "2026-08-23" },
+      "name": "End of Heat",
+      "primary_type": "Season",
+      "type": ["Season"]
+    },
+    {
+      "date": { "datetime": { "day": 25, "month": 8, "year": 2026 }, "iso": "2026-08-25" },
+      "name": "Ghost Festival",
+      "primary_type": "Observance",
+      "type": ["Observance"]
+    },
+    {
+      "date": { "datetime": { "day": 7, "month": 9, "year": 2026 }, "iso": "2026-09-07" },
+      "name": "White Dew",
+      "primary_type": "Season",
+      "type": ["Season"]
+    },
+    {
+      "date": { "datetime": { "day": 10, "month": 9, "year": 2026 }, "iso": "2026-09-10" },
+      "name": "Teachers' Day",
+      "primary_type": "Observance",
+      "type": ["Observance"]
+    },
+    {
+      "date": { "datetime": { "day": 20, "month": 9, "year": 2026 }, "iso": "2026-09-20" },
+      "name": "Make-up Workday",
+      "primary_type": "Working Day on a Weekend",
+      "type": ["Weekend"]
+    },
+    {
+      "date": { "datetime": { "day": 23, "month": 9, "year": 2026 }, "iso": "2026-09-23" },
+      "name": "Autumn Equinox",
+      "primary_type": "Season",
+      "type": ["Season"]
+    },
+    {
+      "date": { "datetime": { "day": 25, "month": 9, "year": 2026 }, "iso": "2026-09-25" },
+      "name": "Mid-Autumn Festival",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 26, "month": 9, "year": 2026 }, "iso": "2026-09-26" },
+      "name": "Mid-Autumn Festival Holiday",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 27, "month": 9, "year": 2026 }, "iso": "2026-09-27" },
+      "name": "Mid-Autumn Festival Holiday",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 1, "month": 10, "year": 2026 }, "iso": "2026-10-01" },
+      "name": "National Day",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 2, "month": 10, "year": 2026 }, "iso": "2026-10-02" },
+      "name": "National Day Holiday",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 3, "month": 10, "year": 2026 }, "iso": "2026-10-03" },
+      "name": "National Day Holiday",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 4, "month": 10, "year": 2026 }, "iso": "2026-10-04" },
+      "name": "National Day Holiday",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 5, "month": 10, "year": 2026 }, "iso": "2026-10-05" },
+      "name": "National Day Holiday",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 6, "month": 10, "year": 2026 }, "iso": "2026-10-06" },
+      "name": "National Day Holiday",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 7, "month": 10, "year": 2026 }, "iso": "2026-10-07" },
+      "name": "National Day Holiday",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": { "datetime": { "day": 8, "month": 10, "year": 2026 }, "iso": "2026-10-08" },
+      "name": "Cold Dew",
+      "primary_type": "Season",
+      "type": ["Season"]
+    },
+    {
+      "date": { "datetime": { "day": 10, "month": 10, "year": 2026 }, "iso": "2026-10-10" },
+      "name": "Make-up Workday",
+      "primary_type": "Working Day on a Weekend",
+      "type": ["Weekend"]
+    },
+    {
+      "date": { "datetime": { "day": 17, "month": 10, "year": 2026 }, "iso": "2026-10-17" },
+      "name": "Double Ninth Festival",
+      "primary_type": "Observance",
+      "type": ["Observance"]
+    },
+    {
+      "date": { "datetime": { "day": 23, "month": 10, "year": 2026 }, "iso": "2026-10-23" },
+      "name": "Frost Descent",
+      "primary_type": "Season",
+      "type": ["Season"]
+    },
+    {
+      "date": { "datetime": { "day": 7, "month": 11, "year": 2026 }, "iso": "2026-11-07" },
+      "name": "Beginning of Winter",
+      "primary_type": "Season",
+      "type": ["Season"]
+    },
+    {
+      "date": { "datetime": { "day": 8, "month": 11, "year": 2026 }, "iso": "2026-11-08" },
+      "name": "Journalists' Day",
+      "primary_type": "Observance",
+      "type": ["Observance"]
+    },
+    {
+      "date": { "datetime": { "day": 22, "month": 11, "year": 2026 }, "iso": "2026-11-22" },
+      "name": "Minor Snow",
+      "primary_type": "Season",
+      "type": ["Season"]
+    },
+    {
+      "date": { "datetime": { "day": 7, "month": 12, "year": 2026 }, "iso": "2026-12-07" },
+      "name": "Major Snow",
+      "primary_type": "Season",
+      "type": ["Season"]
+    },
+    {
+      "date": { "datetime": { "day": 21, "month": 12, "year": 2026 }, "iso": "2026-12-21" },
+      "name": "Winter Solstice",
+      "primary_type": "Season",
+      "type": ["Season"]
+    },
+    {
+      "date": { "datetime": { "day": 25, "month": 12, "year": 2026 }, "iso": "2026-12-25" },
+      "name": "Christmas Day",
+      "primary_type": "Observance",
+      "type": ["Observance"]
+    },
+    {
+      "date": { "datetime": { "day": 5, "month": 1, "year": 2027 }, "iso": "2027-01-05" },
+      "name": "Minor Cold",
+      "primary_type": "Season",
+      "type": ["Season"]
+    },
+    {
+      "date": { "datetime": { "day": 20, "month": 1, "year": 2027 }, "iso": "2027-01-20" },
+      "name": "Major Cold",
+      "primary_type": "Season",
+      "type": ["Season"]
+    }
+  ]
+}
