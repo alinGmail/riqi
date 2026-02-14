@@ -61,12 +61,21 @@ jobs:
             target/${{ matrix.target }}/release/riqi
             target/${{ matrix.target }}/release/riqi.exe
           if-no-files-found: error
+      - name: Create zip archive
+        shell: bash
+        run: |
+          VERSION=${GITHUB_REF#refs/tags/}
+          cd target/${{ matrix.target }}/release
+          if [ -f riqi.exe ]; then
+            7z a riqi-${VERSION}-${{ matrix.target }}.zip riqi.exe
+          else
+            zip riqi-${VERSION}-${{ matrix.target }}.zip riqi
+          fi
       - name: release
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
-            target/${{ matrix.target }}/release/riqi
-            target/${{ matrix.target }}/release/riqi.exe
+            target/${{ matrix.target }}/release/riqi-*.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
