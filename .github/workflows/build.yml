@@ -35,7 +35,7 @@ jobs:
         if: runner.os == 'macOS'
         run: |
           codesign --force --options runtime --deep \
-            --sign "${{ secrets.APPLE_CERT_NAME }}" \
+            --sign "Developer ID Application: Xiaolin Zhai (GKKM6A9PRT)" \
             target/${{ matrix.target }}/release/riqi
       # --- 仅 macOS 需要的步骤：公证 ---
       - name: Notarize (macOS only)
