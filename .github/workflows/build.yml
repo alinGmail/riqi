@@ -1,5 +1,11 @@
 name: Build Binary
-on: [push] # 每次推代码时触发
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
 
 jobs:
   build:
@@ -55,3 +61,12 @@ jobs:
             target/${{ matrix.target }}/release/riqi
             target/${{ matrix.target }}/release/riqi.exe
           if-no-files-found: error
+      - name: release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            target/${{ matrix.target }}/release/riqi
+            target/${{ matrix.target }}/release/riqi.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
