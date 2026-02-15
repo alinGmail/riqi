@@ -12,6 +12,8 @@ use crate::events::AppEvent;
 use crate::holiday::manager::HolidayManager;
 use crate::holiday::modal::HolidayOfYearList;
 use crate::holiday::utils::get_ylc_code;
+use crate::ui::bottom_line_component::BottomLineComponent;
+use crate::utils::add_months_safe;
 use chrono::{Datelike, Duration, Local, NaiveDate};
 use clap::Parser;
 use color_eyre::Result;
@@ -39,7 +41,6 @@ use ui::{
     layout::get_layout,
     month_component::{self, MonthComponent},
 };
-use crate::utils::add_months_safe;
 
 #[derive(Deserialize, Debug, Clone)]
 struct Todo {
@@ -152,9 +153,9 @@ async fn main() -> Result<()> {
                 if key.code == KeyCode::Char('b') {
                     riqi_state.select_day = add_months_safe(riqi_state.select_day, -12);
                 }
-                
+
                 if key.code == KeyCode::Char('t') {
-                   riqi_state.select_day =  now.date_naive();
+                    riqi_state.select_day = now.date_naive();
                 }
                 let selected_day = riqi_state.select_day;
                 let ylc_key = get_ylc_code(
@@ -227,6 +228,8 @@ fn draw_ui(
         // let data =
         let month_item = MonthComponent::new(calendar, &layout, &riqi_state, app_config);
         month_item.render(layout.month_calendar.area, f.buffer_mut());
+        let bottom_line = BottomLineComponent { app_config, riqi_state };
+        bottom_line.render(layout.bottom_line, f.buffer_mut());
     })?;
     Ok(())
 }

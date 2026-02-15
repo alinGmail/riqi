@@ -32,7 +32,7 @@ under_line = false
 transparent_bg = false
 
 [bottom_line]
-fg = "Rgb(180,200,50)" # 与 month_til 同色，统一风格
+fg = "Rgb(126, 140, 35)" # 与 month_til 同色，统一风格
 bold = false
 italic = false
 under_line = false
