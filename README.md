@@ -34,16 +34,16 @@ cargo run
 |----------|-------|------|------|---------|-------------|
 | Country | `-c` | `--country` | `String` | System locale or `cn` | Country code for holiday data |
 | Language | `-l` | `--language` | `String` | System locale | Language code for display |
-| Column | | `--column` | `u32` | Theme default | Number of columns in the calendar grid |
-| Row | | `--row` | `u32` | Theme default | Number of rows in the calendar grid |
-| Show Lunar | | `--show-lunar` | `bool` | Config default | Show/hide lunar calendar dates |
-| Show Holiday | | `--show-holiday` | `bool` | Config default | Show/hide holiday information |
+| Column | | `--column` | `u32` | -- | Number of columns in the calendar grid |
+| Row | | `--row` | `u32` | -- | Number of rows in the calendar grid |
+| Show Lunar | | `--show-lunar` | `bool` | false | Show/hide lunar calendar dates |
+| Show Holiday | | `--show-holiday` | `bool` | false | Show/hide holiday information |
 
 **Examples:**
 
 ```bash
 # Set country and language
-riqi --country us --language en
+riqi --country us --language en --show-holoday
 
 # Customize grid layout
 riqi --column 7 --row 6
@@ -53,10 +53,6 @@ riqi --show-lunar
 # or disable it
 riqi --show-lunar=false
 
-# Enable holiday display
-riqi --show-holiday
-# or disable it
-riqi --show-holiday=false
 ```
 
 **Configuration Priority (highest to lowest):**
@@ -119,8 +115,8 @@ The configuration file uses TOML format. All fields are optional; if not specifi
 |--------|------|-------------|---------|
 | `language` | `string` | Language code (e.g., `en`, `zh`) | System locale |
 | `country` | `string` | Country code for holiday data (e.g., `us`, `cn`) | System locale or `cn` |
-| `show_lunar` | `boolean` | Display lunar calendar dates | `true` |
-| `show_holiday` | `boolean` | Display holiday information | `true` |
+| `show_lunar` | `boolean` | Display lunar calendar dates | `false` |
+| `show_holiday` | `boolean` | Display holiday information | `false` |
 | `hide_bg` | `boolean` | Hide background colors | `false` |
 | `column` | `integer` | Number of columns in calendar grid | Theme default (7) |
 | `row` | `integer` | Number of rows in calendar grid | Theme default (6) |
@@ -195,8 +191,14 @@ Configuration values are resolved in the following order (highest priority first
 - Themes are defined in TOML format
 - Customize colors for calendar elements, highlights, and borders
 
-## Development
 
+## FAQ
+
+* **Q: I enabled the `show-holiday` argument, but cannot see holiday data.**
+  * **A:** You must set the correct language and country. Currently, only `zh_cn` and `en_cn` are supported.
+
+
+## Development
 ### Project Structure
 
 ```
