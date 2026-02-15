@@ -37,6 +37,7 @@ cargo run
 | Column | | `--column` | `u32` | Theme default | Number of columns in the calendar grid |
 | Row | | `--row` | `u32` | Theme default | Number of rows in the calendar grid |
 | Show Lunar | | `--show-lunar` | `bool` | Config default | Show/hide lunar calendar dates |
+| Show Holiday | | `--show-holiday` | `bool` | Config default | Show/hide holiday information |
 
 **Examples:**
 
@@ -51,6 +52,11 @@ riqi --column 7 --row 6
 riqi --show-lunar
 # or disable it
 riqi --show-lunar=false
+
+# Enable holiday display
+riqi --show-holiday
+# or disable it
+riqi --show-holiday=false
 ```
 
 **Configuration Priority (highest to lowest):**
@@ -114,6 +120,7 @@ The configuration file uses TOML format. All fields are optional; if not specifi
 | `language` | `string` | Language code (e.g., `en`, `zh`) | System locale |
 | `country` | `string` | Country code for holiday data (e.g., `us`, `cn`) | System locale or `cn` |
 | `show_lunar` | `boolean` | Display lunar calendar dates | `true` |
+| `show_holiday` | `boolean` | Display holiday information | `true` |
 | `hide_bg` | `boolean` | Hide background colors | `false` |
 | `column` | `integer` | Number of columns in calendar grid | Theme default (7) |
 | `row` | `integer` | Number of rows in calendar grid | Theme default (6) |
@@ -126,6 +133,7 @@ The configuration file uses TOML format. All fields are optional; if not specifi
 language = "zh"
 country = "cn"
 show_lunar = true
+show_holiday = true
 hide_bg = false
 column = 7
 row = 6
