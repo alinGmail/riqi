@@ -10,7 +10,8 @@ pub fn get_app_config(args:Args) -> AppConfig {
         country: String::from("cn"),
         column: None,
         row: None,
-        show_lunar: None,
+        show_lunar: Some(false),
+        show_holiday: Some(false),
     };
     if let Some(country) = country_option {
         app_config.country = country
@@ -33,6 +34,9 @@ pub fn get_app_config(args:Args) -> AppConfig {
         if let Some(show_lunar) = file_config.show_lunar {
             app_config.show_lunar = Some(show_lunar);
         }
+        if let Some(show_holiday) = file_config.show_holiday {
+            app_config.show_holiday = Some(show_holiday);
+        }
     }
     
     if let Some(arg_country) = args.country {
@@ -53,6 +57,10 @@ pub fn get_app_config(args:Args) -> AppConfig {
     
     if let Some(arg_show_lunar) = args.show_lunar {
         app_config.show_lunar = Some(arg_show_lunar);
+    }
+    
+    if let Some(arg_show_holiday) = args.show_holiday {
+        app_config.show_holiday = Some(arg_show_holiday);
     }
     
 

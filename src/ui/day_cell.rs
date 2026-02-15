@@ -98,7 +98,8 @@ impl<'a> DayCell<'a> {
 
         let mut icon_x = inner_area.left() + inner_area.width - 3;
 
-        if show_holiday_icon {
+        let show_holiday = self.app_config.show_holiday.unwrap_or(false);
+        if show_holiday_icon && show_holiday {
             self.render_work_rest_icon(
                 is_rest_day,
                 Rect {
@@ -134,9 +135,11 @@ impl<'a> DayCell<'a> {
         }
 
         if let Some(holidays) = &self.day_data.holidays {
-            for holiday in holidays {
-                let holiday_name = holiday.name.clone();
-                content_lines.push(Line::from(holiday_name).style(day_item_style))
+            if show_holiday {
+                for holiday in holidays {
+                    let holiday_name = holiday.name.clone();
+                    content_lines.push(Line::from(holiday_name).style(day_item_style))
+                }
             }
         }
 

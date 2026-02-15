@@ -19,4 +19,7 @@ pub struct Args {
 
     #[arg( long, num_args(0..=1),default_missing_value = "true")]
     pub show_lunar: Option<bool>,
+
+    #[arg( long, num_args(0..=1),default_missing_value = "true")]
+    pub show_holiday: Option<bool>,
 }
