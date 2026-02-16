@@ -10,3 +10,5 @@ pub mod utils;
 pub mod translate;
 pub mod lunar;
 pub mod bottom_line_component;
+
+pub mod goto_panel_component;

@@ -13,6 +13,7 @@ use crate::holiday::manager::HolidayManager;
 use crate::holiday::modal::HolidayOfYearList;
 use crate::holiday::utils::get_ylc_code;
 use crate::ui::bottom_line_component::BottomLineComponent;
+use crate::ui::goto_panel_component::GotoPanelComponent;
 use crate::utils::add_months_safe;
 use chrono::{Datelike, Duration, Local, NaiveDate};
 use clap::Parser;
@@ -27,6 +28,7 @@ use data::calendar::MonthCalendar;
 use env_logger::{Builder, Target};
 use log::{debug, LevelFilter};
 use ratatui::prelude::*;
+use ratatui::widgets::Clear;
 use serde::Deserialize;
 use state::RiqiState;
 use std::collections::HashMap;
@@ -228,8 +230,35 @@ fn draw_ui(
         // let data =
         let month_item = MonthComponent::new(calendar, &layout, &riqi_state, app_config);
         month_item.render(layout.month_calendar.area, f.buffer_mut());
-        let bottom_line = BottomLineComponent { app_config, riqi_state };
+        let bottom_line = BottomLineComponent {
+            app_config,
+            riqi_state,
+        };
         bottom_line.render(layout.bottom_line, f.buffer_mut());
+
+        let goto_panel = GotoPanelComponent {
+            year: "".to_string(),
+            month: "".to_string(),
+            day: "".to_string(),
+            cursor: 0,
+        };
+
+        // 1. 定义弹出层总大小 (45x8 字符左右)
+        let area = f.area();
+        let popup_area = area.centered(Constraint::Length(45), Constraint::Length(8));
+
+        // 2. 清除背景并绘制外层边框
+        f.render_widget(
+            Clear,
+            Rect {
+                x: popup_area.x - 1,
+                y: popup_area.y,
+                width: popup_area.width + 2,
+                height: popup_area.height,
+            },
+        );
+
+        goto_panel.render(popup_area, f.buffer_mut());
     })?;
     Ok(())
 }
