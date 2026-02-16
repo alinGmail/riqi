@@ -104,12 +104,6 @@ async fn main() -> Result<()> {
     thread::spawn(move || loop {
         if event::poll(std::time::Duration::from_millis(500)).unwrap() {
             if let Ok(ev) = event::read() {
-                if let Event::Key(key) = ev {
-                    if key.code == KeyCode::Char('q') {
-                        let _ = tx_input.send(AppEvent::Quit);
-                        break;
-                    }
-                }
                 let _ = tx_input.send(AppEvent::TerminalEvent(ev));
             }
         }
@@ -138,6 +132,11 @@ async fn main() -> Result<()> {
             AppEvent::TerminalEvent(Event::Key(key)) => {
                 if key.is_release() {
                     continue;
+                }
+                if key.code == KeyCode::Char('q') || key.code == KeyCode::Esc {
+                    if matches!(riqi_state.mode, RiqiMode::Normal) {
+                        break;
+                    }
                 }
                 // 判断是什么mode
                 match riqi_state.mode {

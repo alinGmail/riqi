@@ -13,6 +13,10 @@ pub enum AppEvent {
 
 pub fn handle_normal_mode_key_event(key: KeyEvent, riqi_state: &mut RiqiState) {
     let now = Local::now();
+
+    if key.code == KeyCode::Char('q') || key.code == KeyCode::Esc {
+        return;
+    }
     if key.code == KeyCode::Char('j') || key.code == KeyCode::Down {
         riqi_state.select_day += Duration::weeks(1);
     }
