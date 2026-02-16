@@ -1,5 +1,5 @@
 use crate::holiday::modal::HolidayOfYearList;
-use crate::state::{GotoPanelState, RiqiMode, RiqiState};
+use crate::state::{GotoPanelState, NotificationMessage, RiqiMode, RiqiState};
 use crate::utils::add_months_safe;
 use chrono::{Datelike, Duration, Local};
 use crossterm::event::{Event, KeyCode, KeyEvent};
@@ -9,6 +9,8 @@ pub enum AppEvent {
     Quit,
     TerminalEvent(Event),
     UpdateHoliday(String, HolidayOfYearList),
+    AddNotification(NotificationMessage),
+    RemoveNotification(NotificationMessage),
 }
 
 pub fn handle_normal_mode_key_event(key: KeyEvent, riqi_state: &mut RiqiState) {

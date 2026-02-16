@@ -1,7 +1,6 @@
+use crate::theme::theme_model::Theme;
 use chrono::NaiveDate;
 use serde::Deserialize;
-use crate::theme::theme_model::Theme;
-
 
 #[derive(Debug)]
 pub enum RiqiMode {
@@ -9,10 +8,15 @@ pub enum RiqiMode {
     Goto,
 }
 
+#[derive(Debug, Clone)]
+pub struct NotificationMessage {
+    pub id: String,
+    pub message: String,
+}
 
 #[derive(Debug)]
-pub struct GotoPanelState{
-    pub year:u16,
+pub struct GotoPanelState {
+    pub year: u16,
     pub month: u8,
     pub day: u8,
     pub focus_inp: u8,
@@ -25,4 +29,5 @@ pub struct RiqiState {
     pub theme: Theme,
     pub mode: RiqiMode,
     pub goto_panel: GotoPanelState,
+    pub notification: Vec<NotificationMessage>,
 }

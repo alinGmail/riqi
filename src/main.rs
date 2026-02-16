@@ -94,6 +94,7 @@ async fn main() -> Result<()> {
             day: now.month() as u8,
             focus_inp: 0,
         },
+        notification: vec![],
     };
 
     let now = Local::now();
@@ -191,6 +192,16 @@ async fn main() -> Result<()> {
                         .get(&ylc_key)
                         .map(|holiday_list| holiday_list.to_holiday_map()),
                 );
+                draw_ui(&mut terminal, &calendar, &riqi_state, &app_config)?;
+            }
+            AppEvent::AddNotification(notification_message) => {
+                riqi_state.notification.push(notification_message);
+                draw_ui(&mut terminal, &calendar, &riqi_state, &app_config)?;
+            }
+            AppEvent::RemoveNotification(notification_message) => {
+                riqi_state
+                    .notification
+                    .retain(|message| message.id != notification_message.id);
                 draw_ui(&mut terminal, &calendar, &riqi_state, &app_config)?;
             }
             _ => {} // 其他按键暂不触发重绘
