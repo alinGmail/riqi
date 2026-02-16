@@ -7,6 +7,7 @@ use ratatui::{
     Frame,
 };
 use ratatui::layout::Alignment;
+use ratatui::widgets::BorderType::Rounded;
 
 pub struct GotoPanelComponent {
     pub year: String,
@@ -21,18 +22,24 @@ impl Widget for GotoPanelComponent {
         let outer_block = Block::default()
             .borders(Borders::ALL)
             .border_type(BorderType::Rounded)
-            .title(" GOTO SPECIFIC DATE ")
+            .title(" GOTO TO DATE")
             .title_alignment(Alignment::Center);
 
         let inner_area = outer_block.inner(area);
         outer_block.render(area, buf);
 
-        // 2. Split into 3 columns
+        // 2. Split into rows: input area and help text
+        let rows = Layout::vertical([
+            Constraint::Length(4),
+            Constraint::Length(1),
+        ]).split(inner_area);
+
+        // 3. Split input area into 3 columns
         let cols = Layout::horizontal([
             Constraint::Percentage(33),
             Constraint::Percentage(33),
             Constraint::Percentage(34),
-        ]).split(inner_area);
+        ]).split(rows[0]);
 
         let data = [
             ("年", &self.year),
@@ -42,7 +49,7 @@ impl Widget for GotoPanelComponent {
 
         for (i, (label, value)) in data.iter().enumerate() {
             // Split each column into Title (1 row) and Box (3 rows)
-            let rows = Layout::vertical([
+            let field_rows = Layout::vertical([
                 Constraint::Length(1),
                 Constraint::Length(3),
             ]).split(cols[i]);
@@ -50,7 +57,7 @@ impl Widget for GotoPanelComponent {
             // Render Title
             Paragraph::new(*label)
                 .alignment(Alignment::Center)
-                .render(rows[0], buf);
+                .render(field_rows[0], buf);
 
             // Render Value Box (Highlight border if focused)
             let style = if i == self.cursor {
@@ -62,7 +69,13 @@ impl Widget for GotoPanelComponent {
             Paragraph::new(value.as_str())
                 .alignment(Alignment::Center)
                 .block(Block::default().borders(Borders::ALL).border_style(style))
-                .render(rows[1], buf);
+                .render(field_rows[1], buf);
         }
+
+        // Render help text
+        Paragraph::new("h,l:左右导航;j,k:加或减;enter:选择日期")
+            .alignment(Alignment::Center)
+            .style(Style::default().fg(Color::DarkGray))
+            .render(rows[1], buf);
     }
 }

@@ -8,10 +8,11 @@ mod ui;
 mod utils;
 
 use crate::config::model::AppConfig;
-use crate::events::AppEvent;
+use crate::events::{handle_goto_mode_key_event, handle_normal_mode_key_event, AppEvent};
 use crate::holiday::manager::HolidayManager;
 use crate::holiday::modal::HolidayOfYearList;
 use crate::holiday::utils::get_ylc_code;
+use crate::state::{GotoPanelState, RiqiMode};
 use crate::ui::bottom_line_component::BottomLineComponent;
 use crate::ui::goto_panel_component::GotoPanelComponent;
 use crate::utils::add_months_safe;
@@ -86,6 +87,13 @@ async fn main() -> Result<()> {
         select_day: now.date_naive(),
         today: now.date_naive(),
         theme,
+        mode: RiqiMode::Normal,
+        goto_panel: GotoPanelState {
+            year: now.year() as u16,
+            month: now.month() as u8,
+            day: now.month() as u8,
+            focus_inp: 0,
+        },
     };
 
     let now = Local::now();
@@ -131,34 +139,13 @@ async fn main() -> Result<()> {
                 if key.is_release() {
                     continue;
                 }
-                if key.code == KeyCode::Char('j') || key.code == KeyCode::Down {
-                    riqi_state.select_day += Duration::weeks(1);
-                }
-                if key.code == KeyCode::Char('k') || key.code == KeyCode::Up {
-                    riqi_state.select_day += Duration::weeks(-1);
-                }
-                if key.code == KeyCode::Char('h') || key.code == KeyCode::Left {
-                    riqi_state.select_day += Duration::days(-1);
-                }
-                if key.code == KeyCode::Char('l') || key.code == KeyCode::Right {
-                    riqi_state.select_day += Duration::days(1);
-                }
-                if key.code == KeyCode::Char('d') {
-                    riqi_state.select_day = add_months_safe(riqi_state.select_day, 1);
-                }
-                if key.code == KeyCode::Char('u') {
-                    riqi_state.select_day = add_months_safe(riqi_state.select_day, -1);
-                }
-                if key.code == KeyCode::Char('f') {
-                    riqi_state.select_day = add_months_safe(riqi_state.select_day, 12);
-                }
-                if key.code == KeyCode::Char('b') {
-                    riqi_state.select_day = add_months_safe(riqi_state.select_day, -12);
+                // 判断是什么mode
+                match riqi_state.mode {
+                    RiqiMode::Normal => handle_normal_mode_key_event(key, &mut riqi_state),
+                    RiqiMode::Goto => handle_goto_mode_key_event(key, &mut riqi_state),
+                    _ => (),
                 }
 
-                if key.code == KeyCode::Char('t') {
-                    riqi_state.select_day = now.date_naive();
-                }
                 let selected_day = riqi_state.select_day;
                 let ylc_key = get_ylc_code(
                     &selected_day.year().to_string(),
@@ -227,7 +214,6 @@ fn draw_ui(
     terminal.draw(|f| {
         let frame_area = f.area();
         let layout = get_layout(frame_area, app_config.column, app_config.row);
-        // let data =
         let month_item = MonthComponent::new(calendar, &layout, &riqi_state, app_config);
         month_item.render(layout.month_calendar.area, f.buffer_mut());
         let bottom_line = BottomLineComponent {
@@ -236,29 +222,32 @@ fn draw_ui(
         };
         bottom_line.render(layout.bottom_line, f.buffer_mut());
 
-        let goto_panel = GotoPanelComponent {
-            year: "".to_string(),
-            month: "".to_string(),
-            day: "".to_string(),
-            cursor: 0,
-        };
-
-        // 1. 定义弹出层总大小 (45x8 字符左右)
-        let area = f.area();
-        let popup_area = area.centered(Constraint::Length(45), Constraint::Length(8));
-
-        // 2. 清除背景并绘制外层边框
-        f.render_widget(
-            Clear,
-            Rect {
-                x: popup_area.x - 1,
-                y: popup_area.y,
-                width: popup_area.width + 2,
-                height: popup_area.height,
-            },
-        );
-
-        goto_panel.render(popup_area, f.buffer_mut());
+        if matches!(riqi_state.mode, RiqiMode::Goto) {
+            draw_goto_panel(riqi_state, f);
+        }
     })?;
     Ok(())
+}
+
+fn draw_goto_panel(riqi_state: &RiqiState, f: &mut Frame) {
+    let goto_panel = GotoPanelComponent {
+        year: riqi_state.goto_panel.year.to_string(),
+        month: riqi_state.goto_panel.month.to_string(),
+        day: riqi_state.goto_panel.day.to_string(),
+        cursor: riqi_state.goto_panel.focus_inp as usize,
+    };
+    // 1. 定义弹出层总大小 (45x8 字符左右)
+    let area = f.area();
+    let popup_area = area.centered(Constraint::Length(45), Constraint::Length(7));
+    // 2. 清除背景并绘制外层边框
+    f.render_widget(
+        Clear,
+        Rect {
+            x: popup_area.x - 1,
+            y: popup_area.y,
+            width: popup_area.width + 2,
+            height: popup_area.height,
+        },
+    );
+    goto_panel.render(popup_area, f.buffer_mut());
 }
