@@ -142,6 +142,11 @@ pub struct Translate<'a> {
     pub next_year: &'a str,
     pub prev_year: &'a str,
     pub back_to_today: &'a str,
+    pub goto_to_date: &'a str,
+    pub year: &'a str,
+    pub month: &'a str,
+    pub day: &'a str,
+    pub goto_help: &'a str,
 }
 
 const ZH_TRANSLATE: Translate<'static> = Translate {
@@ -151,6 +156,11 @@ const ZH_TRANSLATE: Translate<'static> = Translate {
     next_year: "下一年",
     prev_year: "上一年",
     back_to_today: "返回今天",
+    goto_to_date: "跳转到日期",
+    year: "年",
+    month: "月",
+    day: "日",
+    goto_help: "h,l:左右导航;j,k:加或减;enter:选择日期",
 };
 
 // Japanese (日本語)
@@ -161,6 +171,11 @@ const JA_TRANSLATE: Translate<'static> = Translate {
     next_year: "翌年",
     prev_year: "前年",
     back_to_today: "今日に戻る",
+    goto_to_date: "日付へ移動",
+    year: "年",
+    month: "月",
+    day: "日",
+    goto_help: "h,l:左右移動;j,k:増減;enter:日付選択",
 };
 
 // Korean (한국어)
@@ -171,6 +186,11 @@ const KO_TRANSLATE: Translate<'static> = Translate {
     next_year: "다음 해",
     prev_year: "이전 해",
     back_to_today: "오늘로 돌아가기",
+    goto_to_date: "날짜로 이동",
+    year: "년",
+    month: "월",
+    day: "일",
+    goto_help: "h,l:좌우 이동;j,k:증감;enter:날짜 선택",
 };
 
 // German (Deutsch)
@@ -181,6 +201,11 @@ const DE_TRANSLATE: Translate<'static> = Translate {
     next_year: "Nächstes Jahr",
     prev_year: "Vorheriges Jahr",
     back_to_today: "Zurück zum Heute",
+    goto_to_date: "Zu Datum gehen",
+    year: "Jahr",
+    month: "Monat",
+    day: "Tag",
+    goto_help: "h,l:Links/Rechts;j,k:+/-;Enter:Datum wählen",
 };
 
 // French (Français)
@@ -191,6 +216,11 @@ const FR_TRANSLATE: Translate<'static> = Translate {
     next_year: "Année suivante",
     prev_year: "Année précédente",
     back_to_today: "Retour à aujourd'hui",
+    goto_to_date: "Aller à la date",
+    year: "Année",
+    month: "Mois",
+    day: "Jour",
+    goto_help: "h,l:Gauche/Droite;j,k:+/-;Entrée:Sélectionner",
 };
 
 // Russian (Русский)
@@ -201,6 +231,11 @@ const RU_TRANSLATE: Translate<'static> = Translate {
     next_year: "Следующий год",
     prev_year: "Предыдущий год",
     back_to_today: "Вернуться к сегодняшнему дню",
+    goto_to_date: "Перейти к дате",
+    year: "Год",
+    month: "Месяц",
+    day: "День",
+    goto_help: "h,l:Влево/Вправо;j,k:+/-;Enter:Выбрать",
 };
 
 // English (English)
@@ -211,6 +246,11 @@ const EN_TRANSLATE: Translate<'static> = Translate {
     next_year: "Next year",
     prev_year: "Previous year",
     back_to_today: "Back to today",
+    goto_to_date: "Go to date",
+    year: "Year",
+    month: "Month",
+    day: "Day",
+    goto_help: "h,l:Navigate;j,k:+/-;Enter:Select",
 };
 
 pub fn get_translate(language: Language) -> &'static Translate<'static> {

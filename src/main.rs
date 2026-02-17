@@ -8,13 +8,16 @@ mod ui;
 mod utils;
 
 use crate::config::model::AppConfig;
-use crate::events::AppEvent;
+use crate::events::{handle_goto_mode_key_event, handle_normal_mode_key_event, AppEvent};
 use crate::holiday::manager::HolidayManager;
 use crate::holiday::modal::HolidayOfYearList;
 use crate::holiday::utils::get_ylc_code;
+use crate::state::{GotoPanelState, RiqiMode};
 use crate::ui::bottom_line_component::BottomLineComponent;
-use crate::utils::add_months_safe;
-use chrono::{Datelike, Duration, Local, NaiveDate};
+use crate::ui::goto_panel_component::GotoPanelComponent;
+use crate::ui::notification_component::NotificationComponent;
+use crate::ui::translate::{get_translate, Language};
+use chrono::{Datelike, Local, NaiveDate};
 use clap::Parser;
 use color_eyre::Result;
 use config::{cli::Args, config_main::get_app_config};
@@ -25,8 +28,9 @@ use crossterm::{
 };
 use data::calendar::MonthCalendar;
 use env_logger::{Builder, Target};
-use log::{debug, LevelFilter};
+use log::{debug, info, LevelFilter};
 use ratatui::prelude::*;
+use ratatui::widgets::Clear;
 use serde::Deserialize;
 use state::RiqiState;
 use std::collections::HashMap;
@@ -84,6 +88,14 @@ async fn main() -> Result<()> {
         select_day: now.date_naive(),
         today: now.date_naive(),
         theme,
+        mode: RiqiMode::Normal,
+        goto_panel: GotoPanelState {
+            year: now.year() as u16,
+            month: now.month() as u8,
+            day: now.month() as u8,
+            focus_inp: 0,
+        },
+        notification: vec![],
     };
 
     let now = Local::now();
@@ -94,12 +106,6 @@ async fn main() -> Result<()> {
     thread::spawn(move || loop {
         if event::poll(std::time::Duration::from_millis(500)).unwrap() {
             if let Ok(ev) = event::read() {
-                if let Event::Key(key) = ev {
-                    if key.code == KeyCode::Char('q') {
-                        let _ = tx_input.send(AppEvent::Quit);
-                        break;
-                    }
-                }
                 let _ = tx_input.send(AppEvent::TerminalEvent(ev));
             }
         }
@@ -129,34 +135,21 @@ async fn main() -> Result<()> {
                 if key.is_release() {
                     continue;
                 }
-                if key.code == KeyCode::Char('j') || key.code == KeyCode::Down {
-                    riqi_state.select_day += Duration::weeks(1);
-                }
-                if key.code == KeyCode::Char('k') || key.code == KeyCode::Up {
-                    riqi_state.select_day += Duration::weeks(-1);
-                }
-                if key.code == KeyCode::Char('h') || key.code == KeyCode::Left {
-                    riqi_state.select_day += Duration::days(-1);
-                }
-                if key.code == KeyCode::Char('l') || key.code == KeyCode::Right {
-                    riqi_state.select_day += Duration::days(1);
-                }
-                if key.code == KeyCode::Char('d') {
-                    riqi_state.select_day = add_months_safe(riqi_state.select_day, 1);
-                }
-                if key.code == KeyCode::Char('u') {
-                    riqi_state.select_day = add_months_safe(riqi_state.select_day, -1);
-                }
-                if key.code == KeyCode::Char('f') {
-                    riqi_state.select_day = add_months_safe(riqi_state.select_day, 12);
-                }
-                if key.code == KeyCode::Char('b') {
-                    riqi_state.select_day = add_months_safe(riqi_state.select_day, -12);
+                if key.code == KeyCode::Char('q') || key.code == KeyCode::Esc {
+                    if matches!(riqi_state.mode, RiqiMode::Normal) {
+                        break;
+                    }
                 }
 
-                if key.code == KeyCode::Char('t') {
-                    riqi_state.select_day = now.date_naive();
+                let pre_year = riqi_state.select_day.year();
+                let pre_month = riqi_state.select_day.month();
+                // 判断是什么mode
+                match riqi_state.mode {
+                    RiqiMode::Normal => handle_normal_mode_key_event(key, &mut riqi_state),
+                    RiqiMode::Goto => handle_goto_mode_key_event(key, &mut riqi_state, tx.clone()),
+                    _ => (),
                 }
+
                 let selected_day = riqi_state.select_day;
                 let ylc_key = get_ylc_code(
                     &selected_day.year().to_string(),
@@ -205,6 +198,17 @@ async fn main() -> Result<()> {
                 );
                 draw_ui(&mut terminal, &calendar, &riqi_state, &app_config)?;
             }
+            AppEvent::AddNotification(notification_message) => {
+                riqi_state.notification.push(notification_message);
+                draw_ui(&mut terminal, &calendar, &riqi_state, &app_config)?;
+            }
+            AppEvent::RemoveNotification(notification_message) => {
+                info!("in remove notification_message");
+                riqi_state
+                    .notification
+                    .retain(|message| message.id != notification_message.id);
+                draw_ui(&mut terminal, &calendar, &riqi_state, &app_config)?;
+            }
             _ => {} // 其他按键暂不触发重绘
         }
     }
@@ -225,11 +229,54 @@ fn draw_ui(
     terminal.draw(|f| {
         let frame_area = f.area();
         let layout = get_layout(frame_area, app_config.column, app_config.row);
-        // let data =
         let month_item = MonthComponent::new(calendar, &layout, &riqi_state, app_config);
         month_item.render(layout.month_calendar.area, f.buffer_mut());
-        let bottom_line = BottomLineComponent { app_config, riqi_state };
+        let bottom_line = BottomLineComponent {
+            app_config,
+            riqi_state,
+        };
         bottom_line.render(layout.bottom_line, f.buffer_mut());
+
+        if matches!(riqi_state.mode, RiqiMode::Goto) {
+            draw_goto_panel(riqi_state, app_config, f);
+        }
+
+        if !riqi_state.notification.is_empty() {
+            let notification_component = NotificationComponent {
+                notifications: &riqi_state.notification,
+            };
+            notification_component.render(frame_area, f.buffer_mut());
+        }
     })?;
     Ok(())
+}
+
+fn draw_goto_panel(riqi_state: &RiqiState, app_config: &AppConfig, f: &mut Frame) {
+    let language = app_config
+        .language
+        .parse::<Language>()
+        .unwrap_or(Language::EN);
+    let translate = get_translate(language);
+
+    let goto_panel = GotoPanelComponent {
+        year: riqi_state.goto_panel.year.to_string(),
+        month: riqi_state.goto_panel.month.to_string(),
+        day: riqi_state.goto_panel.day.to_string(),
+        cursor: riqi_state.goto_panel.focus_inp as usize,
+        translate,
+    };
+    // 1. 定义弹出层总大小 (45x8 字符左右)
+    let area = f.area();
+    let popup_area = area.centered(Constraint::Length(45), Constraint::Length(7));
+    // 2. 清除背景并绘制外层边框
+    f.render_widget(
+        Clear,
+        Rect {
+            x: popup_area.x - 1,
+            y: popup_area.y,
+            width: popup_area.width + 2,
+            height: popup_area.height,
+        },
+    );
+    goto_panel.render(popup_area, f.buffer_mut());
 }

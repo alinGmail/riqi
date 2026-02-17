@@ -14,6 +14,18 @@ A terminal-based calendar application (TUI) written in Rust that displays monthl
 
 ## Installation
 
+### Requirements
+
+**Font Recommendation**: This application uses Nerd Font icons for enhanced visual display. For the best experience, please install and configure a [Nerd Font](https://www.nerdfonts.com/) in your terminal.
+
+### Install from Release
+
+1. Download the appropriate ZIP package for your system from the [Releases](https://github.com/alinGmail/riqi/releases) page
+2. Extract the ZIP file
+3. Move the `riqi` executable to a directory in your system's PATH:
+   - **Linux/macOS**: `sudo mv riqi /usr/local/bin/`
+   - **Windows**: Move `riqi.exe` to a directory in your PATH (e.g., `C:\Windows\System32\` or add a custom directory to PATH)
+
 ### Build from Source
 
 ```bash
@@ -25,7 +37,7 @@ The binary will be available at `target/release/riqi`.
 ## Usage
 
 ```bash
-cargo run
+riqi
 ```
 
 ### Command-line Arguments

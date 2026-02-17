@@ -71,7 +71,7 @@ impl<'a> DayCell<'a> {
     }
 
     fn render_work_rest_icon(&self, is_rest_day: bool, area: Rect, buf: &mut Buffer, style: Style) {
-        let holiday_line = Line::from(if is_rest_day { "休" } else { "班" })
+        let holiday_line = Line::from(if is_rest_day { "\u{f104f}" } else { "\u{f491}" })
             .style(style)
             .centered();
         holiday_line.render(area, buf);
@@ -115,7 +115,7 @@ impl<'a> DayCell<'a> {
         }
 
         if self.day_data.is_today {
-            let today_line = Line::from("今").style(day_item_style).centered();
+            let today_line = Line::from("\u{f192}").style(day_item_style).centered();
             today_line.render(
                 Rect {
                     x: icon_x,
