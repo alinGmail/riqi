@@ -1,5 +1,7 @@
 # Riqi
 
+[中文版](README.zh-CN.md)
+
 A terminal-based calendar application (TUI) written in Rust that displays monthly calendars with lunar dates, holidays, and intuitive keyboard navigation.
 
 ## Features
