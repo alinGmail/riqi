@@ -16,6 +16,7 @@ use crate::state::{GotoPanelState, RiqiMode};
 use crate::ui::bottom_line_component::BottomLineComponent;
 use crate::ui::goto_panel_component::GotoPanelComponent;
 use crate::ui::notification_component::NotificationComponent;
+use crate::ui::translate::{get_translate, Language};
 use chrono::{Datelike, Local, NaiveDate};
 use clap::Parser;
 use color_eyre::Result;
@@ -237,7 +238,7 @@ fn draw_ui(
         bottom_line.render(layout.bottom_line, f.buffer_mut());
 
         if matches!(riqi_state.mode, RiqiMode::Goto) {
-            draw_goto_panel(riqi_state, f);
+            draw_goto_panel(riqi_state, app_config, f);
         }
 
         if !riqi_state.notification.is_empty() {
@@ -250,12 +251,19 @@ fn draw_ui(
     Ok(())
 }
 
-fn draw_goto_panel(riqi_state: &RiqiState, f: &mut Frame) {
+fn draw_goto_panel(riqi_state: &RiqiState, app_config: &AppConfig, f: &mut Frame) {
+    let language = app_config
+        .language
+        .parse::<Language>()
+        .unwrap_or(Language::EN);
+    let translate = get_translate(language);
+
     let goto_panel = GotoPanelComponent {
         year: riqi_state.goto_panel.year.to_string(),
         month: riqi_state.goto_panel.month.to_string(),
         day: riqi_state.goto_panel.day.to_string(),
         cursor: riqi_state.goto_panel.focus_inp as usize,
+        translate,
     };
     // 1. 定义弹出层总大小 (45x8 字符左右)
     let area = f.area();
