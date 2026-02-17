@@ -24,7 +24,7 @@ A terminal-based calendar application (TUI) written in Rust that displays monthl
 2. Extract the ZIP file
 3. Move the `riqi` executable to a directory in your system's PATH:
    - **Linux/macOS**: `sudo mv riqi /usr/local/bin/`
-   - **Windows**: Move `riqi.exe` to a directory in your PATH (e.g., `C:\Windows\System32\` or add a custom directory to PATH)
+   - **Windows**: Move `riqi.exe` to a directory in your PATH or add a custom directory to PATH
 
 ### Build from Source
 
