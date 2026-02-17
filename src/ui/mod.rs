@@ -12,3 +12,4 @@ pub mod lunar;
 pub mod bottom_line_component;
 
 pub mod goto_panel_component;
+pub mod notification_component;

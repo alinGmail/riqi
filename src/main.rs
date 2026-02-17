@@ -15,8 +15,8 @@ use crate::holiday::utils::get_ylc_code;
 use crate::state::{GotoPanelState, RiqiMode};
 use crate::ui::bottom_line_component::BottomLineComponent;
 use crate::ui::goto_panel_component::GotoPanelComponent;
-use crate::utils::add_months_safe;
-use chrono::{Datelike, Duration, Local, NaiveDate};
+use crate::ui::notification_component::NotificationComponent;
+use chrono::{Datelike, Local, NaiveDate};
 use clap::Parser;
 use color_eyre::Result;
 use config::{cli::Args, config_main::get_app_config};
@@ -27,7 +27,7 @@ use crossterm::{
 };
 use data::calendar::MonthCalendar;
 use env_logger::{Builder, Target};
-use log::{debug, LevelFilter};
+use log::{debug, info, LevelFilter};
 use ratatui::prelude::*;
 use ratatui::widgets::Clear;
 use serde::Deserialize;
@@ -139,10 +139,13 @@ async fn main() -> Result<()> {
                         break;
                     }
                 }
+
+                let pre_year = riqi_state.select_day.year();
+                let pre_month = riqi_state.select_day.month();
                 // 判断是什么mode
                 match riqi_state.mode {
                     RiqiMode::Normal => handle_normal_mode_key_event(key, &mut riqi_state),
-                    RiqiMode::Goto => handle_goto_mode_key_event(key, &mut riqi_state),
+                    RiqiMode::Goto => handle_goto_mode_key_event(key, &mut riqi_state, tx.clone()),
                     _ => (),
                 }
 
@@ -199,6 +202,7 @@ async fn main() -> Result<()> {
                 draw_ui(&mut terminal, &calendar, &riqi_state, &app_config)?;
             }
             AppEvent::RemoveNotification(notification_message) => {
+                info!("in remove notification_message");
                 riqi_state
                     .notification
                     .retain(|message| message.id != notification_message.id);
@@ -234,6 +238,13 @@ fn draw_ui(
 
         if matches!(riqi_state.mode, RiqiMode::Goto) {
             draw_goto_panel(riqi_state, f);
+        }
+
+        if !riqi_state.notification.is_empty() {
+            let notification_component = NotificationComponent {
+                notifications: &riqi_state.notification,
+            };
+            notification_component.render(frame_area, f.buffer_mut());
         }
     })?;
     Ok(())
