@@ -98,6 +98,7 @@ riqi --show-lunar=false
 | `f` | Next year |
 | `b` | Previous year |
 | `t` | Jump to today |
+| `g` | Jump to |
 
 #### Application
 | Key | Action |
