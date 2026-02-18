@@ -1,5 +1,10 @@
 # Riqi（日期）
 
+
+<p align="center">
+  <img src="./assets/demo.gif" alt="描述文字" />
+</p>
+
 一个用 Rust 编写的终端日历应用（TUI），可显示农历日期、节假日并支持直观的键盘导航。
 
 ## 功能特性

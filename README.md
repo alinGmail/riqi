@@ -2,6 +2,11 @@
 
 [中文版](README.zh-CN.md)
 
+<p align="center">
+  <img src="./assets/demo.gif" alt="描述文字" />
+</p>
+
+
 A terminal-based calendar application (TUI) written in Rust that displays monthly calendars with lunar dates, holidays, and intuitive keyboard navigation.
 
 ## Features
