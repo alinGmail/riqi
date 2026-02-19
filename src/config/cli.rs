@@ -22,4 +22,7 @@ pub struct Args {
 
     #[arg( long, num_args(0..=1),default_missing_value = "true")]
     pub show_holiday: Option<bool>,
+
+    #[arg(short, long, default_value = "%Y-%m-%d")]
+    pub output: Option<String>,
 }

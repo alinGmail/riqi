@@ -18,7 +18,7 @@ use crate::ui::goto_panel_component::GotoPanelComponent;
 use crate::ui::notification_component::NotificationComponent;
 use crate::ui::translate::{get_translate, Language};
 use chrono::{Datelike, Local, NaiveDate};
-use clap::Parser;
+use clap::{arg, Parser};
 use color_eyre::Result;
 use config::{cli::Args, config_main::get_app_config};
 use crossterm::{
@@ -92,7 +92,7 @@ async fn main() -> Result<()> {
 
     let now = Local::now();
     let args = Args::parse();
-    let app_config = get_app_config(args);
+    let app_config = get_app_config(&args);
 
     let theme = load_theme_from_file("ningmen").expect("主题加载失败");
     let mut riqi_state = RiqiState {
@@ -160,7 +160,11 @@ async fn main() -> Result<()> {
                         } else {
                             stderr().execute(LeaveAlternateScreen)?;
                         }
-                        print!("{}", riqi_state.select_day);
+                        if let Some(out_put_format) = &args.output {
+                            print!("{}", riqi_state.select_day.format(out_put_format));
+                        } else {
+                            print!("{}", riqi_state.select_day);
+                        }
                         stdout().flush()?;
                         return Ok(());
                     }
