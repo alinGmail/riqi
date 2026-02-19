@@ -47,13 +47,6 @@ use ui::{
     month_component::{self, MonthComponent},
 };
 
-#[derive(Deserialize, Debug, Clone)]
-struct Todo {
-    id: u32,
-    title: String,
-    completed: bool,
-}
-
 fn setup_logger() {
     // 创建或覆盖日志文件
     let log_file = File::create("debug.log").expect("Failed to create log file");
@@ -86,13 +79,9 @@ async fn main() -> Result<()> {
     // --- 2. 创建核心事件通道 ---
     let (tx, rx) = mpsc::channel();
 
-    // --- 3. 状态与主循环 ---
-    let mut todo_data: Option<Todo> = None;
-    let mut error_msg: Option<String> = None;
-
     let now = Local::now();
     let args = Args::parse();
-    let app_config = get_app_config(&args);
+    let app_config = get_app_config(args);
 
     let theme = load_theme_from_file("ningmen").expect("主题加载失败");
     let mut riqi_state = RiqiState {
@@ -160,11 +149,7 @@ async fn main() -> Result<()> {
                         } else {
                             stderr().execute(LeaveAlternateScreen)?;
                         }
-                        if let Some(out_put_format) = &args.output {
-                            print!("{}", riqi_state.select_day.format(out_put_format));
-                        } else {
-                            print!("{}", riqi_state.select_day);
-                        }
+                        print!("{}", riqi_state.select_day.format(&app_config.output));
                         stdout().flush()?;
                         return Ok(());
                     }
