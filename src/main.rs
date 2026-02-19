@@ -34,9 +34,10 @@ use ratatui::widgets::Clear;
 use serde::Deserialize;
 use state::RiqiState;
 use std::collections::HashMap;
+use std::io::IsTerminal;
 use std::{
     fs::File,
-    io::{self, stdout},
+    io::{self, stderr, stdout, Write},
     sync::mpsc,
     thread,
 };
@@ -70,8 +71,18 @@ async fn main() -> Result<()> {
     color_eyre::install()?;
     // --- 1. 初始化终端 ---
     enable_raw_mode()?;
-    stdout().execute(EnterAlternateScreen)?;
-    let mut terminal = Terminal::new(CrosstermBackend::new(stdout()))?;
+
+    // 使用 Box 包装，这样后端就不再关心具体是哪种流
+    let writer: Box<dyn Write> = if io::stdout().is_terminal() {
+        stdout().execute(EnterAlternateScreen)?;
+        Box::new(io::stdout())
+    } else {
+        stderr().execute(EnterAlternateScreen)?;
+        Box::new(io::stderr())
+    };
+
+    let backend = CrosstermBackend::new(writer);
+    let mut terminal = Terminal::new(backend)?;
     // --- 2. 创建核心事件通道 ---
     let (tx, rx) = mpsc::channel();
 
@@ -138,6 +149,20 @@ async fn main() -> Result<()> {
                 if key.code == KeyCode::Char('q') || key.code == KeyCode::Esc {
                     if matches!(riqi_state.mode, RiqiMode::Normal) {
                         break;
+                    }
+                }
+                if key.code == KeyCode::Enter {
+                    if matches!(riqi_state.mode, RiqiMode::Normal) {
+                        disable_raw_mode()?;
+                        //
+                        if io::stdout().is_terminal() {
+                            stdout().execute(LeaveAlternateScreen)?;
+                        } else {
+                            stderr().execute(LeaveAlternateScreen)?;
+                        }
+                        print!("{}", riqi_state.select_day);
+                        stdout().flush()?;
+                        return Ok(());
                     }
                 }
 
@@ -215,13 +240,17 @@ async fn main() -> Result<()> {
 
     // --- 4. 恢复终端 ---
     disable_raw_mode()?;
-    stdout().execute(LeaveAlternateScreen)?;
+    if io::stdout().is_terminal() {
+        stdout().execute(LeaveAlternateScreen)?;
+    } else {
+        stderr().execute(LeaveAlternateScreen)?;
+    }
     Ok(())
 }
 
 // 将渲染逻辑抽离
-fn draw_ui(
-    terminal: &mut Terminal<CrosstermBackend<io::Stdout>>,
+fn draw_ui<W: io::Write>(
+    terminal: &mut Terminal<CrosstermBackend<W>>,
     calendar: &MonthCalendar,
     riqi_state: &RiqiState,
     app_config: &AppConfig,
