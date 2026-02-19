@@ -49,14 +49,15 @@ riqi
 
 ### Command-line Arguments
 
-| Argument | Short | Long | Type | Default | Description |
-|----------|-------|------|------|---------|-------------|
-| Country | `-c` | `--country` | `String` | System locale or `cn` | Country code for holiday data |
-| Language | `-l` | `--language` | `String` | System locale | Language code for display |
-| Column | | `--column` | `u32` | -- | Number of columns in the calendar grid |
-| Row | | `--row` | `u32` | -- | Number of rows in the calendar grid |
-| Show Lunar | | `--show-lunar` | `bool` | false | Show/hide lunar calendar dates |
-| Show Holiday | | `--show-holiday` | `bool` | false | Show/hide holiday information |
+| Argument     | Short | Long             | Type     | Default | Description                            |
+|--------------|-------|------------------|----------|----|----------------------------------------|
+| Country      | `-c`  | `--country`      | `String` | System locale or `cn` | Country code for holiday data          |
+| Language     | `-l`  | `--language`     | `String` | System locale | Language code for display              |
+| Column       |       | `--column`       | `u32`    | -- | Number of columns in the calendar grid |
+| Row          |       | `--row`          | `u32`    | -- | Number of rows in the calendar grid    |
+| Show Lunar   |       | `--show-lunar`   | `bool`   | false | Show/hide lunar calendar dates         |
+| Show Holiday |       | `--show-holiday` | `bool`   | false | Show/hide holiday information          |
+| output       | `-o`  | `--output`       | `String` | %Y-%m-%d | the output format of the select day    |
 
 **Examples:**
 
@@ -101,9 +102,10 @@ riqi --show-lunar=false
 | `g` | Jump to |
 
 #### Application
-| Key | Action |
-|-----|--------|
-| `q` | Quit application |
+| Key     | Action                                     |
+|---------|--------------------------------------------|
+| `q`     | Quit application                           |
+| `Enter` | output the select day and quit application |
 
 ## Configuration
 
