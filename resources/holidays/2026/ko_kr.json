@@ -1,0 +1,305 @@
+{
+  "version": 1,
+  "holidays": [
+    {
+      "date": {
+        "datetime": {
+          "day": 1,
+          "month": 1,
+          "year": 2026
+        },
+        "iso": "2026-01-01"
+      },
+      "name": "신정연휴",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 16,
+          "month": 2,
+          "year": 2026
+        },
+        "iso": "2026-02-16"
+      },
+      "name": "설날 전날",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 17,
+          "month": 2,
+          "year": 2026
+        },
+        "iso": "2026-02-17"
+      },
+      "name": "설날",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 18,
+          "month": 2,
+          "year": 2026
+        },
+        "iso": "2026-02-18"
+      },
+      "name": "설날 다음날",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 1,
+          "month": 3,
+          "year": 2026
+        },
+        "iso": "2026-03-01"
+      },
+      "name": "삼일절",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 2,
+          "month": 3,
+          "year": 2026
+        },
+        "iso": "2026-03-02"
+      },
+      "name": "삼일절 대체 휴일",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 5,
+          "month": 5,
+          "year": 2026
+        },
+        "iso": "2026-05-05"
+      },
+      "name": "어린이날",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 24,
+          "month": 5,
+          "year": 2026
+        },
+        "iso": "2026-05-24"
+      },
+      "name": "부처님오신날",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 25,
+          "month": 5,
+          "year": 2026
+        },
+        "iso": "2026-05-25"
+      },
+      "name": "부처님오신날 대체 휴일",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 3,
+          "month": 6,
+          "year": 2026
+        },
+        "iso": "2026-06-03"
+      },
+      "name": "지방선거일",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 6,
+          "month": 6,
+          "year": 2026
+        },
+        "iso": "2026-06-06"
+      },
+      "name": "현충일",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 15,
+          "month": 8,
+          "year": 2026
+        },
+        "iso": "2026-08-15"
+      },
+      "name": "광복절",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 17,
+          "month": 8,
+          "year": 2026
+        },
+        "iso": "2026-08-17"
+      },
+      "name": "광복절 대체 휴일",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 24,
+          "month": 9,
+          "year": 2026
+        },
+        "iso": "2026-09-24"
+      },
+      "name": "추석 전날",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 25,
+          "month": 9,
+          "year": 2026
+        },
+        "iso": "2026-09-25"
+      },
+      "name": "추석",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 26,
+          "month": 9,
+          "year": 2026
+        },
+        "iso": "2026-09-26"
+      },
+      "name": "추석 다음날",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 3,
+          "month": 10,
+          "year": 2026
+        },
+        "iso": "2026-10-03"
+      },
+      "name": "개천절",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 5,
+          "month": 10,
+          "year": 2026
+        },
+        "iso": "2026-10-05"
+      },
+      "name": "개천절 대체 휴일",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 9,
+          "month": 10,
+          "year": 2026
+        },
+        "iso": "2026-10-09"
+      },
+      "name": "한글날",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 25,
+          "month": 12,
+          "year": 2026
+        },
+        "iso": "2026-12-25"
+      },
+      "name": "기독탄신일",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    }
+  ]
+}

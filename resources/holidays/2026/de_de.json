@@ -1,0 +1,290 @@
+{
+  "version": 1,
+  "holidays": [
+    {
+      "date": {
+        "datetime": {
+          "day": 1,
+          "month": 1,
+          "year": 2026
+        },
+        "iso": "2026-01-01"
+      },
+      "name": "Neujahr",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 6,
+          "month": 1,
+          "year": 2026
+        },
+        "iso": "2026-01-06"
+      },
+      "name": "Heilige Drei Könige",
+      "primary_type": "Regional holiday",
+      "type": [
+        "Regional holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 8,
+          "month": 3,
+          "year": 2026
+        },
+        "iso": "2026-03-08"
+      },
+      "name": "Frauentag",
+      "primary_type": "Regional holiday",
+      "type": [
+        "Regional holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 3,
+          "month": 4,
+          "year": 2026
+        },
+        "iso": "2026-04-03"
+      },
+      "name": "Karfreitag",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 5,
+          "month": 4,
+          "year": 2026
+        },
+        "iso": "2026-04-05"
+      },
+      "name": "Ostersonntag",
+      "primary_type": "Regional holiday",
+      "type": [
+        "Regional holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 6,
+          "month": 4,
+          "year": 2026
+        },
+        "iso": "2026-04-06"
+      },
+      "name": "Ostermontag",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 1,
+          "month": 5,
+          "year": 2026
+        },
+        "iso": "2026-05-01"
+      },
+      "name": "Erster Mai",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 14,
+          "month": 5,
+          "year": 2026
+        },
+        "iso": "2026-05-14"
+      },
+      "name": "Christi Himmelfahrt",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 24,
+          "month": 5,
+          "year": 2026
+        },
+        "iso": "2026-05-24"
+      },
+      "name": "Pfingstsonntag",
+      "primary_type": "Regional holiday",
+      "type": [
+        "Regional holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 25,
+          "month": 5,
+          "year": 2026
+        },
+        "iso": "2026-05-25"
+      },
+      "name": "Pfingstmontag",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 4,
+          "month": 6,
+          "year": 2026
+        },
+        "iso": "2026-06-04"
+      },
+      "name": "Fronleichnam",
+      "primary_type": "Regional holiday",
+      "type": [
+        "Regional holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 15,
+          "month": 8,
+          "year": 2026
+        },
+        "iso": "2026-08-15"
+      },
+      "name": "Mariä Himmelfahrt",
+      "primary_type": "Regional holiday",
+      "type": [
+        "Regional holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 20,
+          "month": 9,
+          "year": 2026
+        },
+        "iso": "2026-09-20"
+      },
+      "name": "Weltkindertag",
+      "primary_type": "Regional holiday",
+      "type": [
+        "Regional holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 3,
+          "month": 10,
+          "year": 2026
+        },
+        "iso": "2026-10-03"
+      },
+      "name": "Tag der Deutschen Einheit",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 31,
+          "month": 10,
+          "year": 2026
+        },
+        "iso": "2026-10-31"
+      },
+      "name": "Reformationstag",
+      "primary_type": "Regional holiday",
+      "type": [
+        "Regional holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 1,
+          "month": 11,
+          "year": 2026
+        },
+        "iso": "2026-11-01"
+      },
+      "name": "Allerheiligen",
+      "primary_type": "Regional holiday",
+      "type": [
+        "Regional holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 18,
+          "month": 11,
+          "year": 2026
+        },
+        "iso": "2026-11-18"
+      },
+      "name": "Buß- und Bettag",
+      "primary_type": "Regional holiday",
+      "type": [
+        "Regional holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 25,
+          "month": 12,
+          "year": 2026
+        },
+        "iso": "2026-12-25"
+      },
+      "name": "Erster Weihnachtstag",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 26,
+          "month": 12,
+          "year": 2026
+        },
+        "iso": "2026-12-26"
+      },
+      "name": "Zweiter Weihnachtstag",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    }
+  ]
+}
