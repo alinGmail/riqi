@@ -98,7 +98,7 @@ impl<'a> DayCell<'a> {
 
         let mut icon_x = inner_area.left() + inner_area.width - 3;
 
-        let show_holiday = self.app_config.show_holiday.unwrap_or(false);
+        let show_holiday = self.app_config.show_holiday;
         if show_holiday_icon && show_holiday {
             self.render_work_rest_icon(
                 is_rest_day,
@@ -130,7 +130,7 @@ impl<'a> DayCell<'a> {
 
         let mut content_lines: Vec<Line> = vec![];
 
-        if let Some(true) = self.app_config.show_lunar {
+        if self.app_config.show_lunar {
             content_lines.push(self.get_lunar_line(day_item_style));
         }
 

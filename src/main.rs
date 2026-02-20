@@ -110,15 +110,17 @@ async fn main() -> Result<()> {
             }
         }
     });
-    let mut holiday_manager = HolidayManager::new(tx.clone());
+    let holiday_manager = HolidayManager::new(tx.clone());
 
-    holiday_manager
-        .load_ylc_holiday(
-            &riqi_state.select_day.year().to_string(),
-            &app_config.language,
-            &app_config.country,
-        )
-        .await;
+    if app_config.show_holiday {
+        holiday_manager
+            .load_ylc_holiday(
+                &riqi_state.select_day.year().to_string(),
+                &app_config.language,
+                &app_config.country,
+            )
+            .await;
+    }
 
     // 初始手动触发一次渲染（显示“加载中”）
     draw_ui(&mut terminal, &calendar, &riqi_state, &app_config)?;
@@ -170,13 +172,16 @@ async fn main() -> Result<()> {
                     &app_config.language,
                     &app_config.country,
                 );
-                holiday_manager
-                    .load_ylc_holiday(
-                        &riqi_state.select_day.year().to_string(),
-                        &app_config.language,
-                        &app_config.country,
-                    )
-                    .await;
+                if app_config.show_holiday {
+                    holiday_manager
+                        .load_ylc_holiday(
+                            &riqi_state.select_day.year().to_string(),
+                            &app_config.language,
+                            &app_config.country,
+                        )
+                        .await;
+                }
+
                 calendar = MonthCalendar::new(
                     riqi_state.select_day.year() as u32,
                     riqi_state.select_day.month(),
@@ -185,10 +190,10 @@ async fn main() -> Result<()> {
                         .get(&ylc_key)
                         .map(|holiday_list| holiday_list.to_holiday_map()),
                 );
+
                 draw_ui(&mut terminal, &calendar, &riqi_state, &app_config)?;
             }
             AppEvent::UpdateHoliday(ylc_key, holiday_of_year) => {
-                debug!("receive update holiday event, ylc: {}", &ylc_key);
                 let old = holiday_map.get(&ylc_key);
                 if let Some(old_holidays) = old {
                     if old_holidays.version >= holiday_of_year.version {

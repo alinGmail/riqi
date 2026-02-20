@@ -6,8 +6,8 @@ pub struct AppConfig {
     pub language: String,
     pub column: Option<u32>,
     pub row: Option<u32>,
-    pub show_lunar: Option<bool>,
-    pub show_holiday:Option<bool>,
+    pub show_lunar: bool,
+    pub show_holiday:bool,
     pub output: String,
 }
 
