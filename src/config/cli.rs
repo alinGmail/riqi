@@ -11,6 +11,10 @@ pub struct Args {
     #[arg(short, long)]
     pub language: Option<String>,
 
+    /// holiday data source (github or gitee)
+    #[arg(long, default_value = "github")]
+    pub source: Option<String>,
+
     #[arg(long)]
     pub column: Option<u32>,
 

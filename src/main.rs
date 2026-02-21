@@ -118,6 +118,7 @@ async fn main() -> Result<()> {
                 &riqi_state.select_day.year().to_string(),
                 &app_config.language,
                 &app_config.country,
+                app_config.source.clone(),
             )
             .await;
     }
@@ -178,6 +179,7 @@ async fn main() -> Result<()> {
                             &riqi_state.select_day.year().to_string(),
                             &app_config.language,
                             &app_config.country,
+                            app_config.source.clone(),
                         )
                         .await;
                 }

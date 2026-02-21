@@ -1,5 +1,6 @@
 use super::{config_file_loader::load_file_config, locale, model::AppConfig};
 use crate::config::cli::Args;
+use crate::config::model::Source;
 
 pub fn get_app_config(args: Args) -> AppConfig {
     let (language, country_option) = locale::get_system_language_country();
@@ -11,7 +12,8 @@ pub fn get_app_config(args: Args) -> AppConfig {
         row: None,
         show_lunar: false,
         show_holiday: false,
-        output:"%Y-%m-%d".to_string(),
+        output: "%Y-%m-%d".to_string(),
+        source: Source::Github,
     };
     if let Some(country) = country_option {
         app_config.country = country
@@ -40,6 +42,11 @@ pub fn get_app_config(args: Args) -> AppConfig {
         if let Some(file_output) = file_config.output {
             app_config.output = file_output;
         }
+        if let Some(source_str) = file_config.source {
+            if let Ok(source) = source_str.parse::<Source>() {
+                app_config.source = source;
+            }
+        }
     }
 
     if let Some(arg_country) = args.country {
@@ -65,9 +72,15 @@ pub fn get_app_config(args: Args) -> AppConfig {
     if let Some(arg_show_holiday) = args.show_holiday {
         app_config.show_holiday = arg_show_holiday;
     }
-    
+
     if let Some(arg_output) = args.output {
         app_config.output = arg_output;
+    }
+
+    if let Some(arg_source) = args.source {
+        if let Ok(source) = arg_source.parse::<Source>() {
+            app_config.source = source;
+        }
     }
 
     app_config

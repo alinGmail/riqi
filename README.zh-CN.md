@@ -51,6 +51,7 @@ riqi
 |-------|--------|------------------|------|--------|--------------|
 | 国家    | `-c`   | `--country`      | `String` | 系统语言环境或 `cn` | 节假日数据的国家代码   |
 | 语言    | `-l`   | `--language`     | `String` | 系统语言环境 | 显示语言代码       |
+| 数据源   |        | `--source`       | `String` | `github` | 节假日数据源（`github` 或 `gitee`） |
 | 列数    |        | `--column`       | `u32` | -- | 日历网格的列数      |
 | 行数    |        | `--row`          | `u32` | -- | 日历网格的行数      |
 | 显示农历  |        | `--show-lunar`   | `bool` | false | 显示/隐藏农历日期    |
@@ -61,7 +62,7 @@ riqi
 
 ```bash
 # 设置国家和语言
-riqi --country us --language en --show-holoday
+riqi --country us --language en --show-holiday
 
 # 自定义网格布局
 riqi --column 7 --row 6
@@ -71,6 +72,11 @@ riqi --show-lunar
 # 或禁用
 riqi --show-lunar=false
 
+# 使用 gitee 作为节假日数据源（在中国更快）
+riqi --source gitee --country cn --language zh --show-holiday
+
+# 使用 github 作为节假日数据源（默认）
+riqi --source github --country cn --language zh --show-holiday
 ```
 
 **配置优先级（从高到低）：**
@@ -135,6 +141,7 @@ Riqi 遵循各平台的配置文件约定：
 |-----|------|-----|--------|
 | `language` | `string` | 语言代码（如 `en`、`zh`） | 系统语言环境 |
 | `country` | `string` | 节假日数据的国家代码（如 `us`、`cn`） | 系统语言环境或 `cn` |
+| `source` | `string` | 节假日数据源（`github` 或 `gitee`） | `github` |
 | `show_lunar` | `boolean` | 显示农历日期 | `false` |
 | `show_holiday` | `boolean` | 显示节假日信息 | `false` |
 | `hide_bg` | `boolean` | 隐藏背景颜色 | `false` |
@@ -148,6 +155,7 @@ Riqi 遵循各平台的配置文件约定：
 ```toml
 language = "zh"
 country = "cn"
+source = "gitee"
 show_lunar = true
 show_holiday = true
 hide_bg = false
@@ -171,12 +179,13 @@ country = "us"
 show_lunar = false
 ```
 
-**自定义网格布局：**
+**使用 gitee 数据源（在中国更快）：**
 
 ```toml
-column = 7
-row = 6
-hide_bg = true
+language = "zh"
+country = "cn"
+source = "gitee"
+show_holiday = true
 ```
 
 ### 创建配置文件
@@ -213,6 +222,16 @@ notepad "$env:APPDATA\riqi\config.toml"
 
 
 ## 常见问题
+
+* **问：`--source` 参数是什么，什么时候应该使用它？**
+  * **答：** `--source` 参数控制从哪里下载节假日数据。它有两个值：
+    - `github`（默认）：从 GitHub 下载（https://github.com/alinGmail/riqi）
+    - `gitee`：从 Gitee 下载（https://gitee.com/alinGmail/riqi）
+    
+    如果您在中国且从 GitHub 下载速度较慢，请使用 `gitee`。您可以通过命令行（`--source gitee`）或配置文件（`source = "gitee"`）设置它。
+
+* **问：如何永久配置节假日数据源？**
+  * **答：** 在 `config.toml` 文件中添加 `source = "gitee"`（或 `source = "github"`）。这将作为默认值使用，除非被 `--source` 命令行参数覆盖。
 
 * **问：我启用了 `show-holiday` 参数，但看不到节假日数据。**
   * **答：** 您必须设置正确的语言和国家。目前仅支持 `zh_cn` 和 `en_cn`。

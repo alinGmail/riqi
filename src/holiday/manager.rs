@@ -1,3 +1,4 @@
+use crate::config::model::Source;
 use crate::events::AppEvent;
 use crate::holiday::modal::{parse_holidays_of_year, HolidayOfYearList};
 use crate::holiday::utils::{get_holiday_cache_file_path, get_ylc_code};
@@ -35,13 +36,26 @@ pub struct HolidayManager {
     tx: Sender<AppEvent>,
 }
 
-pub fn get_holiday_data_file_url(year: &str, language: &str, country: &str) -> String {
-    format!(
-        "https://raw.githubusercontent.com/alinGmail/riqi/refs/heads/main/resources/holidays/{}/{}_{}.json",
-        year,
-        language,
-        country
-    )
+pub fn get_holiday_data_file_url(
+    year: &str,
+    language: &str,
+    country: &str,
+    source: &Source,
+) -> String {
+    match source {
+        Source::Github => format!(
+            "https://raw.githubusercontent.com/alinGmail/riqi/refs/heads/main/resources/holidays/{}/{}_{}.json",
+            year,
+            language,
+            country
+        ),
+        Source::Gitee => format!(
+            "https://gitee.com/zhaixiaolin/riqi/raw/main/resources/holidays/{}/{}_{}.json",
+            year,
+            language,
+            country
+        ),
+    }
 }
 
 pub fn is_need_update(modify_time: NaiveDateTime) -> bool {
@@ -146,6 +160,7 @@ impl HolidayManager {
         year: &str,
         language: &str,
         country: &str,
+        source: Source,
         tx: Sender<AppEvent>,
         old_version: Option<i32>,
     ) -> Result<()> {
@@ -162,7 +177,7 @@ impl HolidayManager {
             ylc_update_state.load_remote_state = LoadRemoteState::Loading;
         }
 
-        let url = get_holiday_data_file_url(year, language, country);
+        let url = get_holiday_data_file_url(year, language, country, &source);
         info!("remote url is {}", &url);
         let content = download_file(&url).await;
         if let Ok(content_str) = content {
@@ -195,7 +210,7 @@ impl HolidayManager {
         return Ok(());
     }
 
-    pub async fn load_ylc_holiday(&self, year: &str, language: &str, country: &str) {
+    pub async fn load_ylc_holiday(&self, year: &str, language: &str, country: &str, source: Source) {
         {
             let mut property = self.property.lock().await;
             let ylc_update_property = property
@@ -238,6 +253,7 @@ impl HolidayManager {
             let year_owned = year.to_string();
             let language_owned = language.to_string();
             let country_owned = country.to_string();
+            let source_owned = source.clone();
 
             tokio::spawn(async move {
                 let load_remote_res = HolidayManager::load_remote_file(
@@ -245,6 +261,7 @@ impl HolidayManager {
                     &year_owned,
                     &language_owned,
                     &country_owned,
+                    source_owned,
                     tx_clone,
                     old_version,
                 )

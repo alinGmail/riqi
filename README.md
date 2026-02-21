@@ -53,6 +53,7 @@ riqi
 |--------------|-------|------------------|----------|----|----------------------------------------|
 | Country      | `-c`  | `--country`      | `String` | System locale or `cn` | Country code for holiday data          |
 | Language     | `-l`  | `--language`     | `String` | System locale | Language code for display              |
+| Source       |       | `--source`       | `String` | `github` | Holiday data source (`github` or `gitee`) |
 | Column       |       | `--column`       | `u32`    | -- | Number of columns in the calendar grid |
 | Row          |       | `--row`          | `u32`    | -- | Number of rows in the calendar grid    |
 | Show Lunar   |       | `--show-lunar`   | `bool`   | false | Show/hide lunar calendar dates         |
@@ -63,7 +64,7 @@ riqi
 
 ```bash
 # Set country and language
-riqi --country us --language en --show-holoday
+riqi --country us --language en --show-holiday
 
 # Customize grid layout
 riqi --column 7 --row 6
@@ -73,6 +74,11 @@ riqi --show-lunar
 # or disable it
 riqi --show-lunar=false
 
+# Use gitee as holiday data source (faster in China)
+riqi --source gitee --country cn --language zh --show-holiday
+
+# Use github as holiday data source (default)
+riqi --source github --country cn --language zh --show-holiday
 ```
 
 **Configuration Priority (highest to lowest):**
@@ -137,6 +143,7 @@ The configuration file uses TOML format. All fields are optional; if not specifi
 |--------|------|-------------|---------|
 | `language` | `string` | Language code (e.g., `en`, `zh`) | System locale |
 | `country` | `string` | Country code for holiday data (e.g., `us`, `cn`) | System locale or `cn` |
+| `source` | `string` | Holiday data source (`github` or `gitee`) | `github` |
 | `show_lunar` | `boolean` | Display lunar calendar dates | `false` |
 | `show_holiday` | `boolean` | Display holiday information | `false` |
 | `hide_bg` | `boolean` | Hide background colors | `false` |
@@ -150,6 +157,7 @@ The configuration file uses TOML format. All fields are optional; if not specifi
 ```toml
 language = "zh"
 country = "cn"
+source = "gitee"
 show_lunar = true
 show_holiday = true
 hide_bg = false
@@ -173,12 +181,13 @@ country = "us"
 show_lunar = false
 ```
 
-**Custom grid layout:**
+**Use gitee source (faster in China):**
 
 ```toml
-column = 7
-row = 6
-hide_bg = true
+language = "zh"
+country = "cn"
+source = "gitee"
+show_holiday = true
 ```
 
 ### Creating Your Configuration File
@@ -215,6 +224,16 @@ Configuration values are resolved in the following order (highest priority first
 
 
 ## FAQ
+
+* **Q: What is the `--source` parameter and when should I use it?**
+  * **A:** The `--source` parameter controls where holiday data is downloaded from. It has two values:
+    - `github` (default): Downloads from GitHub (https://github.com/alinGmail/riqi)
+    - `gitee`: Downloads from Gitee (https://gitee.com/alinGmail/riqi)
+    
+    Use `gitee` if you're in China and experiencing slow downloads from GitHub. You can set it via command-line (`--source gitee`) or in the config file (`source = "gitee"`).
+
+* **Q: How can I configure the holiday data source permanently?**
+  * **A:** Add `source = "gitee"` (or `source = "github"`) to your `config.toml` file. This will be used as the default unless overridden by the `--source` command-line argument.
 
 * **Q: I enabled the `show-holiday` argument, but cannot see holiday data.**
   * **A:** You must set the correct language and country. Currently, only `zh_cn` and `en_cn` are supported.

@@ -1,5 +1,32 @@
 use serde::{Deserialize, Serialize};
 
+#[derive(Debug, Clone, PartialEq)]
+pub enum Source {
+    Github,
+    Gitee,
+}
+
+impl Source {
+    pub fn as_str(&self) -> &'static str {
+        match self {
+            Source::Github => "github",
+            Source::Gitee => "gitee",
+        }
+    }
+}
+
+impl std::str::FromStr for Source {
+    type Err = String;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s.to_lowercase().as_str() {
+            "github" => Ok(Source::Github),
+            "gitee" => Ok(Source::Gitee),
+            _ => Err(format!("Unknown source: {}", s)),
+        }
+    }
+}
+
 #[derive(Debug, Clone)]
 pub struct AppConfig {
     pub country: String,
@@ -7,8 +34,9 @@ pub struct AppConfig {
     pub column: Option<u32>,
     pub row: Option<u32>,
     pub show_lunar: bool,
-    pub show_holiday:bool,
+    pub show_holiday: bool,
     pub output: String,
+    pub source: Source,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
@@ -21,5 +49,6 @@ pub struct ConfigFile {
     pub column: Option<u32>,
     pub row: Option<u32>,
     pub output: Option<String>,
+    pub source: Option<String>,
 }
 
