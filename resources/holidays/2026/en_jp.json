@@ -1,0 +1,275 @@
+{
+  "version": 1,
+  "holidays": [
+    {
+      "date": {
+        "datetime": {
+          "day": 1,
+          "month": 1,
+          "year": 2026
+        },
+        "iso": "2026-01-01"
+      },
+      "name": "New Year's Day",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 12,
+          "month": 1,
+          "year": 2026
+        },
+        "iso": "2026-01-12"
+      },
+      "name": "Coming of Age Day",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 11,
+          "month": 2,
+          "year": 2026
+        },
+        "iso": "2026-02-11"
+      },
+      "name": "National Foundation Day",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 23,
+          "month": 2,
+          "year": 2026
+        },
+        "iso": "2026-02-23"
+      },
+      "name": "Emperor's Birthday",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 20,
+          "month": 3,
+          "year": 2026
+        },
+        "iso": "2026-03-20"
+      },
+      "name": "Vernal Equinox Day",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 29,
+          "month": 4,
+          "year": 2026
+        },
+        "iso": "2026-04-29"
+      },
+      "name": "Showa Day",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 3,
+          "month": 5,
+          "year": 2026
+        },
+        "iso": "2026-05-03"
+      },
+      "name": "Constitution Memorial Day",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 4,
+          "month": 5,
+          "year": 2026
+        },
+        "iso": "2026-05-04"
+      },
+      "name": "Greenery Day",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 5,
+          "month": 5,
+          "year": 2026
+        },
+        "iso": "2026-05-05"
+      },
+      "name": "Children's Day",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 6,
+          "month": 5,
+          "year": 2026
+        },
+        "iso": "2026-05-06"
+      },
+      "name": "Substitute Holiday",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 20,
+          "month": 7,
+          "year": 2026
+        },
+        "iso": "2026-07-20"
+      },
+      "name": "Marine Day",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 11,
+          "month": 8,
+          "year": 2026
+        },
+        "iso": "2026-08-11"
+      },
+      "name": "Mountain Day",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 21,
+          "month": 9,
+          "year": 2026
+        },
+        "iso": "2026-09-21"
+      },
+      "name": "Respect for the Aged Day",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 22,
+          "month": 9,
+          "year": 2026
+        },
+        "iso": "2026-09-22"
+      },
+      "name": "National Holiday",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 23,
+          "month": 9,
+          "year": 2026
+        },
+        "iso": "2026-09-23"
+      },
+      "name": "Autumnal Equinox Day",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 12,
+          "month": 10,
+          "year": 2026
+        },
+        "iso": "2026-10-12"
+      },
+      "name": "Sports Day",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 3,
+          "month": 11,
+          "year": 2026
+        },
+        "iso": "2026-11-03"
+      },
+      "name": "Culture Day",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 23,
+          "month": 11,
+          "year": 2026
+        },
+        "iso": "2026-11-23"
+      },
+      "name": "Labor Thanksgiving Day",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    }
+  ]
+}

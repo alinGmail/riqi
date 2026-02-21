@@ -3,7 +3,16 @@
     "2025_de_de": {
       "version": 1
     },
+    "2025_en_de": {
+      "version": 1
+    },
+    "2025_en_fr": {
+      "version": 1
+    },
     "2025_en_jp": {
+      "version": 1
+    },
+    "2025_en_kr": {
       "version": 1
     },
     "2025_fr_fr": {
@@ -17,7 +26,34 @@
     },
     "2025_zh_cn": {
       "version": 1
+    },
+    "2026_de_de": {
+      "version": 1
+    },
+    "2026_en_de": {
+      "version": 1
+    },
+    "2026_en_fr": {
+      "version": 1
+    },
+    "2026_en_jp": {
+      "version": 1
+    },
+    "2026_en_kr": {
+      "version": 1
+    },
+    "2026_fr_fr": {
+      "version": 1
+    },
+    "2026_ja_jp": {
+      "version": 1
+    },
+    "2026_ko_kr": {
+      "version": 1
+    },
+    "2026_zh_cn": {
+      "version": 1
     }
   },
-  "last_updated": "2025-07-09T13:42:42.617599800+00:00"
+  "last_updated": "2026-02-21T00:00:00.000000000+00:00"
 }

@@ -1,0 +1,176 @@
+{
+  "version": 1,
+  "holidays": [
+    {
+      "date": {
+        "datetime": { "day": 1, "month": 1, "year": 2025 },
+        "iso": "2025-01-01"
+      },
+      "name": "New Year's Day",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": {
+        "datetime": { "day": 6, "month": 1, "year": 2025 },
+        "iso": "2025-01-06"
+      },
+      "name": "Epiphany",
+      "primary_type": "Regional holiday",
+      "type": ["Regional holiday"]
+    },
+    {
+      "date": {
+        "datetime": { "day": 20, "month": 3, "year": 2025 },
+        "iso": "2025-03-20"
+      },
+      "name": "Spring Equinox",
+      "primary_type": "Season",
+      "type": ["Season"]
+    },
+    {
+      "date": {
+        "datetime": { "day": 18, "month": 4, "year": 2025 },
+        "iso": "2025-04-18"
+      },
+      "name": "Good Friday",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": {
+        "datetime": { "day": 21, "month": 4, "year": 2025 },
+        "iso": "2025-04-21"
+      },
+      "name": "Easter Monday",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": {
+        "datetime": { "day": 1, "month": 5, "year": 2025 },
+        "iso": "2025-05-01"
+      },
+      "name": "Labour Day",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": {
+        "datetime": { "day": 29, "month": 5, "year": 2025 },
+        "iso": "2025-05-29"
+      },
+      "name": "Ascension Day",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": {
+        "datetime": { "day": 9, "month": 6, "year": 2025 },
+        "iso": "2025-06-09"
+      },
+      "name": "Whit Monday",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": {
+        "datetime": { "day": 19, "month": 6, "year": 2025 },
+        "iso": "2025-06-19"
+      },
+      "name": "Corpus Christi",
+      "primary_type": "Regional holiday",
+      "type": ["Regional holiday"]
+    },
+    {
+      "date": {
+        "datetime": { "day": 15, "month": 8, "year": 2025 },
+        "iso": "2025-08-15"
+      },
+      "name": "Assumption Day",
+      "primary_type": "Regional holiday",
+      "type": ["Regional holiday"]
+    },
+    {
+      "date": {
+        "datetime": { "day": 3, "month": 10, "year": 2025 },
+        "iso": "2025-10-03"
+      },
+      "name": "German Unity Day",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": {
+        "datetime": { "day": 26, "month": 10, "year": 2025 },
+        "iso": "2025-10-26"
+      },
+      "name": "End of Daylight Saving Time",
+      "primary_type": "Observance",
+      "type": ["Observance"]
+    },
+    {
+      "date": {
+        "datetime": { "day": 31, "month": 10, "year": 2025 },
+        "iso": "2025-10-31"
+      },
+      "name": "Reformation Day",
+      "primary_type": "Regional holiday",
+      "type": ["Regional holiday"]
+    },
+    {
+      "date": {
+        "datetime": { "day": 1, "month": 11, "year": 2025 },
+        "iso": "2025-11-01"
+      },
+      "name": "All Saints' Day",
+      "primary_type": "Regional holiday",
+      "type": ["Regional holiday"]
+    },
+    {
+      "date": {
+        "datetime": { "day": 19, "month": 11, "year": 2025 },
+        "iso": "2025-11-19"
+      },
+      "name": "Repentance and Prayer Day",
+      "primary_type": "Regional holiday",
+      "type": ["Regional holiday"]
+    },
+    {
+      "date": {
+        "datetime": { "day": 24, "month": 12, "year": 2025 },
+        "iso": "2025-12-24"
+      },
+      "name": "Christmas Eve",
+      "primary_type": "Common holiday",
+      "type": ["Common holiday"]
+    },
+    {
+      "date": {
+        "datetime": { "day": 25, "month": 12, "year": 2025 },
+        "iso": "2025-12-25"
+      },
+      "name": "Christmas Day",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": {
+        "datetime": { "day": 26, "month": 12, "year": 2025 },
+        "iso": "2025-12-26"
+      },
+      "name": "Boxing Day",
+      "primary_type": "National holiday",
+      "type": ["National holiday"]
+    },
+    {
+      "date": {
+        "datetime": { "day": 31, "month": 12, "year": 2025 },
+        "iso": "2025-12-31"
+      },
+      "name": "New Year's Eve",
+      "primary_type": "Common holiday",
+      "type": ["Common holiday"]
+    }
+  ]
+}

@@ -1,0 +1,425 @@
+{
+  "version": 1,
+  "holidays": [
+    {
+      "date": {
+        "datetime": {
+          "day": 1,
+          "month": 1,
+          "year": 2026
+        },
+        "iso": "2026-01-01"
+      },
+      "name": "New Year's Day",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 5,
+          "month": 3,
+          "year": 2026
+        },
+        "iso": "2026-03-05"
+      },
+      "name": "Gospel Arrival",
+      "primary_type": "Regional holiday",
+      "type": [
+        "Regional holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 12,
+          "month": 3,
+          "year": 2026
+        },
+        "iso": "2026-03-12"
+      },
+      "name": "Mid-Lent",
+      "primary_type": "Regional holiday",
+      "type": [
+        "Regional holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 3,
+          "month": 4,
+          "year": 2026
+        },
+        "iso": "2026-04-03"
+      },
+      "name": "Good Friday",
+      "primary_type": "Regional holiday",
+      "type": [
+        "Regional holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 6,
+          "month": 4,
+          "year": 2026
+        },
+        "iso": "2026-04-06"
+      },
+      "name": "Easter Monday",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 27,
+          "month": 4,
+          "year": 2026
+        },
+        "iso": "2026-04-27"
+      },
+      "name": "Abolition of Slavery",
+      "primary_type": "Regional holiday",
+      "type": [
+        "Regional holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 28,
+          "month": 4,
+          "year": 2026
+        },
+        "iso": "2026-04-28"
+      },
+      "name": "Saint Pierre Chanel",
+      "primary_type": "Regional holiday",
+      "type": [
+        "Regional holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 1,
+          "month": 5,
+          "year": 2026
+        },
+        "iso": "2026-05-01"
+      },
+      "name": "Labour Day",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 8,
+          "month": 5,
+          "year": 2026
+        },
+        "iso": "2026-05-08"
+      },
+      "name": "Victory Day",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 14,
+          "month": 5,
+          "year": 2026
+        },
+        "iso": "2026-05-14"
+      },
+      "name": "Ascension Day",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 22,
+          "month": 5,
+          "year": 2026
+        },
+        "iso": "2026-05-22"
+      },
+      "name": "Abolition of Slavery",
+      "primary_type": "Regional holiday",
+      "type": [
+        "Regional holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 25,
+          "month": 5,
+          "year": 2026
+        },
+        "iso": "2026-05-25"
+      },
+      "name": "Whit Monday",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 27,
+          "month": 5,
+          "year": 2026
+        },
+        "iso": "2026-05-27"
+      },
+      "name": "Abolition of Slavery",
+      "primary_type": "Regional holiday",
+      "type": [
+        "Regional holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 28,
+          "month": 5,
+          "year": 2026
+        },
+        "iso": "2026-05-28"
+      },
+      "name": "Abolition of Slavery",
+      "primary_type": "Regional holiday",
+      "type": [
+        "Regional holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 10,
+          "month": 6,
+          "year": 2026
+        },
+        "iso": "2026-06-10"
+      },
+      "name": "Abolition of Slavery",
+      "primary_type": "Regional holiday",
+      "type": [
+        "Regional holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 29,
+          "month": 6,
+          "year": 2026
+        },
+        "iso": "2026-06-29"
+      },
+      "name": "Saints Peter and Paul",
+      "primary_type": "Regional holiday",
+      "type": [
+        "Regional holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 14,
+          "month": 7,
+          "year": 2026
+        },
+        "iso": "2026-07-14"
+      },
+      "name": "National Day",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 21,
+          "month": 7,
+          "year": 2026
+        },
+        "iso": "2026-07-21"
+      },
+      "name": "Victor Schoelcher Day",
+      "primary_type": "Regional holiday",
+      "type": [
+        "Regional holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 29,
+          "month": 7,
+          "year": 2026
+        },
+        "iso": "2026-07-29"
+      },
+      "name": "Territory Day",
+      "primary_type": "Regional holiday",
+      "type": [
+        "Regional holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 15,
+          "month": 8,
+          "year": 2026
+        },
+        "iso": "2026-08-15"
+      },
+      "name": "Assumption",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 24,
+          "month": 9,
+          "year": 2026
+        },
+        "iso": "2026-09-24"
+      },
+      "name": "Citizenship Day",
+      "primary_type": "Regional holiday",
+      "type": [
+        "Regional holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 9,
+          "month": 10,
+          "year": 2026
+        },
+        "iso": "2026-10-09"
+      },
+      "name": "Abolition of Slavery",
+      "primary_type": "Regional holiday",
+      "type": [
+        "Regional holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 1,
+          "month": 11,
+          "year": 2026
+        },
+        "iso": "2026-11-01"
+      },
+      "name": "All Saints' Day",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 11,
+          "month": 11,
+          "year": 2026
+        },
+        "iso": "2026-11-11"
+      },
+      "name": "Armistice Day",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 20,
+          "month": 11,
+          "year": 2026
+        },
+        "iso": "2026-11-20"
+      },
+      "name": "Matāri'i",
+      "primary_type": "Regional holiday",
+      "type": [
+        "Regional holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 20,
+          "month": 12,
+          "year": 2026
+        },
+        "iso": "2026-12-20"
+      },
+      "name": "Abolition of Slavery",
+      "primary_type": "Regional holiday",
+      "type": [
+        "Regional holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 25,
+          "month": 12,
+          "year": 2026
+        },
+        "iso": "2026-12-25"
+      },
+      "name": "Christmas Day",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 26,
+          "month": 12,
+          "year": 2026
+        },
+        "iso": "2026-12-26"
+      },
+      "name": "Saint Stephen's Day",
+      "primary_type": "Regional holiday",
+      "type": [
+        "Regional holiday"
+      ]
+    }
+  ]
+}

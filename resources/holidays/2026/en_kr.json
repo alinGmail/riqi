@@ -1,0 +1,305 @@
+{
+  "version": 1,
+  "holidays": [
+    {
+      "date": {
+        "datetime": {
+          "day": 1,
+          "month": 1,
+          "year": 2026
+        },
+        "iso": "2026-01-01"
+      },
+      "name": "New Year's Day Holiday",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 16,
+          "month": 2,
+          "year": 2026
+        },
+        "iso": "2026-02-16"
+      },
+      "name": "Day Before Seollal",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 17,
+          "month": 2,
+          "year": 2026
+        },
+        "iso": "2026-02-17"
+      },
+      "name": "Seollal (Lunar New Year)",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 18,
+          "month": 2,
+          "year": 2026
+        },
+        "iso": "2026-02-18"
+      },
+      "name": "Day After Seollal",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 1,
+          "month": 3,
+          "year": 2026
+        },
+        "iso": "2026-03-01"
+      },
+      "name": "Independence Movement Day",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 2,
+          "month": 3,
+          "year": 2026
+        },
+        "iso": "2026-03-02"
+      },
+      "name": "Independence Movement Day Substitute Holiday",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 5,
+          "month": 5,
+          "year": 2026
+        },
+        "iso": "2026-05-05"
+      },
+      "name": "Children's Day",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 24,
+          "month": 5,
+          "year": 2026
+        },
+        "iso": "2026-05-24"
+      },
+      "name": "Buddha's Birthday",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 25,
+          "month": 5,
+          "year": 2026
+        },
+        "iso": "2026-05-25"
+      },
+      "name": "Buddha's Birthday Substitute Holiday",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 3,
+          "month": 6,
+          "year": 2026
+        },
+        "iso": "2026-06-03"
+      },
+      "name": "Local Election Day",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 6,
+          "month": 6,
+          "year": 2026
+        },
+        "iso": "2026-06-06"
+      },
+      "name": "Memorial Day",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 15,
+          "month": 8,
+          "year": 2026
+        },
+        "iso": "2026-08-15"
+      },
+      "name": "Liberation Day",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 17,
+          "month": 8,
+          "year": 2026
+        },
+        "iso": "2026-08-17"
+      },
+      "name": "Liberation Day Substitute Holiday",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 24,
+          "month": 9,
+          "year": 2026
+        },
+        "iso": "2026-09-24"
+      },
+      "name": "Day Before Chuseok",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 25,
+          "month": 9,
+          "year": 2026
+        },
+        "iso": "2026-09-25"
+      },
+      "name": "Chuseok (Korean Thanksgiving)",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 26,
+          "month": 9,
+          "year": 2026
+        },
+        "iso": "2026-09-26"
+      },
+      "name": "Day After Chuseok",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 3,
+          "month": 10,
+          "year": 2026
+        },
+        "iso": "2026-10-03"
+      },
+      "name": "National Foundation Day",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 5,
+          "month": 10,
+          "year": 2026
+        },
+        "iso": "2026-10-05"
+      },
+      "name": "National Foundation Day Substitute Holiday",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 9,
+          "month": 10,
+          "year": 2026
+        },
+        "iso": "2026-10-09"
+      },
+      "name": "Hangul Day",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    },
+    {
+      "date": {
+        "datetime": {
+          "day": 25,
+          "month": 12,
+          "year": 2026
+        },
+        "iso": "2026-12-25"
+      },
+      "name": "Christmas Day",
+      "primary_type": "National holiday",
+      "type": [
+        "National holiday"
+      ]
+    }
+  ]
+}
