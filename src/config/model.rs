@@ -37,6 +37,7 @@ pub struct AppConfig {
     pub show_holiday: bool,
     pub output: String,
     pub source: Source,
+    pub hide_bg: bool,
 }
 
 #[derive(Debug, Deserialize, Serialize)]

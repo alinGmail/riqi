@@ -30,7 +30,7 @@ use data::calendar::MonthCalendar;
 use env_logger::{Builder, Target};
 use log::{debug, info, LevelFilter};
 use ratatui::prelude::*;
-use ratatui::widgets::Clear;
+use ratatui::widgets::{Block, Clear};
 use serde::Deserialize;
 use state::RiqiState;
 use std::collections::HashMap;
@@ -252,6 +252,14 @@ fn draw_ui<W: io::Write>(
     app_config: &AppConfig,
 ) -> io::Result<()> {
     terminal.draw(|f| {
+        
+        if !app_config.hide_bg{
+            f.render_widget(
+                Block::default().style(Style::default().bg(riqi_state.theme.bg)),
+                f.area(),
+            );
+        }
+        
         let frame_area = f.area();
         let layout = get_layout(frame_area, app_config.column, app_config.row);
         let month_item = MonthComponent::new(calendar, &layout, &riqi_state, app_config);

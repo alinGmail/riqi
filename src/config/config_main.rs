@@ -14,6 +14,7 @@ pub fn get_app_config(args: Args) -> AppConfig {
         show_holiday: false,
         output: "%Y-%m-%d".to_string(),
         source: Source::Github,
+        hide_bg: true,
     };
     if let Some(country) = country_option {
         app_config.country = country
@@ -46,6 +47,9 @@ pub fn get_app_config(args: Args) -> AppConfig {
             if let Ok(source) = source_str.parse::<Source>() {
                 app_config.source = source;
             }
+        }
+        if let Some(hide_bg) = file_config.hide_bg {
+            app_config.hide_bg = hide_bg;
         }
     }
 
@@ -81,6 +85,10 @@ pub fn get_app_config(args: Args) -> AppConfig {
         if let Ok(source) = arg_source.parse::<Source>() {
             app_config.source = source;
         }
+    }
+    
+    if let Some(arg_hide_bg) = args.hide_bg {
+        app_config.hide_bg = arg_hide_bg;
     }
 
     app_config

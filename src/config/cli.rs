@@ -15,6 +15,10 @@ pub struct Args {
     #[arg(long, default_value = "github")]
     pub source: Option<String>,
 
+    /// hide background colors
+    #[arg(long, num_args(0..=1), default_missing_value = "true")]
+    pub hide_bg: Option<bool>,
+
     #[arg(long)]
     pub column: Option<u32>,
 
