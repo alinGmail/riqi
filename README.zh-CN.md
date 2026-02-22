@@ -56,6 +56,7 @@ riqi
 | 行数    |        | `--row`          | `u32` | -- | 日历网格的行数      |
 | 显示农历  |        | `--show-lunar`   | `bool` | false | 显示/隐藏农历日期    |
 | 显示节假日 |        | `--show-holiday` | `bool` | false | 显示/隐藏节假日信息   |
+| 主题    |        | `--theme`        | `String` | ningmen | 主题名称（见[主题配置](#主题配置)） |
 | 输出格式  | `-o`   | `--output`       | `String` | %Y-%m-%d | 输出到命令行的日期的格式 |
 
 **示例：**
@@ -77,6 +78,24 @@ riqi --source gitee --country cn --language zh --show-holiday
 
 # 使用 github 作为节假日数据源（默认）
 riqi --source github --country cn --language zh --show-holiday
+
+# 使用 forest 主题
+riqi --theme forest
+
+# 使用 ocean 主题
+riqi --theme ocean
+
+# 使用 lavender 主题
+riqi --theme lavender
+
+# 使用 mint 主题
+riqi --theme mint
+
+# 使用 sunset 主题
+riqi --theme sunset
+
+# 使用 ruby 主题
+riqi --theme ruby
 ```
 
 **配置优先级（从高到低）：**
@@ -216,9 +235,48 @@ notepad "$env:APPDATA\riqi\config.toml"
 
 ### 主题配置
 
-- **主题文件**：位于 `resources/theme/` 目录
-- 主题使用 TOML 格式定义
-- 自定义日历元素、高亮和边框的颜色
+Riqi 内置了 8 个主题。您可以使用 `--theme` 命令行参数或在配置文件中设置 `theme` 来切换主题。
+
+**可用主题：**
+
+| 主题名称 | 描述 |
+|----------|------|
+| `ningmen` | 默认主题 - 柠檬黄绿色配深色背景 |
+| `ocean` | 清凉蓝色主题，灵感来自海洋波浪 |
+| `forest` | 大地绿色主题，灵感来自深林 |
+| `sunset` | 温暖橙色主题，灵感来自日落 |
+| `lavender` | 柔和紫色主题，灵感来自薰衣草花田 |
+| `mint` | 清新薄荷主题，灵感来自薄荷叶 |
+| `ruby` | 富贵红色主题，灵感来自红宝石 |
+| `dark` | 经典深色主题（原版） |
+| `blue` | 经典蓝色主题（原版） |
+
+**使用方法：**
+
+命令行：
+```bash
+riqi --theme forest
+riqi --theme ocean
+riqi --theme lavender
+riqi --theme mint
+riqi --theme sunset
+riqi --theme ruby
+```
+
+配置文件（`config.toml`）：
+```toml
+theme = "forest"
+```
+
+**主题文件**：位于 `resources/theme/` 目录。每个主题使用 TOML 格式定义，可自定义以下颜色：
+- 日历背景/前景色
+- 月份标题和星期标题
+- 工作日和节假日文字（当月）
+- 相邻月份的工作日和节假日文字
+- 选中日期高亮
+- 底部状态栏
+
+详细的主題信息和自定义指南，请参阅 [THEMES.md](THEMES.md)。
 
 
 ## 常见问题

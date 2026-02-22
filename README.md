@@ -58,6 +58,7 @@ riqi
 | Row          |       | `--row`          | `u32`    | -- | Number of rows in the calendar grid    |
 | Show Lunar   |       | `--show-lunar`   | `bool`   | false | Show/hide lunar calendar dates         |
 | Show Holiday |       | `--show-holiday` | `bool`   | false | Show/hide holiday information          |
+| Theme        |       | `--theme`        | `String` | ningmen | Theme name (see [Theme Configuration](#theme-configuration)) |
 | output       | `-o`  | `--output`       | `String` | %Y-%m-%d | the output format of the select day    |
 
 **Examples:**
@@ -79,6 +80,24 @@ riqi --source gitee --country cn --language zh --show-holiday
 
 # Use github as holiday data source (default)
 riqi --source github --country cn --language zh --show-holiday
+
+# Use forest theme
+riqi --theme forest
+
+# Use ocean theme
+riqi --theme ocean
+
+# Use lavender theme
+riqi --theme lavender
+
+# Use mint theme
+riqi --theme mint
+
+# Use sunset theme
+riqi --theme sunset
+
+# Use ruby theme
+riqi --theme ruby
 ```
 
 **Configuration Priority (highest to lowest):**
@@ -218,9 +237,48 @@ Configuration values are resolved in the following order (highest priority first
 
 ### Theme Configuration
 
-- **Theme Files**: Located in `resources/theme/` directory
-- Themes are defined in TOML format
-- Customize colors for calendar elements, highlights, and borders
+Riqi comes with 8 built-in themes. You can switch themes using the `--theme` command-line argument or by setting `theme` in your configuration file.
+
+**Available Themes:**
+
+| Theme Name | Description |
+|------------|-------------|
+| `ningmen` | Default theme - Lemon yellow-green on dark background |
+| `ocean` | Cool blue theme inspired by ocean waves |
+| `forest` | Earthy green theme inspired by deep forests |
+| `sunset` | Warm orange theme inspired by sunset colors |
+| `lavender` | Soft purple theme inspired by lavender fields |
+| `mint` | Crisp fresh theme inspired by mint leaves |
+| `ruby` | Rich red theme inspired by ruby gemstones |
+| `dark` | Classic dark theme (original) |
+| `blue` | Classic blue theme (original) |
+
+**Usage:**
+
+Command-line:
+```bash
+riqi --theme forest
+riqi --theme ocean
+riqi --theme lavender
+riqi --theme mint
+riqi --theme sunset
+riqi --theme ruby
+```
+
+Configuration file (`config.toml`):
+```toml
+theme = "forest"
+```
+
+**Theme Files**: Located in `resources/theme/` directory. Each theme is defined in TOML format with customizable colors for:
+- Calendar background/foreground
+- Month title and week headers
+- Workday and holiday text (current month)
+- Adjacent month workday and holiday text
+- Selected day highlight
+- Bottom status line
+
+For detailed theme information and customization guide, see [THEMES.md](THEMES.md).
 
 
 ## FAQ
