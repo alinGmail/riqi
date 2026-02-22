@@ -1,0 +1,61 @@
+# Ruby Red Theme - 红宝石
+# Rich, passionate theme inspired by ruby gemstones
+
+fg = "Rgb(255, 245, 245)"  # Misty rose, soft readability
+bg = "#2a1518"             # Deep burgundy
+
+[month_til]
+fg = "Rgb(255, 100, 120)"  # Bright ruby red
+bold = true
+italic = false
+under_line = false
+transparent_bg = false
+
+[month_head]
+fg = "Rgb(255, 130, 140)"  # Light ruby
+bold = false
+italic = false
+under_line = false
+transparent_bg = false
+
+[workday_adjacent]
+fg = "Rgb(90, 50, 60)"     # Dark maroon, adjacent workdays
+bold = false
+italic = false
+under_line = false
+transparent_bg = false
+
+[holiday_adjacent]
+fg = "Rgb(100, 70, 40)"    # Dark amber, adjacent holidays
+bold = false
+italic = false
+under_line = false
+transparent_bg = false
+
+[bottom_line]
+fg = "Rgb(220, 120, 130)"  # Medium red
+bold = false
+italic = false
+under_line = false
+transparent_bg = false
+
+[workday]
+fg = "Rgb(255, 220, 220)"  # Pale pink, current month workdays
+bold = false
+italic = false
+under_line = false
+transparent_bg = false
+
+[holiday]
+fg = "Rgb(255, 230, 150)"  # Golden yellow, holidays
+bold = false
+italic = false
+under_line = false
+transparent_bg = false
+
+[focus_day]
+fg = "Rgb(255, 150, 160)"  # Vibrant coral, focused day
+bold = true
+italic = false
+under_line = false
+transparent_bg = false

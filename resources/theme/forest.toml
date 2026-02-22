@@ -1,0 +1,61 @@
+# Forest Green Theme - 森林绿
+# Earthy, natural theme inspired by deep forests and nature
+
+fg = "Rgb(230, 240, 230)"  # Pale mint, soft readability
+bg = "#122418"             # Deep forest green
+
+[month_til]
+fg = "Rgb(120, 220, 120)"  # Bright spring green
+bold = true
+italic = false
+under_line = false
+transparent_bg = false
+
+[month_head]
+fg = "Rgb(150, 230, 150)"  # Light spring green
+bold = false
+italic = false
+under_line = false
+transparent_bg = false
+
+[workday_adjacent]
+fg = "Rgb(60, 90, 70)"     # Dark forest green, adjacent workdays
+bold = false
+italic = false
+under_line = false
+transparent_bg = false
+
+[holiday_adjacent]
+fg = "Rgb(110, 80, 50)"    # Dark amber, adjacent holidays
+bold = false
+italic = false
+under_line = false
+transparent_bg = false
+
+[bottom_line]
+fg = "Rgb(140, 200, 140)"  # Medium green
+bold = false
+italic = false
+under_line = false
+transparent_bg = false
+
+[workday]
+fg = "Rgb(190, 240, 190)"  # Pale green, current month workdays
+bold = false
+italic = false
+under_line = false
+transparent_bg = false
+
+[holiday]
+fg = "Rgb(255, 210, 120)"  # Amber gold, holidays
+bold = false
+italic = false
+under_line = false
+transparent_bg = false
+
+[focus_day]
+fg = "Rgb(255, 100, 100)"  # Bright red, focused day (maximum contrast)
+bold = true
+italic = false
+under_line = false
+transparent_bg = false

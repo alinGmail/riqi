@@ -1,0 +1,61 @@
+# Ocean Blue Theme - 清新海洋蓝
+# A cool, calming theme inspired by ocean waves and sky
+
+fg = "Rgb(240, 248, 255)"  # Alice blue, soft and readable
+bg = "#0a1929"             # Deep navy blue, like night ocean
+
+[month_til]
+fg = "Rgb(100, 180, 255)"  # Bright sky blue
+bold = true
+italic = false
+under_line = false
+transparent_bg = false
+
+[month_head]
+fg = "Rgb(140, 200, 255)"  # Light sky blue
+bold = false
+italic = false
+under_line = false
+transparent_bg = false
+
+[workday_adjacent]
+fg = "Rgb(50, 90, 120)"    # Dark blue-gray, adjacent workdays
+bold = false
+italic = false
+under_line = false
+transparent_bg = false
+
+[holiday_adjacent]
+fg = "Rgb(100, 70, 40)"    # Dark golden brown, adjacent holidays
+bold = false
+italic = false
+under_line = false
+transparent_bg = false
+
+[bottom_line]
+fg = "Rgb(120, 180, 220)"  # Medium blue
+bold = false
+italic = false
+under_line = false
+transparent_bg = false
+
+[workday]
+fg = "Rgb(180, 220, 255)"  # Light blue, current month workdays
+bold = false
+italic = false
+under_line = false
+transparent_bg = false
+
+[holiday]
+fg = "Rgb(255, 200, 100)"  # Golden yellow, holidays
+bold = false
+italic = false
+under_line = false
+transparent_bg = false
+
+[focus_day]
+fg = "Rgb(100, 255, 255)"  # Cyan, focused day
+bold = true
+italic = false
+under_line = false
+transparent_bg = false

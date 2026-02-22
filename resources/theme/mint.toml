@@ -1,0 +1,61 @@
+# Mint Fresh Theme - 薄荷清新
+# Crisp, refreshing theme inspired by mint leaves
+
+fg = "Rgb(240, 255, 248)"  # Honeydew, very light green
+bg = "#0f241d"             # Deep teal green
+
+[month_til]
+fg = "Rgb(160, 240, 200)"  # Bright mint green
+bold = true
+italic = false
+under_line = false
+transparent_bg = false
+
+[month_head]
+fg = "Rgb(180, 250, 210)"  # Light mint
+bold = false
+italic = false
+under_line = false
+transparent_bg = false
+
+[workday_adjacent]
+fg = "Rgb(60, 90, 80)"     # Dark teal, adjacent workdays
+bold = false
+italic = false
+under_line = false
+transparent_bg = false
+
+[holiday_adjacent]
+fg = "Rgb(100, 80, 50)"    # Dark golden, adjacent holidays
+bold = false
+italic = false
+under_line = false
+transparent_bg = false
+
+[bottom_line]
+fg = "Rgb(150, 220, 190)"  # Medium mint
+bold = false
+italic = false
+under_line = false
+transparent_bg = false
+
+[workday]
+fg = "Rgb(210, 255, 230)"  # Pale mint, current month workdays
+bold = false
+italic = false
+under_line = false
+transparent_bg = false
+
+[holiday]
+fg = "Rgb(255, 230, 180)"  # Light amber, holidays
+bold = false
+italic = false
+under_line = false
+transparent_bg = false
+
+[focus_day]
+fg = "Rgb(100, 255, 255)"  # Bright cyan, focused day (maximum contrast)
+bold = true
+italic = false
+under_line = false
+transparent_bg = false

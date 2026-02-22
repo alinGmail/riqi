@@ -38,6 +38,7 @@ pub struct AppConfig {
     pub output: String,
     pub source: Source,
     pub hide_bg: bool,
+    pub theme: String,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
@@ -51,5 +52,6 @@ pub struct ConfigFile {
     pub row: Option<u32>,
     pub output: Option<String>,
     pub source: Option<String>,
+    pub theme: Option<String>,
 }
 

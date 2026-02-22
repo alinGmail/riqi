@@ -83,7 +83,9 @@ async fn main() -> Result<()> {
     let args = Args::parse();
     let app_config = get_app_config(args);
 
-    let theme = load_theme_from_file("ningmen").expect("主题加载失败");
+    let theme = load_theme_from_file(&app_config.theme)
+        .expect(&format!("Failed to load theme: {}", &app_config.theme));
+
     let mut riqi_state = RiqiState {
         select_day: now.date_naive(),
         today: now.date_naive(),
@@ -252,14 +254,13 @@ fn draw_ui<W: io::Write>(
     app_config: &AppConfig,
 ) -> io::Result<()> {
     terminal.draw(|f| {
-        
-        if !app_config.hide_bg{
+        if !app_config.hide_bg {
             f.render_widget(
                 Block::default().style(Style::default().bg(riqi_state.theme.bg)),
                 f.area(),
             );
         }
-        
+
         let frame_area = f.area();
         let layout = get_layout(frame_area, app_config.column, app_config.row);
         let month_item = MonthComponent::new(calendar, &layout, &riqi_state, app_config);

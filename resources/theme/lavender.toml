@@ -1,0 +1,61 @@
+# Lavender Purple Theme - 薰衣草紫
+# Soft, elegant theme inspired by lavender fields
+
+fg = "Rgb(245, 240, 255)"  # Lavender blush, soft white
+bg = "#1a152a"             # Deep purple
+
+[month_til]
+fg = "Rgb(180, 140, 255)"  # Bright lavender
+bold = true
+italic = false
+under_line = false
+transparent_bg = false
+
+[month_head]
+fg = "Rgb(200, 160, 255)"  # Light lavender
+bold = false
+italic = false
+under_line = false
+transparent_bg = false
+
+[workday_adjacent]
+fg = "Rgb(70, 60, 90)"     # Dark purple-gray, adjacent workdays
+bold = false
+italic = false
+under_line = false
+transparent_bg = false
+
+[holiday_adjacent]
+fg = "Rgb(90, 70, 50)"     # Dark golden, adjacent holidays
+bold = false
+italic = false
+under_line = false
+transparent_bg = false
+
+[bottom_line]
+fg = "Rgb(160, 130, 220)"  # Medium purple
+bold = false
+italic = false
+under_line = false
+transparent_bg = false
+
+[workday]
+fg = "Rgb(220, 200, 255)"  # Pale lavender, current month workdays
+bold = false
+italic = false
+under_line = false
+transparent_bg = false
+
+[holiday]
+fg = "Rgb(255, 220, 180)"  # Light peach, holidays
+bold = false
+italic = false
+under_line = false
+transparent_bg = false
+
+[focus_day]
+fg = "Rgb(255, 80, 150)"  # Bright pink, focused day (maximum contrast)
+bold = true
+italic = false
+under_line = false
+transparent_bg = false

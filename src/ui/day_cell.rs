@@ -146,9 +146,9 @@ impl<'a> DayCell<'a> {
         let paragraph = Paragraph::new(content_lines).wrap(Wrap { trim: false });
         paragraph.render(
             Rect {
-                x: inner_area.left(),
+                x: inner_area.left() + 1,
                 y: inner_area.top() + 1,
-                width: inner_area.width,
+                width: inner_area.width - 2,
                 height: inner_area.height - 1,
             },
             buf,

@@ -33,4 +33,8 @@ pub struct Args {
 
     #[arg(short, long, default_value = "%Y-%m-%d")]
     pub output: Option<String>,
+
+    /// theme name (ningmen, ocean, forest, sunset, lavender, mint, ruby)
+    #[arg(long)]
+    pub theme: Option<String>,
 }

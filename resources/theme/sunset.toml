@@ -1,0 +1,61 @@
+# Sunset Orange Theme - 日落橙
+# Warm, vibrant theme inspired by sunset colors
+
+fg = "Rgb(255, 250, 240)"  # Old lace, warm white
+bg = "#2a1a15"             # Deep chocolate brown
+
+[month_til]
+fg = "Rgb(255, 140, 80)"   # Bright orange
+bold = true
+italic = false
+under_line = false
+transparent_bg = false
+
+[month_head]
+fg = "Rgb(255, 160, 100)"  # Light orange
+bold = false
+italic = false
+under_line = false
+transparent_bg = false
+
+[workday_adjacent]
+fg = "Rgb(90, 60, 50)"     # Dark brown-orange, adjacent workdays
+bold = false
+italic = false
+under_line = false
+transparent_bg = false
+
+[holiday_adjacent]
+fg = "Rgb(100, 60, 30)"    # Dark copper, adjacent holidays
+bold = false
+italic = false
+under_line = false
+transparent_bg = false
+
+[bottom_line]
+fg = "Rgb(220, 140, 100)"  # Medium orange
+bold = false
+italic = false
+under_line = false
+transparent_bg = false
+
+[workday]
+fg = "Rgb(255, 220, 200)"  # Peach, current month workdays
+bold = false
+italic = false
+under_line = false
+transparent_bg = false
+
+[holiday]
+fg = "Rgb(255, 240, 150)"  # Light yellow, holidays
+bold = false
+italic = false
+under_line = false
+transparent_bg = false
+
+[focus_day]
+fg = "Rgb(255, 180, 100)"  # Vibrant orange, focused day
+bold = true
+italic = false
+under_line = false
+transparent_bg = false
