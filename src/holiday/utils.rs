@@ -38,8 +38,5 @@ pub fn get_holiday_state(holidays: &Option<Vec<Holiday>>, day_of_week: u16) -> (
             return (false, true);
         }
     };
-    (
-        day_of_week == 6 || day_of_week == 0,
-        false,
-    )
+    (day_of_week == 6 || day_of_week == 0, false)
 }

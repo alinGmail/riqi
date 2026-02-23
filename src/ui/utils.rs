@@ -2,7 +2,6 @@ use ratatui::style::{Style, Stylize};
 
 use crate::theme::theme_model::ItemStyle;
 
-
 pub fn get_style_from_config(default_style: Option<Style>, item_style_config: ItemStyle) -> Style {
     let mut style = default_style.unwrap_or_default();
 

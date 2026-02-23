@@ -107,7 +107,6 @@ pub fn weekday_name_i18n(weekday: u32, lang: &str) -> String {
     names.get(weekday as usize % 7).unwrap_or(&"").to_string()
 }
 
-
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Language {
     ZH, // 中文

@@ -54,4 +54,3 @@ pub struct ConfigFile {
     pub source: Option<String>,
     pub theme: Option<String>,
 }
-

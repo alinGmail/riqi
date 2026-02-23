@@ -19,7 +19,7 @@ impl<'a> Widget for NotificationComponent<'a> {
 
         for (i, notification) in self.notifications.iter().enumerate() {
             let y_offset = i as u16 * (notification_height + spacing);
-            
+
             if area.y + y_offset + notification_height > area.bottom() {
                 break;
             }

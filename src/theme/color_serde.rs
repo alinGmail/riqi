@@ -42,4 +42,4 @@ fn parse_color(s: &str) -> Result<Color, String> {
         return Err(format!("Hex 格式错误: {}", s));
     }
     Err(format!("未知颜色格式: {}", s))
-} 
+}

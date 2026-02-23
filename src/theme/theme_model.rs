@@ -1,8 +1,6 @@
 use ratatui::style::{Color, Style};
 use serde::Deserialize;
 
-
-
 #[derive(Debug, Clone, Copy, Deserialize)]
 pub struct Theme {
     #[serde(deserialize_with = "crate::theme::color_serde::de_color")]
@@ -37,4 +35,3 @@ pub struct ItemStyle {
     pub under_line: Option<bool>,
     pub transparent_bg: Option<bool>,
 }
-

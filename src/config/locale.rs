@@ -1,8 +1,5 @@
 use sys_locale::get_locale;
 
-
-
-
 // 获取系统的语言和国家
 // 返回 (language, Option<country>)，
 pub fn get_system_language_country() -> (String, Option<String>) {
