@@ -342,7 +342,12 @@ cargo test <test_name>      # Run specific test
 
 ### Logging
 
-Debug logs are written to `debug.log` in the project root.
+Debug logs are written to `debug.log` in the platform-specific cache directory:
+- **Linux**: `~/.cache/riqi/debug.log` or `$XDG_CACHE_HOME/riqi/debug.log`
+- **macOS**: `~/Library/Caches/riqi/debug.log`
+- **Windows**: `C:\Users\<YourName>\AppData\Local\riqi\debug.log`
+
+The application gracefully handles log file creation failures - if the log file cannot be created, the program continues to run without logging.
 
 ## Dependencies
 

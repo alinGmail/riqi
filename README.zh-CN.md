@@ -340,7 +340,12 @@ cargo test <test_name>      # 运行特定测试
 
 ### 日志
 
-调试日志写入项目根目录下的 `debug.log`。
+调试日志写入平台特定的缓存目录中的 `debug.log`：
+- **Linux**: `~/.cache/riqi/debug.log` 或 `$XDG_CACHE_HOME/riqi/debug.log`
+- **macOS**: `~/Library/Caches/riqi/debug.log`
+- **Windows**: `C:\Users\<用户名>\AppData\Local\riqi\debug.log`
+
+应用程序会优雅地处理日志文件创建失败的情况 - 如果无法创建日志文件，程序会继续运行而不记录日志。
 
 ## 依赖项
 

@@ -8,6 +8,7 @@ mod ui;
 mod utils;
 
 use crate::config::model::AppConfig;
+use crate::config::xdg::Xdg;
 use crate::events::{handle_goto_mode_key_event, handle_normal_mode_key_event, AppEvent};
 use crate::holiday::manager::HolidayManager;
 use crate::holiday::modal::HolidayOfYearList;
@@ -48,11 +49,20 @@ use ui::{
 };
 
 fn setup_logger() {
-    // 创建或覆盖日志文件
-    let log_file = File::create("debug.log").expect("Failed to create log file");
+    // 尝试在缓存目录创建日志文件
+    let log_file = Xdg::cache_dir()
+        .map(|mut path| {
+            // 确保缓存目录存在
+            let _ = std::fs::create_dir_all(&path);
+            path.push("debug.log");
+            File::create(path)
+        })
+        .and_then(|result| result.ok())
+        .map(|file| Box::new(file) as Box<dyn Write + Send>)
+        .unwrap_or_else(|| Box::new(io::sink()) as Box<dyn Write + Send>);
 
     Builder::new()
-        .target(Target::Pipe(Box::new(log_file))) // 输出到文件
+        .target(Target::Pipe(log_file)) // 输出到文件或 /dev/null
         .filter_level(LevelFilter::Debug) // 设置日志级别
         .format_timestamp(None) // 可选：禁用时间戳
         .is_test(true) // 禁用颜色（避免乱码）
@@ -167,7 +177,7 @@ async fn main() -> Result<()> {
                 if key.code == KeyCode::Enter {
                     if matches!(riqi_state.mode, RiqiMode::Normal) {
                         disable_raw_mode()?;
-                        //
+                        // 
                         if io::stdout().is_terminal() {
                             stdout().execute(LeaveAlternateScreen)?;
                         } else {
