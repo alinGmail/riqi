@@ -1,4 +1,5 @@
 use crate::holiday::modal::{parse_holidays_of_year, Holiday, HolidayOfYearList};
+use crate::holiday::utils::get_ylc_code;
 use chrono::{Datelike, Duration, Local, NaiveDate};
 use ratatui::widgets::Wrap;
 use std::collections::HashMap;
@@ -72,9 +73,12 @@ impl MonthCalendar {
         year: u32,
         month: u32,
         select_day: NaiveDate,
-        holiday_map: Option<HashMap<String, Vec<Holiday>>>,
+        holiday_map: &HashMap<String, HolidayOfYearList>,
+        language: &str,
+        country: &str,
     ) -> Self {
-        let day_data = Self::generate_calendar_data(year, month, select_day, holiday_map);
+        let day_data =
+            Self::generate_calendar_data(year, month, select_day, holiday_map, language, country);
         MonthCalendar {
             year,
             month,
@@ -86,7 +90,9 @@ impl MonthCalendar {
         year: u32,
         month: u32,
         select_day: NaiveDate,
-        holiday_map: Option<HashMap<String, Vec<Holiday>>>,
+        holiday_map: &HashMap<String, HolidayOfYearList>,
+        language: &str,
+        country: &str,
     ) -> Vec<Vec<CalendarDay>> {
         let now = Local::now().date_naive();
         let is_now_in_cur_month = now.year() as u32 == year && now.month() == month;
@@ -114,19 +120,29 @@ impl MonthCalendar {
         // 初始化日历数据
         let mut weeks = Vec::new();
         let mut current_week = Vec::new();
-        
+
         // 如果是周日或者周一，上周添加一个星期
-        if first_weekday == 0 || first_weekday == 1{
-            for i in (0..7){
+        if first_weekday == 0 || first_weekday == 1 {
+            for i in 0..7 {
                 // 如果是周日或者周一，添加一周在前面
-                let day = prev_month_last_day.day() + 1 - first_weekday as u32 - 7  + i;
-                let holidays = holiday_map.as_ref().and_then(|m| {
-                    m.get(&get_iso_data_str(
-                        prev_month_last_day.year() as u32,
-                        prev_month_last_day.month(),
-                        day,
+                let day = prev_month_last_day.day() + 1 - first_weekday as u32 - 7 + i;
+                let holidays = holiday_map
+                    .get(&get_ylc_code(
+                        &prev_month_last_day.year().to_string(),
+                        language,
+                        country,
                     ))
-                });
+                    .map(|h| {
+                        let holiday_map = h.to_holiday_map();
+                        holiday_map
+                            .get(&get_iso_data_str(
+                                prev_month_last_day.year() as u32,
+                                prev_month_last_day.month(),
+                                day,
+                            ))
+                            .cloned()
+                    })
+                    .flatten();
                 current_week.push(CalendarDay::new(
                     prev_month_last_day.year() as u32,
                     prev_month_last_day.month(),
@@ -135,25 +151,33 @@ impl MonthCalendar {
                     is_now_in_prev_month && day == now.day(),
                     false,
                     select_day,
-                    holidays,
+                    holidays.as_ref(),
                 ));
             }
             weeks.push(current_week);
             current_week = Vec::new();
         }
-        
-      
 
         // 添加上个月的日期
         for i in (0..first_weekday).rev() {
             let day = prev_month_last_day.day() - i as u32;
-            let holidays = holiday_map.as_ref().and_then(|m| {
-                m.get(&get_iso_data_str(
-                    prev_month_last_day.year() as u32,
-                    prev_month_last_day.month(),
-                    day,
+            let holidays = holiday_map
+                .get(&get_ylc_code(
+                    &prev_month_last_day.year().to_string(),
+                    language,
+                    country,
                 ))
-            });
+                .map(|h| {
+                    let holiday_map = h.to_holiday_map();
+                    holiday_map
+                        .get(&get_iso_data_str(
+                            prev_month_last_day.year() as u32,
+                            prev_month_last_day.month(),
+                            day,
+                        ))
+                        .cloned()
+                })
+                .flatten();
             current_week.push(CalendarDay::new(
                 prev_month_last_day.year() as u32,
                 prev_month_last_day.month(),
@@ -162,7 +186,7 @@ impl MonthCalendar {
                 is_now_in_prev_month && day == now.day(),
                 false,
                 select_day,
-                holidays,
+                holidays.as_ref(),
             ));
         }
 
@@ -170,8 +194,14 @@ impl MonthCalendar {
         for day in 1..=last_day.day() {
             let day_of_week = (first_weekday as u32 + day - 1) % 7;
             let holidays = holiday_map
-                .as_ref()
-                .and_then(|m| m.get(&get_iso_data_str(year, month, day)));
+                .get(&get_ylc_code(&year.to_string(), language, country))
+                .map(|h| {
+                    let holiday_map = h.to_holiday_map();
+                    holiday_map
+                        .get(&get_iso_data_str(year, month, day))
+                        .cloned()
+                })
+                .flatten();
             current_week.push(CalendarDay::new(
                 year,
                 month,
@@ -180,7 +210,7 @@ impl MonthCalendar {
                 is_now_in_cur_month && day == now.day(),
                 true,
                 select_day,
-                holidays,
+                holidays.as_ref(),
             ));
 
             // 如果当前星期已满7天或这是最后一天，则开始新的一周
@@ -197,13 +227,23 @@ impl MonthCalendar {
         // 添加下个月的日期
         while weeks.len() < 6 {
             while current_week.len() < 7 {
-                let holidays = holiday_map.as_ref().and_then(|m| {
-                    m.get(&get_iso_data_str(
-                        next_month_first_day.year() as u32,
-                        next_month_first_day.month(),
-                        next_day,
+                let holidays = holiday_map
+                    .get(&get_ylc_code(
+                        &next_month_first_day.year().to_string(),
+                        language,
+                        country,
                     ))
-                });
+                    .map(|h| {
+                        let holiday_map = h.to_holiday_map();
+                        holiday_map
+                            .get(&get_iso_data_str(
+                                next_month_first_day.year() as u32,
+                                next_month_first_day.month(),
+                                next_day,
+                            ))
+                            .cloned()
+                    })
+                    .flatten();
                 let day_of_week = (current_week.len() as u32) % 7;
                 current_week.push(CalendarDay::new(
                     next_month_first_day.year() as u32,
@@ -213,7 +253,7 @@ impl MonthCalendar {
                     is_now_in_next_month && next_day == now.day(),
                     false,
                     select_day,
-                    holidays
+                    holidays.as_ref(),
                 ));
                 next_day += 1;
             }
@@ -232,6 +272,7 @@ mod tests {
 
     #[test]
     fn test_calendar_day_creation() {
+        let mut holiday_map: HashMap<String, HolidayOfYearList> = HashMap::new();
         let day = CalendarDay::new(2024, 3, 15, 5, false, true, Local::now().date_naive(), None);
         assert_eq!(day.year, 2024);
         assert_eq!(day.month, 3);
@@ -242,8 +283,15 @@ mod tests {
 
     #[test]
     fn test_month_calendar_creation() {
-        let calendar =
-            MonthCalendar::new(2024, 3, NaiveDate::from_ymd_opt(2024, 3, 1).unwrap(), None);
+        let mut holiday_map: HashMap<String, HolidayOfYearList> = HashMap::new();
+        let calendar = MonthCalendar::new(
+            2024,
+            3,
+            NaiveDate::from_ymd_opt(2024, 3, 1).unwrap(),
+            &holiday_map,
+            "zh",
+            "cn",
+        );
         assert_eq!(calendar.year, 2024);
         assert_eq!(calendar.month, 3);
         assert!(!calendar.day_data.is_empty());
@@ -251,8 +299,15 @@ mod tests {
 
     #[test]
     fn test_month_calendar_weeks() {
-        let calendar =
-            MonthCalendar::new(2024, 3, NaiveDate::from_ymd_opt(2024, 3, 1).unwrap(), None);
+        let mut holiday_map: HashMap<String, HolidayOfYearList> = HashMap::new();
+        let calendar = MonthCalendar::new(
+            2024,
+            3,
+            NaiveDate::from_ymd_opt(2024, 3, 1).unwrap(),
+            &holiday_map,
+            "zh",
+            "cn",
+        );
         // 2024年3月有6周
         assert_eq!(calendar.day_data.len(), 6);
 
@@ -267,8 +322,15 @@ mod tests {
 
     #[test]
     fn test_month_calendar_days() {
-        let calendar =
-            MonthCalendar::new(2024, 3, NaiveDate::from_ymd_opt(2024, 3, 1).unwrap(), None);
+        let mut holiday_map: HashMap<String, HolidayOfYearList> = HashMap::new();
+        let calendar = MonthCalendar::new(
+            2024,
+            3,
+            NaiveDate::from_ymd_opt(2024, 3, 1).unwrap(),
+            &holiday_map,
+            "zh",
+            "cn",
+        );
 
         // 检查3月1日
         let first_week = &calendar.day_data[0];
@@ -293,8 +355,15 @@ mod tests {
 
     #[test]
     fn test_month_calendar_weekdays() {
-        let calendar =
-            MonthCalendar::new(2024, 3, NaiveDate::from_ymd_opt(2024, 3, 1).unwrap(), None);
+        let mut holiday_map: HashMap<String, HolidayOfYearList> = HashMap::new();
+        let calendar = MonthCalendar::new(
+            2024,
+            3,
+            NaiveDate::from_ymd_opt(2024, 3, 1).unwrap(),
+            &holiday_map,
+            "zh",
+            "cn",
+        );
 
         // 检查所有当前月份的日期
         for week in &calendar.day_data {
@@ -316,8 +385,15 @@ mod tests {
 
     #[test]
     fn test_month_calendar_adjacent_months() {
-        let calendar =
-            MonthCalendar::new(2024, 3, NaiveDate::from_ymd_opt(2024, 3, 1).unwrap(), None);
+        let mut holiday_map: HashMap<String, HolidayOfYearList> = HashMap::new();
+        let calendar = MonthCalendar::new(
+            2024,
+            3,
+            NaiveDate::from_ymd_opt(2024, 3, 1).unwrap(),
+            &holiday_map,
+            "zh",
+            "cn",
+        );
 
         // 检查2月的最后几天
         let first_week = &calendar.day_data[0];
@@ -339,8 +415,15 @@ mod tests {
     #[test]
     fn test_april_30_in_may_calendar() {
         // 测试2025年5月份日历中的4月30日
-        let calendar =
-            MonthCalendar::new(2025, 5, NaiveDate::from_ymd_opt(2025, 5, 1).unwrap(), None);
+        let mut holiday_map: HashMap<String, HolidayOfYearList> = HashMap::new();
+        let calendar = MonthCalendar::new(
+            2025,
+            5,
+            NaiveDate::from_ymd_opt(2025, 5, 1).unwrap(),
+            &holiday_map,
+            "zh",
+            "cn",
+        );
 
         print!("{:?}", calendar);
         // 找到4月30日
@@ -380,11 +463,14 @@ mod tests {
         ];
 
         for (year, month) in test_cases {
+            let mut holiday_map: HashMap<String, HolidayOfYearList> = HashMap::new();
             let calendar = MonthCalendar::new(
                 year,
                 month,
                 NaiveDate::from_ymd_opt(year as i32, month, 1).unwrap(),
-                None,
+                &holiday_map,
+                "zh",
+                "cn",
             );
             assert_eq!(
                 calendar.day_data.len(),
@@ -399,8 +485,15 @@ mod tests {
 
     #[test]
     fn test_calendar_week_structure() {
-        let calendar =
-            MonthCalendar::new(2024, 3, NaiveDate::from_ymd_opt(2024, 3, 1).unwrap(), None);
+        let mut holiday_map: HashMap<String, HolidayOfYearList> = HashMap::new();
+        let calendar = MonthCalendar::new(
+            2024,
+            3,
+            NaiveDate::from_ymd_opt(2024, 3, 1).unwrap(),
+            &holiday_map,
+            "zh",
+            "cn",
+        );
 
         // 验证每周都有7天
         for (week_index, week) in calendar.day_data.iter().enumerate() {
@@ -426,8 +519,15 @@ mod tests {
 
     #[test]
     fn test_calendar_month_transition() {
-        let calendar =
-            MonthCalendar::new(2024, 3, NaiveDate::from_ymd_opt(2024, 3, 1).unwrap(), None);
+        let mut holiday_map: HashMap<String, HolidayOfYearList> = HashMap::new();
+        let calendar = MonthCalendar::new(
+            2024,
+            3,
+            NaiveDate::from_ymd_opt(2024, 3, 1).unwrap(),
+            &holiday_map,
+            "zh",
+            "cn",
+        );
 
         // 验证月份过渡的正确性
         let mut found_current_month = false;

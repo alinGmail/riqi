@@ -1,4 +1,7 @@
+use crate::ui::translate::Translate;
+use ratatui::layout::Alignment;
 use ratatui::prelude::Buffer;
+use ratatui::widgets::BorderType::Rounded;
 use ratatui::widgets::{BorderType, Widget};
 use ratatui::{
     layout::{Constraint, Flex, Layout, Rect},
@@ -6,9 +9,6 @@ use ratatui::{
     widgets::{Block, Borders, Clear, Paragraph},
     Frame,
 };
-use ratatui::layout::Alignment;
-use ratatui::widgets::BorderType::Rounded;
-use crate::ui::translate::Translate;
 
 pub struct GotoPanelComponent<'a> {
     pub year: String,
@@ -29,16 +29,15 @@ impl<'a> Widget for GotoPanelComponent<'a> {
         let inner_area = outer_block.inner(area);
         outer_block.render(area, buf);
 
-        let rows = Layout::vertical([
-            Constraint::Length(4),
-            Constraint::Length(1),
-        ]).split(inner_area);
+        let rows =
+            Layout::vertical([Constraint::Length(4), Constraint::Length(1)]).split(inner_area);
 
         let cols = Layout::horizontal([
             Constraint::Percentage(33),
             Constraint::Percentage(33),
             Constraint::Percentage(34),
-        ]).split(rows[0]);
+        ])
+        .split(rows[0]);
 
         let data = [
             (self.translate.year, &self.year),
@@ -47,10 +46,8 @@ impl<'a> Widget for GotoPanelComponent<'a> {
         ];
 
         for (i, (label, value)) in data.iter().enumerate() {
-            let field_rows = Layout::vertical([
-                Constraint::Length(1),
-                Constraint::Length(3),
-            ]).split(cols[i]);
+            let field_rows =
+                Layout::vertical([Constraint::Length(1), Constraint::Length(3)]).split(cols[i]);
 
             Paragraph::new(*label)
                 .alignment(Alignment::Center)
