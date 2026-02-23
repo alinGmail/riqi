@@ -31,6 +31,7 @@ pub struct YlcHolidayUpdateState {
     load_remote_state: LoadRemoteState,
 }
 
+#[derive(Clone)]
 pub struct HolidayManager {
     property: Arc<Mutex<HolidayManagerProperty>>,
     tx: Sender<AppEvent>,
@@ -210,7 +211,13 @@ impl HolidayManager {
         return Ok(());
     }
 
-    pub async fn load_ylc_holiday(&self, year: &str, language: &str, country: &str, source: Source) {
+    pub async fn load_ylc_holiday(
+        &self,
+        year: &str,
+        language: &str,
+        country: &str,
+        source: Source,
+    ) {
         {
             let mut property = self.property.lock().await;
             let ylc_update_property = property

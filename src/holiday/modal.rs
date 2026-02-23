@@ -62,9 +62,7 @@ pub struct HolidayOfYearList {
 }
 
 impl HolidayOfYearList {
-    pub fn to_holiday_map(
-        &self,
-    ) -> HashMap<String, Vec<Holiday>> {
+    pub fn to_holiday_map(&self) -> HashMap<String, Vec<Holiday>> {
         let mut date_map: HashMap<String, Vec<Holiday>> = HashMap::new();
         for holiday in &self.holidays {
             let date_key = holiday.date.iso.clone();

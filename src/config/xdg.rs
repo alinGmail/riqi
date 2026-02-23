@@ -9,9 +9,8 @@ impl Xdg {
     /// - macOS:   ~/Library/Application Support/riqi
     /// - Windows: C:\Users\Alice\AppData\Roaming\riqi
     pub fn config_dir() -> Option<PathBuf> {
-        let path = dirs::config_dir()?
-            .join("riqi");
-        if !path.exists(){
+        let path = dirs::config_dir()?.join("riqi");
+        if !path.exists() {
             // 自动创建目录（可选，建议在获取时或写入前执行）
             let _ = fs::create_dir_all(&path);
         }
@@ -34,5 +33,4 @@ impl Xdg {
         let path = dirs::cache_dir()?.join("riqi");
         Some(path)
     }
-
 }
