@@ -70,11 +70,11 @@ fn setup_logger() {
 }
 #[tokio::main]
 async fn main() -> Result<()> {
+    let args = Args::parse();
     setup_logger();
     color_eyre::install()?;
     // --- 1. 初始化终端 ---
     enable_raw_mode()?;
-
     // 使用 Box 包装，这样后端就不再关心具体是哪种流
     let writer: Box<dyn Write> = if io::stdout().is_terminal() {
         stdout().execute(EnterAlternateScreen)?;
@@ -90,7 +90,6 @@ async fn main() -> Result<()> {
     let (tx, rx) = mpsc::channel();
 
     let now = Local::now();
-    let args = Args::parse();
     let app_config = get_app_config(args);
 
     let theme = load_theme_from_file(&app_config.theme)

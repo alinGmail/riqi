@@ -1,6 +1,6 @@
 [package]
 name = "riqi"
-version = "0.1.5"
+version = "0.1.8"
 edition = "2021"
 default-run = "riqi"
 
