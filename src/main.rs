@@ -42,7 +42,7 @@ use std::{
     sync::mpsc,
     thread,
 };
-use theme::theme_loader::load_theme_from_file;
+use theme::theme_loader::load_theme_with_fallback;
 use ui::{
     layout::get_layout,
     month_component::{self, MonthComponent},
@@ -92,8 +92,7 @@ async fn main() -> Result<()> {
     let now = Local::now();
     let app_config = get_app_config(args);
 
-    let theme = load_theme_from_file(&app_config.theme)
-        .expect(&format!("Failed to load theme: {}", &app_config.theme));
+    let (theme, theme_warning) = load_theme_with_fallback(&app_config.theme);
 
     let mut riqi_state = RiqiState {
         select_day: now.date_naive(),
@@ -108,6 +107,10 @@ async fn main() -> Result<()> {
         },
         notification: vec![],
     };
+
+    if let Some(message) = theme_warning {
+        push_notification_with_timeout(&mut riqi_state, &tx, "theme_fallback".to_string(), message);
+    }
 
     let now = Local::now();
     let mut holiday_map = HolidayMap::new();
