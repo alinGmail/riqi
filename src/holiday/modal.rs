@@ -1,12 +1,6 @@
-use crate::holiday::utils::get_ylc_code;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
-pub enum HolidayLoadStatus {
-    Loading,
-    Finish,
-    Fail,
-}
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub enum PrimaryType {
     #[serde(rename = "Substitute holiday")]
@@ -55,7 +49,7 @@ pub struct DateTime {
     pub second: Option<i32>,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct HolidayOfYearList {
     pub version: i32,
     pub holidays: Vec<Holiday>,

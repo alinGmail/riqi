@@ -1,279 +1,174 @@
 use crate::config::model::Source;
 use crate::events::AppEvent;
+use crate::holiday::cache_manager::HolidayCacheManager;
 use crate::holiday::modal::{parse_holidays_of_year, HolidayOfYearList};
-use crate::holiday::utils::{get_holiday_cache_file_path, get_ylc_code};
-use chrono::{DateTime, Duration, NaiveDate, NaiveDateTime, Utc};
-use color_eyre::eyre::{bail, OptionExt};
-use color_eyre::Result;
+use crate::holiday::utils::{get_holiday_data_file_url, get_lc_code, get_ylc_code, is_locale_supported};
+use color_eyre::eyre::{bail, eyre, Report, Result};
 use log::{error, info};
-use std::io::Bytes;
+use std::collections::HashMap;
 use std::sync::mpsc::Sender;
-use std::thread::sleep;
-use std::{collections::HashMap, sync::Arc};
-use tokio::fs;
-use tokio::io::AsyncWriteExt;
+use std::sync::Arc;
+use std::time::Duration;
 use tokio::sync::Mutex;
 
-pub enum LoadRemoteState {
-    None,
+/// 首次请求 + 2 次重试。
+const MAX_ATTEMPTS: u32 = 3;
+const REQUEST_TIMEOUT_SECS: u64 = 10;
+
+#[derive(Clone, Copy, PartialEq, Eq)]
+enum KeyState {
+    Idle,
     Loading,
-    Finish,
+    Ready,
     Failed,
 }
 
-pub struct HolidayManagerProperty {
-    ylc_holiday_update_state: HashMap<String, YlcHolidayUpdateState>,
-}
-
-pub struct YlcHolidayUpdateState {
-    loaded_local_cache: bool,
-    local_cache_time: Option<NaiveDate>,
-    load_remote_state: LoadRemoteState,
-}
-
 #[derive(Clone)]
-pub struct HolidayManager {
-    property: Arc<Mutex<HolidayManagerProperty>>,
+pub struct HolidayUpdateManager {
+    state: Arc<Mutex<HashMap<String, KeyState>>>,
     tx: Sender<AppEvent>,
 }
 
-pub fn get_holiday_data_file_url(
-    year: &str,
-    language: &str,
-    country: &str,
-    source: &Source,
-) -> String {
-    match source {
-        Source::Github => format!(
-            "https://raw.githubusercontent.com/alinGmail/riqi/refs/heads/main/resources/holidays/{}/{}_{}.json",
-            year,
-            language,
-            country
-        ),
-        Source::Gitee => format!(
-            "https://gitee.com/zhaixiaolin/riqi/raw/main/resources/holidays/{}/{}_{}.json",
-            year,
-            language,
-            country
-        ),
-    }
+struct RemoteHoliday {
+    raw: String,
+    data: HolidayOfYearList,
 }
 
-pub fn is_need_update(modify_time: NaiveDateTime) -> bool {
-    // 1. 获取当前的 UTC NaiveDateTime
-    let now = Utc::now().naive_utc();
-    let last_need_update_time = now - Duration::days(10);
-    modify_time < last_need_update_time
-}
-
-pub async fn save_holidays_file(
-    year: &str,
-    language: &str,
-    country: &str,
-    content: &[u8],
-) -> Result<()> {
-    let path = get_holiday_cache_file_path(year, language, country);
-    if path == None {
-        bail!("get holiday cache file path failed")
-    }
-    let path_unwrap = path.unwrap();
-    // 2. 确保目录存在
-    if let Some(parent) = path_unwrap.parent() {
-        if !parent.exists() {
-            fs::create_dir_all(parent).await?;
-        }
-    }
-    // 3. 写入文件
-    let mut file = fs::File::create(&path_unwrap).await?;
-    file.write_all(content).await?;
-    info!(
-        "Successfully downloaded and saved file to {}",
-        path_unwrap.display()
-    );
-    Ok(())
-}
-
-pub async fn download_file(url: &str) -> Result<String> {
-    let response = reqwest::get(url).await?;
-    if !response.status().is_success() {
-        error!("Fail to download file: HTTP status {}", response.status());
-        bail!("Fail to download file: HTTP status {}", response.status())
-    }
-    let content = response.bytes().await?;
-    Ok(String::from_utf8(content.into()).expect("Found invalid utf-8"))
-}
-pub fn parse_holidays(json_str: &str) -> Result<HolidayOfYearList, serde_json::Error> {
-    serde_json::from_str(json_str)
-}
-
-impl HolidayManager {
+impl HolidayUpdateManager {
     pub fn new(tx: Sender<AppEvent>) -> Self {
         Self {
-            property: Arc::new(Mutex::new(HolidayManagerProperty {
-                ylc_holiday_update_state: HashMap::new(),
-            })),
+            state: Arc::new(Mutex::new(HashMap::new())),
             tx,
         }
     }
 
-    pub fn load_local_cache(
-        ylc_update_state: &mut YlcHolidayUpdateState,
-        year: &str,
-        language: &str,
-        country: &str,
-        tx_sender: Sender<AppEvent>,
-    ) -> Result<(Option<NaiveDateTime>, i32)> {
-        if ylc_update_state.loaded_local_cache {
-            return Ok((None, 0));
-        }
-        let file_cache_path = get_holiday_cache_file_path(year, language, country);
-        if let Some(cache_path) = file_cache_path {
-            let meatdata = std::fs::metadata(&cache_path)?;
-            // 读取文件
-            let modify_time = meatdata.modified()?;
-            // 1. 先转为 DateTime<Utc>
-            let datetime: DateTime<Utc> = modify_time.into();
-            // 2. 再提取 NaiveDateTime (不含时区信息)
-            let modify_naive_time: NaiveDateTime = datetime.naive_utc();
+    /// 确保某年的假期数据可用：缓存优先，过期则异步刷新。
+    ///
+    /// 策略：
+    /// 1. 按 key 去重（Loading / Ready / Failed 直接返回）
+    /// 2. 不支持的 locale 快速失败并通知
+    /// 3. cache-first：命中即回传旧数据；新鲜则结束，过期则后台刷新
+    /// 4. 远端刷新失败重试 2 次，仍失败则置 Failed 并通知
+    pub async fn ensure_year(&self, year: &str, language: &str, country: &str, source: Source) {
+        let key = get_ylc_code(year, language, country);
 
-            let holiday_content_str = std::fs::read_to_string(cache_path.as_path());
-            // parse 文件
-            let holiday_year_list = parse_holidays_of_year(&holiday_content_str?);
-            let holiday_year_list_un_wrap = holiday_year_list?;
-            let version = holiday_year_list_un_wrap.version;
-
-            tx_sender.send(AppEvent::UpdateHoliday(
-                get_ylc_code(year, language, country),
-                holiday_year_list_un_wrap,
-            ))?;
-
-            // 发送事件，给main 线程处理
-            ylc_update_state.loaded_local_cache = true;
-            Ok((Some(modify_naive_time), version))
-        } else {
-            info!("load local cache file not exist");
-            bail!("local cache file not exist")
-        }
-    }
-
-    pub async fn load_remote_file(
-        property: Arc<Mutex<HolidayManagerProperty>>,
-        year: &str,
-        language: &str,
-        country: &str,
-        source: Source,
-        tx: Sender<AppEvent>,
-        old_version: Option<i32>,
-    ) -> Result<()> {
+        // 1. 请求去重
         {
-            let mut property = property.lock().await;
-            let ylc_update_state = property
-                .ylc_holiday_update_state
-                .get_mut(&get_ylc_code(year, language, country))
-                .unwrap();
-            if !matches!(ylc_update_state.load_remote_state, LoadRemoteState::None) {
-                return Ok(());
-            }
-            info!("start to load remote file");
-            ylc_update_state.load_remote_state = LoadRemoteState::Loading;
-        }
-
-        let url = get_holiday_data_file_url(year, language, country, &source);
-        info!("remote url is {}", &url);
-        let content = download_file(&url).await;
-        if let Ok(content_str) = content {
-            let holiday_of_ylc = parse_holidays(&content_str)?;
-            // save to local file
-            if let Some(old_version) = old_version {
-                if (old_version < holiday_of_ylc.version) {
-                    // save file
-                    let save_res =
-                        save_holidays_file(year, language, country, content_str.as_bytes()).await;
-                }
-            } else {
-                let save_res =
-                    save_holidays_file(year, language, country, content_str.as_bytes()).await;
-            }
-
-            tx.send(AppEvent::UpdateHoliday(
-                get_ylc_code(year, language, country),
-                holiday_of_ylc,
-            ))?;
-            {
-                let mut property = property.lock().await;
-                let ylc_update_state = property
-                    .ylc_holiday_update_state
-                    .get_mut(&get_ylc_code(year, language, country))
-                    .unwrap();
-                ylc_update_state.load_remote_state = LoadRemoteState::Finish;
+            let mut state = self.state.lock().await;
+            match state.entry(key.clone()).or_insert(KeyState::Idle) {
+                KeyState::Idle => {}
+                _ => return,
             }
         }
-        return Ok(());
-    }
 
-    pub async fn load_ylc_holiday(
-        &self,
-        year: &str,
-        language: &str,
-        country: &str,
-        source: Source,
-    ) {
-        {
-            let mut property = self.property.lock().await;
-            let ylc_update_property = property
-                .ylc_holiday_update_state
-                .entry(get_ylc_code(year, language, country))
-                .or_insert(YlcHolidayUpdateState {
-                    loaded_local_cache: false,
-                    local_cache_time: None,
-                    load_remote_state: LoadRemoteState::None,
-                });
+        // 2. 不支持的 locale：不读缓存、不联网
+        if !is_locale_supported(language, country) {
+            self.set_state(&key, KeyState::Failed).await;
+            let _ = self.tx.send(AppEvent::HolidayLoadFailed(
+                key,
+                format!("暂不支持该语言/地区: {}", get_lc_code(language, country)),
+            ));
+            return;
+        }
 
-            let load_cache_res = HolidayManager::load_local_cache(
-                ylc_update_property,
-                year,
-                language,
-                country,
-                self.tx.clone(),
-            );
+        self.set_state(&key, KeyState::Loading).await;
 
-            let mut old_version: Option<i32> = None;
-            match load_cache_res {
-                Ok((modify_time, version)) => {
-                    old_version = Some(version);
-                    info!("load local cache success");
-                    if let Some(modify_time) = modify_time {
-                        if !is_need_update(modify_time) {
-                            return;
+        // 3. cache-first（同步 IO）
+        let cached = HolidayCacheManager::load(year, language, country);
+        let old_version = cached.as_ref().map(|c| c.data.version);
+        if let Some(cached) = cached {
+            // 先显示旧数据
+            let _ = self
+                .tx
+                .send(AppEvent::UpdateHoliday(key.clone(), cached.data.clone()));
+            if HolidayCacheManager::is_fresh(cached.modify_time) {
+                self.set_state(&key, KeyState::Ready).await;
+                return;
+            }
+            info!("holiday cache is stale, refresh in background");
+        }
+
+        // 4. 异步刷新（带重试）
+        let tx = self.tx.clone();
+        let state = self.state.clone();
+        let year_owned = year.to_string();
+        let language_owned = language.to_string();
+        let country_owned = country.to_string();
+        tokio::spawn(async move {
+            let result =
+                Self::fetch_with_retry(&year_owned, &language_owned, &country_owned, &source).await;
+            match result {
+                Ok(remote) => {
+                    if old_version.map_or(true, |v| v < remote.data.version) {
+                        if let Err(e) = HolidayCacheManager::save(
+                            &year_owned,
+                            &language_owned,
+                            &country_owned,
+                            remote.raw.as_bytes(),
+                        ) {
+                            error!("failed to save holiday cache: {}", e);
                         }
-                    } else {
-                        return;
                     }
+                    let _ = tx.send(AppEvent::UpdateHoliday(key.clone(), remote.data));
+                    Self::set_state_shared(&state, &key, KeyState::Ready).await;
                 }
-                Err(_) => {
-                    info!("load local cache fail");
+                Err(e) => {
+                    error!("failed to load remote holiday {}: {}", key, e);
+                    Self::set_state_shared(&state, &key, KeyState::Failed).await;
+                    let _ = tx.send(AppEvent::HolidayLoadFailed(
+                        key,
+                        "假期数据加载失败".to_string(),
+                    ));
                 }
             }
-            let property_clone = self.property.clone();
-            let tx_clone = self.tx.clone();
+        });
+    }
 
-            let year_owned = year.to_string();
-            let language_owned = language.to_string();
-            let country_owned = country.to_string();
-            let source_owned = source.clone();
-
-            tokio::spawn(async move {
-                let load_remote_res = HolidayManager::load_remote_file(
-                    property_clone,
-                    &year_owned,
-                    &language_owned,
-                    &country_owned,
-                    source_owned,
-                    tx_clone,
-                    old_version,
-                )
-                .await;
-            });
+    async fn fetch_with_retry(
+        year: &str,
+        language: &str,
+        country: &str,
+        source: &Source,
+    ) -> Result<RemoteHoliday> {
+        let url = get_holiday_data_file_url(year, language, country, source);
+        let client = reqwest::Client::builder()
+            .timeout(Duration::from_secs(REQUEST_TIMEOUT_SECS))
+            .build()?;
+        let mut last_err: Option<Report> = None;
+        for attempt in 1..=MAX_ATTEMPTS {
+            info!("fetch holiday {} (attempt {}/{})", url, attempt, MAX_ATTEMPTS);
+            match Self::fetch_once(&client, &url).await {
+                Ok(remote) => return Ok(remote),
+                Err(e) => {
+                    error!("fetch attempt {} failed: {}", attempt, e);
+                    last_err = Some(e);
+                }
+            }
         }
+        Err(last_err.unwrap_or_else(|| eyre!("fetch holiday failed")))
+    }
+
+    async fn fetch_once(client: &reqwest::Client, url: &str) -> Result<RemoteHoliday> {
+        let response = client.get(url).send().await?;
+        if !response.status().is_success() {
+            bail!("Fail to download file: HTTP status {}", response.status());
+        }
+        let bytes = response.bytes().await?;
+        let raw = String::from_utf8(bytes.to_vec())?;
+        let data = parse_holidays_of_year(&raw)?;
+        Ok(RemoteHoliday { raw, data })
+    }
+
+    async fn set_state(&self, key: &str, value: KeyState) {
+        Self::set_state_shared(&self.state, key, value).await;
+    }
+
+    async fn set_state_shared(
+        state: &Arc<Mutex<HashMap<String, KeyState>>>,
+        key: &str,
+        value: KeyState,
+    ) {
+        let mut state = state.lock().await;
+        state.insert(key.to_string(), value);
     }
 }

@@ -10,10 +10,10 @@ mod utils;
 use crate::config::model::AppConfig;
 use crate::config::xdg::Xdg;
 use crate::events::{handle_goto_mode_key_event, handle_normal_mode_key_event, AppEvent};
-use crate::holiday::manager::HolidayManager;
-use crate::holiday::modal::HolidayOfYearList;
+use crate::holiday::holiday_map::HolidayMap;
+use crate::holiday::manager::HolidayUpdateManager;
 use crate::holiday::utils::get_ylc_code;
-use crate::state::{GotoPanelState, RiqiMode};
+use crate::state::{GotoPanelState, NotificationMessage, RiqiMode};
 use crate::ui::bottom_line_component::BottomLineComponent;
 use crate::ui::goto_panel_component::GotoPanelComponent;
 use crate::ui::notification_component::NotificationComponent;
@@ -34,7 +34,7 @@ use ratatui::prelude::*;
 use ratatui::widgets::{Block, Clear};
 use serde::Deserialize;
 use state::RiqiState;
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 use std::io::IsTerminal;
 use std::{
     fs::File,
@@ -110,7 +110,10 @@ async fn main() -> Result<()> {
     };
 
     let now = Local::now();
-    let mut holiday_map: HashMap<String, HolidayOfYearList> = HashMap::new();
+    let mut holiday_map = HolidayMap::new();
+    // 记录加载失败的 key({year}_{language}_{country}) 及其消息，以及是否已提示过
+    let mut failed_holiday_keys: HashMap<String, String> = HashMap::new();
+    let mut notified_holiday_failures: HashSet<String> = HashSet::new();
     let mut calendar = MonthCalendar::new(
         now.year() as u32,
         now.month(),
@@ -128,28 +131,20 @@ async fn main() -> Result<()> {
             }
         }
     });
-    let holiday_manager = HolidayManager::new(tx.clone());
+    let holiday_manager = HolidayUpdateManager::new(tx.clone());
 
     if app_config.show_holiday {
-        let current_year = riqi_state.select_day.year().to_string();
-        let prev_year = (riqi_state.select_day.year() - 1).to_string();
-        let next_year = (riqi_state.select_day.year() + 1).to_string();
+        let year = riqi_state.select_day.year();
         let lang = app_config.language.clone();
         let country = app_config.country.clone();
         let source = app_config.source.clone();
         let hm = holiday_manager.clone();
-        let tx_clone = tx.clone();
 
         tokio::spawn(async move {
-            let _ = hm
-                .load_ylc_holiday(&current_year, &lang, &country, source.clone())
-                .await;
-            let _ = hm
-                .load_ylc_holiday(&prev_year, &lang, &country, source.clone())
-                .await;
-            let _ = hm
-                .load_ylc_holiday(&next_year, &lang, &country, source)
-                .await;
+            for y in [year - 1, year, year + 1] {
+                hm.ensure_year(&y.to_string(), &lang, &country, source.clone())
+                    .await;
+            }
         });
     }
 
@@ -197,50 +192,38 @@ async fn main() -> Result<()> {
                     _ => (),
                 }
 
-                let selected_day = riqi_state.select_day;
-                let ylc_key = get_ylc_code(
-                    &selected_day.year().to_string(),
-                    &app_config.language,
-                    &app_config.country,
-                );
                 if app_config.show_holiday {
-                    // Check if we need to load adjacent years
+                    // 确保 当前年 / 前一年 / 后一年 数据可用
                     let current_year = riqi_state.select_day.year();
-                    let prev_year = current_year - 1;
-                    let next_year = current_year + 1;
-
-                    // Check if prev_year data exists, if not load it
-                    let prev_ylc_key = get_ylc_code(
-                        &prev_year.to_string(),
-                        &app_config.language,
-                        &app_config.country,
-                    );
-                    if !holiday_map.contains_key(&prev_ylc_key) {
+                    let lang = app_config.language.clone();
+                    let country = app_config.country.clone();
+                    let source = app_config.source.clone();
+                    for y in [current_year - 1, current_year, current_year + 1] {
+                        let year_str = y.to_string();
+                        let key = get_ylc_code(&year_str, &lang, &country);
+                        if holiday_map.contains(&key) {
+                            continue;
+                        }
                         holiday_manager
-                            .load_ylc_holiday(
-                                &prev_year.to_string(),
-                                &app_config.language,
-                                &app_config.country,
-                                app_config.source.clone(),
-                            )
+                            .ensure_year(&year_str, &lang, &country, source.clone())
                             .await;
                     }
 
-                    // Check if next_year data exists, if not load it
-                    let next_ylc_key = get_ylc_code(
-                        &next_year.to_string(),
+                    // 只有当前显示年份加载失败时才提示，且每个 key 只提示一次
+                    let current_key = get_ylc_code(
+                        &current_year.to_string(),
                         &app_config.language,
                         &app_config.country,
                     );
-                    if !holiday_map.contains_key(&next_ylc_key) {
-                        holiday_manager
-                            .load_ylc_holiday(
-                                &next_year.to_string(),
-                                &app_config.language,
-                                &app_config.country,
-                                app_config.source.clone(),
-                            )
-                            .await;
+                    if let Some(message) = failed_holiday_keys.get(&current_key).cloned() {
+                        if notified_holiday_failures.insert(current_key.clone()) {
+                            push_notification_with_timeout(
+                                &mut riqi_state,
+                                &tx,
+                                current_key,
+                                message,
+                            );
+                        }
                     }
                 }
 
@@ -256,13 +239,9 @@ async fn main() -> Result<()> {
                 draw_ui(&mut terminal, &calendar, &riqi_state, &app_config)?;
             }
             AppEvent::UpdateHoliday(ylc_key, holiday_of_year) => {
-                let old = holiday_map.get(&ylc_key);
-                if let Some(old_holidays) = old {
-                    if old_holidays.version >= holiday_of_year.version {
-                        continue;
-                    }
+                if !holiday_map.upsert(ylc_key, holiday_of_year) {
+                    continue;
                 }
-                holiday_map.insert(ylc_key, holiday_of_year);
                 calendar = MonthCalendar::new(
                     riqi_state.select_day.year() as u32,
                     riqi_state.select_day.month(),
@@ -272,6 +251,19 @@ async fn main() -> Result<()> {
                     &app_config.country,
                 );
                 draw_ui(&mut terminal, &calendar, &riqi_state, &app_config)?;
+            }
+            AppEvent::HolidayLoadFailed(ylc_key, message) => {
+                failed_holiday_keys.insert(ylc_key.clone(), message.clone());
+                // 仅当失败的是当前显示年份时才提示，且只提示一次
+                let current_key = get_ylc_code(
+                    &riqi_state.select_day.year().to_string(),
+                    &app_config.language,
+                    &app_config.country,
+                );
+                if ylc_key == current_key && notified_holiday_failures.insert(ylc_key.clone()) {
+                    push_notification_with_timeout(&mut riqi_state, &tx, ylc_key, message);
+                    draw_ui(&mut terminal, &calendar, &riqi_state, &app_config)?;
+                }
             }
             AppEvent::AddNotification(notification_message) => {
                 riqi_state.notification.push(notification_message);
@@ -296,6 +288,24 @@ async fn main() -> Result<()> {
         stderr().execute(LeaveAlternateScreen)?;
     }
     Ok(())
+}
+
+// 推送通知，并在 5 秒后自动移除（与 Goto 非法日期提示一致）
+fn push_notification_with_timeout(
+    riqi_state: &mut RiqiState,
+    sender: &mpsc::Sender<AppEvent>,
+    id: String,
+    message: String,
+) {
+    riqi_state.notification.push(NotificationMessage {
+        id: id.clone(),
+        message: message.clone(),
+    });
+    let sender = sender.clone();
+    tokio::spawn(async move {
+        tokio::time::sleep(std::time::Duration::from_secs(5)).await;
+        let _ = sender.send(AppEvent::RemoveNotification(NotificationMessage { id, message }));
+    });
 }
 
 // 将渲染逻辑抽离

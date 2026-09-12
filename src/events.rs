@@ -14,6 +14,8 @@ pub enum AppEvent {
     Quit,
     TerminalEvent(Event),
     UpdateHoliday(String, HolidayOfYearList),
+    /// 某个 {year}_{language}_{country} 加载失败，由主线程决定是否提示
+    HolidayLoadFailed(String, String),
     AddNotification(NotificationMessage),
     RemoveNotification(NotificationMessage),
 }

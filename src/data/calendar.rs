@@ -1,8 +1,8 @@
-use crate::holiday::modal::{parse_holidays_of_year, Holiday, HolidayOfYearList};
+use crate::holiday::holiday_map::HolidayMap;
+use crate::holiday::modal::Holiday;
 use crate::holiday::utils::get_ylc_code;
 use chrono::{Datelike, Duration, Local, NaiveDate};
 use ratatui::widgets::Wrap;
-use std::collections::HashMap;
 use std::fmt::format;
 use std::mem::offset_of;
 use std::ops::Add;
@@ -73,7 +73,7 @@ impl MonthCalendar {
         year: u32,
         month: u32,
         select_day: NaiveDate,
-        holiday_map: &HashMap<String, HolidayOfYearList>,
+        holiday_map: &HolidayMap,
         language: &str,
         country: &str,
     ) -> Self {
@@ -90,7 +90,7 @@ impl MonthCalendar {
         year: u32,
         month: u32,
         select_day: NaiveDate,
-        holiday_map: &HashMap<String, HolidayOfYearList>,
+        holiday_map: &HolidayMap,
         language: &str,
         country: &str,
     ) -> Vec<Vec<CalendarDay>> {
@@ -272,7 +272,7 @@ mod tests {
 
     #[test]
     fn test_calendar_day_creation() {
-        let mut holiday_map: HashMap<String, HolidayOfYearList> = HashMap::new();
+        let holiday_map = HolidayMap::new();
         let day = CalendarDay::new(2024, 3, 15, 5, false, true, Local::now().date_naive(), None);
         assert_eq!(day.year, 2024);
         assert_eq!(day.month, 3);
@@ -283,7 +283,7 @@ mod tests {
 
     #[test]
     fn test_month_calendar_creation() {
-        let mut holiday_map: HashMap<String, HolidayOfYearList> = HashMap::new();
+        let holiday_map = HolidayMap::new();
         let calendar = MonthCalendar::new(
             2024,
             3,
@@ -299,7 +299,7 @@ mod tests {
 
     #[test]
     fn test_month_calendar_weeks() {
-        let mut holiday_map: HashMap<String, HolidayOfYearList> = HashMap::new();
+        let holiday_map = HolidayMap::new();
         let calendar = MonthCalendar::new(
             2024,
             3,
@@ -322,7 +322,7 @@ mod tests {
 
     #[test]
     fn test_month_calendar_days() {
-        let mut holiday_map: HashMap<String, HolidayOfYearList> = HashMap::new();
+        let holiday_map = HolidayMap::new();
         let calendar = MonthCalendar::new(
             2024,
             3,
@@ -355,7 +355,7 @@ mod tests {
 
     #[test]
     fn test_month_calendar_weekdays() {
-        let mut holiday_map: HashMap<String, HolidayOfYearList> = HashMap::new();
+        let holiday_map = HolidayMap::new();
         let calendar = MonthCalendar::new(
             2024,
             3,
@@ -385,7 +385,7 @@ mod tests {
 
     #[test]
     fn test_month_calendar_adjacent_months() {
-        let mut holiday_map: HashMap<String, HolidayOfYearList> = HashMap::new();
+        let holiday_map = HolidayMap::new();
         let calendar = MonthCalendar::new(
             2024,
             3,
@@ -415,7 +415,7 @@ mod tests {
     #[test]
     fn test_april_30_in_may_calendar() {
         // 测试2025年5月份日历中的4月30日
-        let mut holiday_map: HashMap<String, HolidayOfYearList> = HashMap::new();
+        let holiday_map = HolidayMap::new();
         let calendar = MonthCalendar::new(
             2025,
             5,
@@ -463,7 +463,7 @@ mod tests {
         ];
 
         for (year, month) in test_cases {
-            let mut holiday_map: HashMap<String, HolidayOfYearList> = HashMap::new();
+            let holiday_map = HolidayMap::new();
             let calendar = MonthCalendar::new(
                 year,
                 month,
@@ -485,7 +485,7 @@ mod tests {
 
     #[test]
     fn test_calendar_week_structure() {
-        let mut holiday_map: HashMap<String, HolidayOfYearList> = HashMap::new();
+        let holiday_map = HolidayMap::new();
         let calendar = MonthCalendar::new(
             2024,
             3,
@@ -519,7 +519,7 @@ mod tests {
 
     #[test]
     fn test_calendar_month_transition() {
-        let mut holiday_map: HashMap<String, HolidayOfYearList> = HashMap::new();
+        let holiday_map = HolidayMap::new();
         let calendar = MonthCalendar::new(
             2024,
             3,

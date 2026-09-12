@@ -1,100 +1,52 @@
 # AGENTS.md
 
-This file provides guidance to Qoder (qoder.com) when working with code in this repository.
+Guidance for OpenCode sessions working in this repo.
 
-## Project Overview
+## What this is
 
-Riqi is a terminal-based calendar application (TUI) written in Rust. It displays monthly calendars with lunar dates, holidays, and navigation support. The app uses `ratatui` for the TUI interface and `crossterm` for terminal management.
+`riqi` is a Rust TUI calendar (lunar dates, holidays, vim/arrow navigation) built on `ratatui` 0.30 + `crossterm`, async via `tokio`. Single binary; no lib target.
 
-## Build and Development Commands
+**Active code is `src/`. `src-bak/` is the pre-refactor original and is NOT compiled** (nothing in `Cargo.toml` or `src/main.rs` references it). Do not edit or draw conclusions from `src-bak/`. `GEMINI.md` is stale — it describes `src-bak/` as active and `src/main.rs` as a placeholder; ignore it.
 
-### Building
+## Commands
+
 ```bash
-cargo build                 # Debug build
-cargo build --release       # Release build
+cargo build                 # debug
+cargo build --release       # release binary at target/release/riqi
+cargo run -- --show-holiday # run with flags
+cargo test                  # all tests
+cargo test --lib            # unit tests only
+cargo test <test_name>      # single test
 ```
 
-### Running
-```bash
-cargo run                   # Run the main binary
-```
+No lint/format/typecheck config, no CI test job. `.github/workflows/build.yml` only builds release binaries for 3 targets on `v*` tags (macOS signing/notarization needs repo secrets).
 
-### Testing
-```bash
-cargo test                  # Run all tests
-cargo test --lib            # Run unit tests only
-cargo test <test_name>      # Run specific test
-```
+## Wiring you'd otherwise guess wrong
 
-## Architecture
+- `src/main.rs` owns the loop. Input is polled on a thread and sent over a `std::sync::mpsc` channel; the main loop blocks on `rx.recv()` and matches `AppEvent` (`src/events.rs`: `TerminalEvent`, `Quit`, `UpdateHoliday`, `AddNotification`, `RemoveNotification`). Holiday fetches run as `tokio` tasks and report back via `AppEvent::UpdateHoliday`.
+- Components implement `render(area, &mut Buffer)` and are drawn with `f.buffer_mut()`, not `Frame` (enabled by ratatui's `unstable-widget-ref` feature). Follow that pattern for new widgets.
+- Pressing `Enter` in normal mode prints the selected day formatted by `--output` and exits — this is the scripting interface; don't break it.
+- Keys: `hjkl`/arrows move days, `d`/`u` month, `f`/`b` year, `t` today, `g` goto panel, `q`/`Esc` quit. (README's `y`/`x` year keys are wrong; code uses `f`/`b`.)
+- `src/state.rs` (`RiqiState`, `RiqiMode`) is the central mutable state; `src/data/calendar.rs` builds the always-6-week grid.
 
-### Core Application Flow (src/main.rs)
-- Entry point initializes logging to `debug.log`
-- Sets up terminal in raw mode with alternate screen
-- Main loop handles:
-  - Rendering via `ratatui`
-  - Async event handling through `MessageBus`
-  - Keyboard input (hjkl/arrow keys for navigation, d/u for month navigation, y/x for year navigation, t for today, q to quit)
+## Configuration
 
-### State Management (src/state.rs)
-`RiqiState` is the central application state containing:
-- `select_day`: Currently selected date
-- `holiday_map`: Holiday data loaded from cache/remote
-- `today`: Today's date reference
-- `config`: User configuration
-- `theme`: UI theme colors
-- `message_bus`: Event communication channel
+Resolution order: CLI args > `<config_dir>/riqi/config.toml` > system locale > defaults (`src/config/config_main.rs`). `config_dir` is XDG per-OS (`src/config/xdg.rs`). Boolean flags use `num_args(0..=1)`, so both `--show-lunar` and `--show-lunar=false` work.
 
-### Calendar System (src/types/calendar.rs)
-- `CalendarDay`: Represents a single day with solar and lunar dates
-- `MonthCalendar`: Generates 6-week calendar grid for any month
-- Handles edge cases like month boundaries, weekday calculations
-- Uses `tyme4rs` for lunar calendar conversions
+## Themes
 
-### Holiday System (src/holiday/)
-Implements a caching system for holiday data:
-- Downloads holiday metadata from GitHub
-- Caches holiday files locally (XDG cache directory on Unix)
-- Validates cache freshness (1 day TTL for meta_cache.json)
-- Updates asynchronously without blocking UI
-- Structure: `holidays/<year>/<country>_<language>.json`
+Theme TOMLs in `resources/theme/` are **embedded at compile time** with `include_dir!` (`src/theme/theme_loader.rs`). Adding/editing a theme requires a rebuild. An unknown `--theme` name panics (`expect` in `src/main.rs:95`), not a graceful error. 8 themes; default `ningmen`.
 
-Key files:
-- `load.rs`: Loads holidays from cache or triggers updates
-- `update.rs`: Downloads meta and holiday data files
-- `downloader.rs`: HTTP client for fetching remote data
-- `utils.rs`: Cache path resolution and parsing
+## Holidays
 
-### Component System (src/component/)
-UI components render calendar views:
-- `month_component.rs`: Main calendar grid display
-- `day_component.rs`: Individual day cell rendering
-- `bottom_line_component.rs`: Status/help bar
+- Fetched from hardcoded GitHub/Gitee raw URLs (`src/holiday/manager.rs:47`); `--source github|gitee` picks one. There is no bundled fallback.
+- Cache: `<cache_dir>/riqi/holidays/<year>/<language>_<country>.json`. Refresh TTL is **10 days** (`is_need_update`, `src/holiday/manager.rs:62`).
+- Only `zh_cn` and `en_cn` actually have data. `resources/holidays/` holds the files served by the remote repo, not compiled into the binary.
 
-### Configuration (src/config/)
-- Loads from file or uses system defaults
-- Detects system locale (language/country)
-- Theme loading from TOML files in `resources/theme/`
-- XDG-compliant path resolution for config files
+## Logging
 
-### Event System (src/events.rs)
-`MessageBus` provides async communication:
-- `AppEvent::Input`: Keyboard events
-- `AppEvent::RequestResult`: Background task completions (e.g., holiday updates)
+`debug.log` is written to the **XDG cache dir** (`<cache_dir>/riqi/debug.log`), not the project root (`src/main.rs:51`). Logger is initialized with `.is_test(true)`.
 
-## Key Dependencies
+## Tests
 
-- `ratatui`: TUI framework
-- `crossterm`: Terminal control
-- `tokio`: Async runtime
-- `chrono`: Date/time handling
-- `tyme4rs`: Lunar calendar calculations
-- `reqwest`: HTTP client for holiday downloads
-- `serde`/`serde_json`: Configuration and data serialization
-
-## Development Notes
-
-- Logging is written to `debug.log` in the project root
-- The app uses XDG directories for caching holiday data
-- Tests are located inline with implementation (see `src/types/calendar.rs` for examples)
-- Calendar always renders 6 weeks for consistent layout
+Inline `#[cfg(test)]` modules only, in `src/data/calendar.rs` and `src/ui/lunar.rs`. No `tests/` directory.
