@@ -102,7 +102,7 @@ async fn main() -> Result<()> {
         goto_panel: GotoPanelState {
             year: now.year() as u16,
             month: now.month() as u8,
-            day: now.month() as u8,
+            day: now.day() as u8,
             focus_inp: 0,
         },
         notification: vec![],
@@ -174,7 +174,7 @@ async fn main() -> Result<()> {
                 if key.code == KeyCode::Enter {
                     if matches!(riqi_state.mode, RiqiMode::Normal) {
                         disable_raw_mode()?;
-                        // 
+                        //
                         if io::stdout().is_terminal() {
                             stdout().execute(LeaveAlternateScreen)?;
                         } else {
@@ -307,7 +307,10 @@ fn push_notification_with_timeout(
     let sender = sender.clone();
     tokio::spawn(async move {
         tokio::time::sleep(std::time::Duration::from_secs(5)).await;
-        let _ = sender.send(AppEvent::RemoveNotification(NotificationMessage { id, message }));
+        let _ = sender.send(AppEvent::RemoveNotification(NotificationMessage {
+            id,
+            message,
+        }));
     });
 }
 
