@@ -10,3 +10,6 @@ pub mod translate;
 
 pub mod goto_panel_component;
 pub mod notification_component;
+
+pub mod config_panel_component;
+pub mod theme_select_component;

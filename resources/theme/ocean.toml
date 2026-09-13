@@ -3,6 +3,7 @@
 
 fg = "Rgb(240, 248, 255)"  # Alice blue, soft and readable
 bg = "#0a1929"             # Deep navy blue, like night ocean
+panel_selected_bg = "Rgb(90, 140, 190)"  # Light ocean blue for selected panel item
 
 [month_til]
 fg = "Rgb(100, 180, 255)"  # Bright sky blue

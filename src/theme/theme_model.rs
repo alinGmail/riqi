@@ -7,6 +7,8 @@ pub struct Theme {
     pub fg: Color,
     #[serde(deserialize_with = "crate::theme::color_serde::de_color")]
     pub bg: Color,
+    #[serde(deserialize_with = "crate::theme::color_serde::de_color")]
+    pub panel_selected_bg: Color,
     pub focus_day: ItemStyle,
 
     pub month_til: ItemStyle,
@@ -21,6 +23,10 @@ pub struct Theme {
 impl Theme {
     pub fn get_default_style(&self) -> Style {
         Style::default().fg(self.fg)
+    }
+
+    pub fn get_panel_selected_style(&self) -> Style {
+        Style::default().fg(self.bg).bg(self.panel_selected_bg)
     }
 }
 

@@ -3,6 +3,7 @@
 
 fg = "Rgb(245, 240, 255)"  # Lavender blush, soft white
 bg = "#1a152a"             # Deep purple
+panel_selected_bg = "Rgb(150, 135, 190)"  # Light lavender for selected panel item
 
 [month_til]
 fg = "Rgb(180, 140, 255)"  # Bright lavender

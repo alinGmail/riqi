@@ -1,5 +1,6 @@
 use crate::holiday::modal::HolidayOfYearList;
 use crate::state::{GotoPanelState, NotificationMessage, RiqiMode, RiqiState};
+use crate::theme::theme_loader::load_theme_from_file;
 use crate::utils::add_months_safe;
 use chrono::{Datelike, Duration, Local, NaiveDate};
 use crossterm::event::{Event, KeyCode, KeyEvent};
@@ -62,6 +63,89 @@ pub fn handle_normal_mode_key_event(key: KeyEvent, riqi_state: &mut RiqiState) {
             day: riqi_state.select_day.day() as u8,
             focus_inp: 0,
         }
+    }
+
+    if key.code == KeyCode::Char('c') {
+        riqi_state.mode = RiqiMode::Config;
+        riqi_state.config_panel.focus = 0;
+    }
+}
+
+pub fn handle_config_mode_key_event(key: KeyEvent, riqi_state: &mut RiqiState) {
+    if key.code == KeyCode::Char('q') || key.code == KeyCode::Esc {
+        riqi_state.mode = RiqiMode::Normal;
+        return;
+    }
+    if key.code == KeyCode::Char('j') || key.code == KeyCode::Down {
+        // 目前只有一个选项，focus 保持 0
+        riqi_state.config_panel.focus = 0;
+    }
+    if key.code == KeyCode::Char('k') || key.code == KeyCode::Up {
+        riqi_state.config_panel.focus = riqi_state.config_panel.focus.saturating_sub(1);
+    }
+
+    if key.code == KeyCode::Enter {
+        // 配置面板目前只有 theme 一个选项 (index 0)
+        if riqi_state.config_panel.focus == 0 {
+            let selected = riqi_state
+                .theme_names
+                .iter()
+                .position(|name| *name == riqi_state.theme_name)
+                .unwrap_or(0);
+            riqi_state.theme_select.selected = selected;
+            riqi_state.theme_select.original_theme = riqi_state.theme;
+            riqi_state.mode = RiqiMode::ThemeSelect;
+        }
+    }
+}
+
+pub fn handle_theme_select_mode_key_event(key: KeyEvent, riqi_state: &mut RiqiState) {
+    if key.code == KeyCode::Char('q') || key.code == KeyCode::Esc {
+        riqi_state.theme = riqi_state.theme_select.original_theme;
+        riqi_state.mode = RiqiMode::Normal;
+        return;
+    }
+
+    let last_index = riqi_state.theme_names.len().saturating_sub(1);
+    let mut moved = false;
+    if key.code == KeyCode::Char('j') || key.code == KeyCode::Down {
+        if riqi_state.theme_select.selected < last_index {
+            riqi_state.theme_select.selected += 1;
+            moved = true;
+        }
+    }
+    if key.code == KeyCode::Char('k') || key.code == KeyCode::Up {
+        if riqi_state.theme_select.selected > 0 {
+            riqi_state.theme_select.selected -= 1;
+            moved = true;
+        }
+    }
+
+    // 移动即实时预览选中的主题
+    if moved {
+        if let Some(name) = riqi_state
+            .theme_names
+            .get(riqi_state.theme_select.selected)
+            .copied()
+        {
+            if let Ok(theme) = load_theme_from_file(name) {
+                riqi_state.theme = theme;
+            }
+        }
+    }
+
+    if key.code == KeyCode::Enter {
+        if let Some(name) = riqi_state
+            .theme_names
+            .get(riqi_state.theme_select.selected)
+            .copied()
+        {
+            if let Ok(theme) = load_theme_from_file(name) {
+                riqi_state.theme = theme;
+                riqi_state.theme_name = name.to_string();
+            }
+        }
+        riqi_state.mode = RiqiMode::Normal;
     }
 }
 

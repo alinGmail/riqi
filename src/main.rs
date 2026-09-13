@@ -9,14 +9,21 @@ mod utils;
 
 use crate::config::model::AppConfig;
 use crate::config::xdg::Xdg;
-use crate::events::{handle_goto_mode_key_event, handle_normal_mode_key_event, AppEvent};
+use crate::events::{
+    handle_config_mode_key_event, handle_goto_mode_key_event, handle_normal_mode_key_event,
+    handle_theme_select_mode_key_event, AppEvent,
+};
 use crate::holiday::holiday_map::HolidayMap;
 use crate::holiday::manager::HolidayUpdateManager;
 use crate::holiday::utils::get_ylc_code;
-use crate::state::{GotoPanelState, NotificationMessage, RiqiMode};
+use crate::state::{
+    ConfigPanelState, GotoPanelState, NotificationMessage, RiqiMode, ThemeSelectState,
+};
 use crate::ui::bottom_line_component::BottomLineComponent;
+use crate::ui::config_panel_component::ConfigPanelComponent;
 use crate::ui::goto_panel_component::GotoPanelComponent;
 use crate::ui::notification_component::NotificationComponent;
+use crate::ui::theme_select_component::ThemeSelectComponent;
 use crate::ui::translate::{get_translate, Language};
 use chrono::{Datelike, Local, NaiveDate};
 use clap::{arg, Parser};
@@ -42,7 +49,7 @@ use std::{
     sync::mpsc,
     thread,
 };
-use theme::theme_loader::load_theme_with_fallback;
+use theme::theme_loader::{available_theme_names, load_theme_with_fallback};
 use ui::{
     layout::get_layout,
     month_component::{self, MonthComponent},
@@ -94,16 +101,26 @@ async fn main() -> Result<()> {
 
     let (theme, theme_warning) = load_theme_with_fallback(&app_config.theme);
 
+    let mut theme_names = available_theme_names();
+    theme_names.sort_unstable();
+
     let mut riqi_state = RiqiState {
         select_day: now.date_naive(),
         today: now.date_naive(),
         theme,
+        theme_name: app_config.theme.clone(),
+        theme_names,
         mode: RiqiMode::Normal,
         goto_panel: GotoPanelState {
             year: now.year() as u16,
             month: now.month() as u8,
             day: now.day() as u8,
             focus_inp: 0,
+        },
+        config_panel: ConfigPanelState { focus: 0 },
+        theme_select: ThemeSelectState {
+            selected: 0,
+            original_theme: theme,
         },
         notification: vec![],
     };
@@ -192,7 +209,10 @@ async fn main() -> Result<()> {
                 match riqi_state.mode {
                     RiqiMode::Normal => handle_normal_mode_key_event(key, &mut riqi_state),
                     RiqiMode::Goto => handle_goto_mode_key_event(key, &mut riqi_state, tx.clone()),
-                    _ => (),
+                    RiqiMode::Config => handle_config_mode_key_event(key, &mut riqi_state),
+                    RiqiMode::ThemeSelect => {
+                        handle_theme_select_mode_key_event(key, &mut riqi_state)
+                    }
                 }
 
                 if app_config.show_holiday {
@@ -343,6 +363,14 @@ fn draw_ui<W: io::Write>(
             draw_goto_panel(riqi_state, app_config, f);
         }
 
+        if matches!(riqi_state.mode, RiqiMode::Config) {
+            draw_config_panel(riqi_state, app_config, f);
+        }
+
+        if matches!(riqi_state.mode, RiqiMode::ThemeSelect) {
+            draw_theme_select_panel(riqi_state, app_config, f);
+        }
+
         if !riqi_state.notification.is_empty() {
             let notification_component = NotificationComponent {
                 notifications: &riqi_state.notification,
@@ -381,4 +409,59 @@ fn draw_goto_panel(riqi_state: &RiqiState, app_config: &AppConfig, f: &mut Frame
         },
     );
     goto_panel.render(popup_area, f.buffer_mut());
+}
+
+fn draw_config_panel(riqi_state: &RiqiState, app_config: &AppConfig, f: &mut Frame) {
+    let language = app_config
+        .language
+        .parse::<Language>()
+        .unwrap_or(Language::EN);
+    let translate = get_translate(language);
+
+    let popup_area = f.area().centered(Constraint::Length(40), Constraint::Length(5));
+    f.render_widget(
+        Clear,
+        Rect {
+            x: popup_area.x - 1,
+            y: popup_area.y,
+            width: popup_area.width + 2,
+            height: popup_area.height,
+        },
+    );
+
+    let config_panel = ConfigPanelComponent {
+        translate,
+        theme: &riqi_state.theme,
+        theme_name: &riqi_state.theme_name,
+        focus: riqi_state.config_panel.focus,
+    };
+    config_panel.render(popup_area, f.buffer_mut());
+}
+
+fn draw_theme_select_panel(riqi_state: &RiqiState, app_config: &AppConfig, f: &mut Frame) {
+    let language = app_config
+        .language
+        .parse::<Language>()
+        .unwrap_or(Language::EN);
+    let translate = get_translate(language);
+
+    let height = riqi_state.theme_names.len() as u16 + 4;
+    let popup_area = f.area().centered(Constraint::Length(40), Constraint::Length(height));
+    f.render_widget(
+        Clear,
+        Rect {
+            x: popup_area.x - 1,
+            y: popup_area.y,
+            width: popup_area.width + 2,
+            height: popup_area.height,
+        },
+    );
+
+    let theme_select = ThemeSelectComponent {
+        translate,
+        theme: &riqi_state.theme,
+        theme_names: &riqi_state.theme_names,
+        selected: riqi_state.theme_select.selected,
+    };
+    theme_select.render(popup_area, f.buffer_mut());
 }

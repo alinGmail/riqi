@@ -48,6 +48,10 @@ impl<'a> Widget for BottomLineComponent<'a> {
                 Span::from("t"),
                 Span::from(":"),
                 Span::from(translate.back_to_today),
+                Span::from(" | "),
+                Span::from("c"),
+                Span::from(":"),
+                Span::from(translate.config),
             ])
             .centered()
             .style(get_style_from_config(

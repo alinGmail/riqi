@@ -3,6 +3,7 @@
 
 fg = "Rgb(230, 240, 230)"  # Pale mint, soft readability
 bg = "#122418"             # Deep forest green
+panel_selected_bg = "Rgb(80, 130, 95)"  # Light forest green for selected panel item
 
 [month_til]
 fg = "Rgb(120, 220, 120)"  # Bright spring green

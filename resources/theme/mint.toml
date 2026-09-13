@@ -3,6 +3,7 @@
 
 fg = "Rgb(240, 255, 248)"  # Honeydew, very light green
 bg = "#0f241d"             # Deep teal green
+panel_selected_bg = "Rgb(90, 150, 130)"  # Light mint for selected panel item
 
 [month_til]
 fg = "Rgb(160, 240, 200)"  # Bright mint green

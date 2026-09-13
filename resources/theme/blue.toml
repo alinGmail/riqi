@@ -1,5 +1,6 @@
 fg = "Rgb(16,24,48)"
 bg = "Rgb(40,36,51)"
+panel_selected_bg = "Rgb(150,150,200)"
 
 [month_til]
 fg = "Rgb(177,186,244)"

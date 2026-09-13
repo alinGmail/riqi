@@ -7,6 +7,8 @@ use serde::Deserialize;
 pub enum RiqiMode {
     Normal,
     Goto,
+    Config,
+    ThemeSelect,
 }
 
 #[derive(Debug, Clone)]
@@ -24,11 +26,26 @@ pub struct GotoPanelState {
 }
 
 #[derive(Debug)]
+pub struct ConfigPanelState {
+    pub focus: usize,
+}
+
+#[derive(Debug)]
+pub struct ThemeSelectState {
+    pub selected: usize,
+    pub original_theme: Theme,
+}
+
+#[derive(Debug)]
 pub struct RiqiState {
     pub select_day: NaiveDate,
     pub today: NaiveDate,
     pub theme: Theme,
+    pub theme_name: String,
+    pub theme_names: Vec<&'static str>,
     pub mode: RiqiMode,
     pub goto_panel: GotoPanelState,
+    pub config_panel: ConfigPanelState,
+    pub theme_select: ThemeSelectState,
     pub notification: Vec<NotificationMessage>,
 }

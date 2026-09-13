@@ -3,6 +3,7 @@
 
 fg = "Rgb(255, 250, 240)"  # Old lace, warm white
 bg = "#2a1a15"             # Deep chocolate brown
+panel_selected_bg = "Rgb(180, 130, 95)"  # Light orange for selected panel item
 
 [month_til]
 fg = "Rgb(255, 140, 80)"   # Bright orange

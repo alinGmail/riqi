@@ -146,6 +146,8 @@ pub struct Translate<'a> {
     pub month: &'a str,
     pub day: &'a str,
     pub goto_help: &'a str,
+    pub config: &'a str,
+    pub theme: &'a str,
 }
 
 const ZH_TRANSLATE: Translate<'static> = Translate {
@@ -160,6 +162,8 @@ const ZH_TRANSLATE: Translate<'static> = Translate {
     month: "月",
     day: "日",
     goto_help: "h,l:左右导航;j,k:加或减;enter:选择日期",
+    config: "配置",
+    theme: "主题",
 };
 
 // Japanese (日本語)
@@ -175,6 +179,8 @@ const JA_TRANSLATE: Translate<'static> = Translate {
     month: "月",
     day: "日",
     goto_help: "h,l:左右移動;j,k:増減;enter:日付選択",
+    config: "設定",
+    theme: "テーマ",
 };
 
 // Korean (한국어)
@@ -190,6 +196,8 @@ const KO_TRANSLATE: Translate<'static> = Translate {
     month: "월",
     day: "일",
     goto_help: "h,l:좌우 이동;j,k:증감;enter:날짜 선택",
+    config: "설정",
+    theme: "테마",
 };
 
 // German (Deutsch)
@@ -205,6 +213,8 @@ const DE_TRANSLATE: Translate<'static> = Translate {
     month: "Monat",
     day: "Tag",
     goto_help: "h,l:Links/Rechts;j,k:+/-;Enter:Datum wählen",
+    config: "Einstellungen",
+    theme: "Thema",
 };
 
 // French (Français)
@@ -220,6 +230,8 @@ const FR_TRANSLATE: Translate<'static> = Translate {
     month: "Mois",
     day: "Jour",
     goto_help: "h,l:Gauche/Droite;j,k:+/-;Entrée:Sélectionner",
+    config: "Configuration",
+    theme: "Thème",
 };
 
 // Russian (Русский)
@@ -235,6 +247,8 @@ const RU_TRANSLATE: Translate<'static> = Translate {
     month: "Месяц",
     day: "День",
     goto_help: "h,l:Влево/Вправо;j,k:+/-;Enter:Выбрать",
+    config: "Настройки",
+    theme: "Тема",
 };
 
 // English (English)
@@ -250,6 +264,8 @@ const EN_TRANSLATE: Translate<'static> = Translate {
     month: "Month",
     day: "Day",
     goto_help: "h,l:Navigate;j,k:+/-;Enter:Select",
+    config: "Config",
+    theme: "Theme",
 };
 
 pub fn get_translate(language: Language) -> &'static Translate<'static> {
