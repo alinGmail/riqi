@@ -97,7 +97,7 @@ async fn main() -> Result<()> {
     let (tx, rx) = mpsc::channel();
 
     let now = Local::now();
-    let app_config = get_app_config(args);
+    let mut app_config = get_app_config(args);
 
     let (theme, theme_warning) = load_theme_with_fallback(&app_config.theme);
 
@@ -209,7 +209,9 @@ async fn main() -> Result<()> {
                 match riqi_state.mode {
                     RiqiMode::Normal => handle_normal_mode_key_event(key, &mut riqi_state),
                     RiqiMode::Goto => handle_goto_mode_key_event(key, &mut riqi_state, tx.clone()),
-                    RiqiMode::Config => handle_config_mode_key_event(key, &mut riqi_state),
+                    RiqiMode::Config => {
+                        handle_config_mode_key_event(key, &mut riqi_state, &mut app_config)
+                    }
                     RiqiMode::ThemeSelect => {
                         handle_theme_select_mode_key_event(key, &mut riqi_state)
                     }
@@ -418,7 +420,7 @@ fn draw_config_panel(riqi_state: &RiqiState, app_config: &AppConfig, f: &mut Fra
         .unwrap_or(Language::EN);
     let translate = get_translate(language);
 
-    let popup_area = f.area().centered(Constraint::Length(40), Constraint::Length(5));
+    let popup_area = f.area().centered(Constraint::Length(40), Constraint::Length(7));
     f.render_widget(
         Clear,
         Rect {
@@ -433,6 +435,8 @@ fn draw_config_panel(riqi_state: &RiqiState, app_config: &AppConfig, f: &mut Fra
         translate,
         theme: &riqi_state.theme,
         theme_name: &riqi_state.theme_name,
+        show_lunar: app_config.show_lunar,
+        show_holiday: app_config.show_holiday,
         focus: riqi_state.config_panel.focus,
     };
     config_panel.render(popup_area, f.buffer_mut());

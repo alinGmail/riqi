@@ -148,6 +148,10 @@ pub struct Translate<'a> {
     pub goto_help: &'a str,
     pub config: &'a str,
     pub theme: &'a str,
+    pub lunar: &'a str,
+    pub holiday: &'a str,
+    pub on: &'a str,
+    pub off: &'a str,
 }
 
 const ZH_TRANSLATE: Translate<'static> = Translate {
@@ -164,6 +168,10 @@ const ZH_TRANSLATE: Translate<'static> = Translate {
     goto_help: "h,l:左右导航;j,k:加或减;enter:选择日期",
     config: "配置",
     theme: "主题",
+    lunar: "农历",
+    holiday: "节假日",
+    on: "开",
+    off: "关",
 };
 
 // Japanese (日本語)
@@ -181,6 +189,10 @@ const JA_TRANSLATE: Translate<'static> = Translate {
     goto_help: "h,l:左右移動;j,k:増減;enter:日付選択",
     config: "設定",
     theme: "テーマ",
+    lunar: "旧暦",
+    holiday: "祝日",
+    on: "オン",
+    off: "オフ",
 };
 
 // Korean (한국어)
@@ -198,6 +210,10 @@ const KO_TRANSLATE: Translate<'static> = Translate {
     goto_help: "h,l:좌우 이동;j,k:증감;enter:날짜 선택",
     config: "설정",
     theme: "테마",
+    lunar: "음력",
+    holiday: "공휴일",
+    on: "켬",
+    off: "끔",
 };
 
 // German (Deutsch)
@@ -215,6 +231,10 @@ const DE_TRANSLATE: Translate<'static> = Translate {
     goto_help: "h,l:Links/Rechts;j,k:+/-;Enter:Datum wählen",
     config: "Einstellungen",
     theme: "Thema",
+    lunar: "Mondkalender",
+    holiday: "Feiertag",
+    on: "An",
+    off: "Aus",
 };
 
 // French (Français)
@@ -232,6 +252,10 @@ const FR_TRANSLATE: Translate<'static> = Translate {
     goto_help: "h,l:Gauche/Droite;j,k:+/-;Entrée:Sélectionner",
     config: "Configuration",
     theme: "Thème",
+    lunar: "Lunaire",
+    holiday: "Jours fériés",
+    on: "Activé",
+    off: "Désactivé",
 };
 
 // Russian (Русский)
@@ -249,6 +273,10 @@ const RU_TRANSLATE: Translate<'static> = Translate {
     goto_help: "h,l:Влево/Вправо;j,k:+/-;Enter:Выбрать",
     config: "Настройки",
     theme: "Тема",
+    lunar: "Лунный",
+    holiday: "Праздники",
+    on: "Вкл",
+    off: "Выкл",
 };
 
 // English (English)
@@ -266,6 +294,10 @@ const EN_TRANSLATE: Translate<'static> = Translate {
     goto_help: "h,l:Navigate;j,k:+/-;Enter:Select",
     config: "Config",
     theme: "Theme",
+    lunar: "Lunar",
+    holiday: "Holiday",
+    on: "On",
+    off: "Off",
 };
 
 pub fn get_translate(language: Language) -> &'static Translate<'static> {

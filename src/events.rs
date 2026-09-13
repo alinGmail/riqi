@@ -1,3 +1,4 @@
+use crate::config::model::AppConfig;
 use crate::holiday::modal::HolidayOfYearList;
 use crate::state::{GotoPanelState, NotificationMessage, RiqiMode, RiqiState};
 use crate::theme::theme_loader::load_theme_from_file;
@@ -71,31 +72,53 @@ pub fn handle_normal_mode_key_event(key: KeyEvent, riqi_state: &mut RiqiState) {
     }
 }
 
-pub fn handle_config_mode_key_event(key: KeyEvent, riqi_state: &mut RiqiState) {
+const CONFIG_ITEM_COUNT: usize = 3;
+const CONFIG_ITEM_THEME: usize = 0;
+const CONFIG_ITEM_LUNAR: usize = 1;
+const CONFIG_ITEM_HOLIDAY: usize = 2;
+
+pub fn handle_config_mode_key_event(
+    key: KeyEvent,
+    riqi_state: &mut RiqiState,
+    app_config: &mut AppConfig,
+) {
     if key.code == KeyCode::Char('q') || key.code == KeyCode::Esc {
         riqi_state.mode = RiqiMode::Normal;
         return;
     }
     if key.code == KeyCode::Char('j') || key.code == KeyCode::Down {
-        // 目前只有一个选项，focus 保持 0
-        riqi_state.config_panel.focus = 0;
+        if riqi_state.config_panel.focus + 1 < CONFIG_ITEM_COUNT {
+            riqi_state.config_panel.focus += 1;
+        }
     }
     if key.code == KeyCode::Char('k') || key.code == KeyCode::Up {
         riqi_state.config_panel.focus = riqi_state.config_panel.focus.saturating_sub(1);
     }
 
-    if key.code == KeyCode::Enter {
-        // 配置面板目前只有 theme 一个选项 (index 0)
-        if riqi_state.config_panel.focus == 0 {
-            let selected = riqi_state
-                .theme_names
-                .iter()
-                .position(|name| *name == riqi_state.theme_name)
-                .unwrap_or(0);
-            riqi_state.theme_select.selected = selected;
-            riqi_state.theme_select.original_theme = riqi_state.theme;
-            riqi_state.mode = RiqiMode::ThemeSelect;
+    let toggle = |app_config: &mut AppConfig, focus: usize| match focus {
+        CONFIG_ITEM_LUNAR => app_config.show_lunar = !app_config.show_lunar,
+        CONFIG_ITEM_HOLIDAY => app_config.show_holiday = !app_config.show_holiday,
+        _ => {}
+    };
+
+    match key.code {
+        KeyCode::Enter => match riqi_state.config_panel.focus {
+            CONFIG_ITEM_THEME => {
+                let selected = riqi_state
+                    .theme_names
+                    .iter()
+                    .position(|name| *name == riqi_state.theme_name)
+                    .unwrap_or(0);
+                riqi_state.theme_select.selected = selected;
+                riqi_state.theme_select.original_theme = riqi_state.theme;
+                riqi_state.mode = RiqiMode::ThemeSelect;
+            }
+            focus => toggle(app_config, focus),
+        },
+        KeyCode::Char('h') | KeyCode::Left | KeyCode::Char('l') | KeyCode::Right => {
+            toggle(app_config, riqi_state.config_panel.focus);
         }
+        _ => {}
     }
 }
 
